@@ -7,6 +7,11 @@ export interface ISignInData {
     email: string;
     password: string;
 };
+export interface ISignUpData {
+    email: string;
+    name: string;
+    password: string;
+};
 
 export interface IUserCompanyData {
     id: string;
@@ -25,7 +30,7 @@ export interface IUserData {
     permissions: String[];
     createAt: Date;
     loggedAt?: Date;
-    companies: IUserCompanyData[];
+    spaces: IUserCompanyData[];
     contact?: string;
     description?: string;
     payload?:{
@@ -58,9 +63,9 @@ export const signIn = async (data: ISignInData): Promise<UserOrError> => {
     }
 };
 
-export const signUp = async () => {
+export const signUp = async (data: ISignUpData) => {
     try {
-        const response = await api.post("", {});
+        const response = await api.post("/user/signup", data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

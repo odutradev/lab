@@ -31,7 +31,7 @@ const SignIn = () => {
         throw Error;
       }
       setUser(result);
-      setInterval(() => navigate('/companies'), 500);
+      setInterval(() => navigate('/dashboard'), 500);
     }
     await toast.promise(
       send(),
@@ -83,7 +83,7 @@ const SignIn = () => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="reset-password" variant="body2">
                     Esqueci minha senha
                   </Link>
                 </Grid>

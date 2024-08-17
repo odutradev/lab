@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import * as React from 'react';
 
 import { BackgroudCover, Image, FormContainer, CustomPaper, FullHeightGrid } from './styles';
-import { signIn, ISignInData } from '../../actions/user';
+import { ISignUpData, signUp } from '../../actions/user';
 import cover from '../../assets/imgs/cover.png';
 import lite from '../../assets/imgs/lite.svg';
 import useUserStore from '../../store/user';
@@ -20,18 +20,19 @@ const SignUp = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const form: ISignInData = {
+    const form: ISignUpData = {
       email: data.get('email') as string,
+      name: data.get('name') as string,
       password: data.get('password') as string,
     };
     const send = async () => {
-      const result = await signIn(form);
+      const result = await signUp(form);
       if ('error' in result) {
         toast.warning(result.error);
         throw Error;
       }
       setUser(result);
-      setInterval(() => navigate('/companies'), 500);
+      setInterval(() => navigate('/dashboard'), 500);
     }
     await toast.promise(
       send(),

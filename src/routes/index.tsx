@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom";
 
+import Dashboard from "../pages/dashboard";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
 
@@ -15,7 +16,7 @@ const Router = () => {
 
 
           <Route element={<PrivateRoute  />}>
-
+           <Route path="/dashboard" element={<Dashboard/>}/>
           </Route>
 
         </Routes>

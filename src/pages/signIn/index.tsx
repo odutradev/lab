@@ -1,15 +1,14 @@
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
 import { toast } from 'react-toastify';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import * as React from 'react';
 
+import { BackgroudCover, Image, FormContainer, CustomPaper, FullHeightGrid } from './styles';
 import { signIn, ISignInData } from '../../actions/user';
-import { BackgroudCover, Image } from './styles';
 import cover from '../../assets/imgs/cover.png';
 import lite from '../../assets/imgs/lite.svg';
 import useUserStore from '../../store/user';
@@ -30,7 +29,7 @@ const SignIn = () => {
       if ('error' in result) {
         toast.warning(result.error);
         throw Error;
-      };
+      }
       setUser(result);
       setInterval(() => navigate('/companies'), 500);
     }
@@ -41,25 +40,18 @@ const SignIn = () => {
         success: 'Autenticação bem-sucedida',
         error: 'Erro na autenticação'
       }
-  );
+    );
   };
 
   return (
-      <Grid container component="main" sx={{ height: '100vh' }}>
+    <FullHeightGrid>
+      <Grid container component="main" sx={{ height: '100%' }}>
         <Grid item xs={false} md={7}>
-            <BackgroudCover src={cover}/>
+          <BackgroudCover src={cover} />
         </Grid>
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Image src={lite}/>
+        <Grid item xs={12} sm={8} md={5} component={CustomPaper} elevation={6} square>
+          <FormContainer>
+            <Image src={lite} />
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
@@ -102,9 +94,10 @@ const SignIn = () => {
                 </Grid>
               </Grid>
             </Box>
-          </Box>
+          </FormContainer>
         </Grid>
       </Grid>
+    </FullHeightGrid>
   );
 };
 

@@ -13,7 +13,7 @@ import cover from '../../assets/imgs/cover.png';
 import lite from '../../assets/imgs/lite.svg';
 import useUserStore from '../../store/user';
 
-const SignIn = () => {
+const SignUp = () => {
   const navigate = useNavigate();
   const { setUser } = useUserStore(x => x);
 
@@ -57,6 +57,16 @@ const SignIn = () => {
                 margin="normal"
                 required
                 fullWidth
+                id="name"
+                label="nome"
+                name="name"
+                autoComplete="name"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
                 id="email"
                 label="Email"
                 name="email"
@@ -79,17 +89,13 @@ const SignIn = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                ENTRAR
+                CADASTRAR
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Esqueci minha senha
-                  </Link>
-                </Grid>
+                <Grid item xs></Grid>
                 <Grid item>
-                  <Link href="signup" variant="body2">
-                    {"Não tem uma conta? Cadastre-se!"}
+                  <Link href="signin" variant="body2">
+                    {"Já tem uma conta? Entre!"}
                   </Link>
                 </Grid>
               </Grid>
@@ -101,4 +107,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;

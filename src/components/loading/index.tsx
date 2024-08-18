@@ -1,19 +1,21 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-const Loading = ({ showSpinner = true, message = "Loading..." }: {showSpinner: Boolean, message: String}) => {
+import { LoadingProps } from './types';
+
+const Loading = ({ showSpinner = true, message = "Loading..." } : LoadingProps) => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
         justifyContent: 'center',
+        flexDirection: 'column',
+        position: 'absolute',
         alignItems: 'center',
+        display: 'flex',
         height: '100%',
         width: '100%',
-        position: 'absolute',
-        top: 0,
+        zIndex: 2,
         left: 0,
-        zIndex: 2
+        top: 0,
       }}
     >
       {showSpinner && <CircularProgress />}

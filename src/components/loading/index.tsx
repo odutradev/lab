@@ -1,6 +1,6 @@
 import { Box, CircularProgress, Typography } from '@mui/material';
 
-const Loading = ({ showSpinner = true, message = "Loading..." }) => {
+const Loading = ({ showSpinner = true, message = "Loading..." }: {showSpinner: Boolean, message: String}) => {
   return (
     <Box
       sx={{

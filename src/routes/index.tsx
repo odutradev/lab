@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom";
 
+import ResetPassword from "../pages/resetPassword";
 import Dashboard from "../pages/dashboard";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
@@ -12,6 +13,7 @@ const Router = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/signin" replace/>}/>
+          <Route path="/reset-password" element={<ResetPassword/>}/>
           <Route path="*" element={<Navigate to="/404" replace/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>

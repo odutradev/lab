@@ -42,6 +42,12 @@ export interface IUserData {
     };
 };
 
+export interface IRequestPassword {
+    email: string;
+    code?: number | string;
+    password?: string;
+}
+
 interface ResponseError  {
     error: string;
 };
@@ -79,6 +85,42 @@ export const signUp = async (data: ISignUpData) => {
 export const getUser = async (): Promise<IUserData | ResponseError> => {
     try {
         const response = await api.get("/user/me");
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
+export const requestResetPassword = async (data: IRequestPassword): Promise<{} | ResponseError> => {
+    try {
+        const response = await api.post("/user/request/reset-password", data);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
+export const validateResetPassword = async (data: IRequestPassword): Promise<{ authorized: boolean } | ResponseError> => {
+    try {
+        const response = await api.post("/user/validate/reset-password", data);
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
+export const resetPassword = async (data: IRequestPassword): Promise<{ token: string } | ResponseError> => {
+    try {
+        const response = await api.put("/user/reset-password", data);
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

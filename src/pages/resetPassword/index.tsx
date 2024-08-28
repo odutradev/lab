@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import Validade from './components/validate';
+import Validate from './components/validate';
 import { ResetPasswordState } from './types';
 import useUserStore from '../../store/user';
 import Request from './components/request';
@@ -12,12 +12,15 @@ const ResetPassword = () => {
 
     const { setUser } = useUserStore(x => x);
     const navigate = useNavigate();
+    useEffect(() => {
+        console.log(state)
+    },[state])
 
     switch(state.step){
         case'request':
             return <Request state={state} setState={setState}/>
         case'validate':
-            return <Validade state={state} setState={setState}/>
+            return <Validate state={state} setState={setState}/>
         case'reset':
             return <Reset state={state} setState={setState}/>
     }

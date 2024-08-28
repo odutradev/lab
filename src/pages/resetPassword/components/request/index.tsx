@@ -19,7 +19,7 @@ const Request: React.FC<ResetPasswordStepProps> = ({ state, setState }) => {
                 toast.warning(result.error);
                 throw new Error(result.error);
             }        
-            setTimeout(() => setState({ ...form, step: 'validate' }), 500);
+            setTimeout(() => setState({ ...state, ...form, step: 'validate' }), 500);
         };
         await toast.promise(
             send(),

@@ -1,19 +1,19 @@
 import { Box, Button, Container, Grid, TextField, Typography, Paper } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import React from 'react';
 
+import setAuthToken from '../../../../services/setAuthToken';
 import { resetPassword } from '../../../../actions/user';
 import { ResetPasswordStepProps } from '../../types';
-import useUserStore from '../../../../store/user';
 
 const Reset: React.FC<ResetPasswordStepProps> = ({ state }) => {
-    const { setUser } = useUserStore(x => x);
+    const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         const form = {
-            email: state.email,
             password: data.get('password') as string,
         };
         const send = async () => {
@@ -22,7 +22,8 @@ const Reset: React.FC<ResetPasswordStepProps> = ({ state }) => {
                 toast.warning(result.error);
                 throw new Error(result.error);
             }
-            setUser(result);
+            setAuthToken(result.token);
+            setTimeout(() => navigate('/dashboard'), 500);
         };
         await toast.promise(
             send(),

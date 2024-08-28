@@ -1,12 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { toast } from 'react-toastify';
 
-
+import Validade from './components/validate';
+import { ResetPasswordState } from './types';
 import useUserStore from '../../store/user';
 import Request from './components/request';
-import { ResetPasswordState } from './types';
-import Validade from './components/validate';
 import Reset from './components/reset';
 
 const ResetPassword = () => {

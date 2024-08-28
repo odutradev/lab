@@ -23,15 +23,17 @@ interface DashboardLayoutProps {
   updateSpace: (spaceId?: string) => void;
 }
 
+/*
 interface Space {
   name: string;
   _id: string;
 }
+*/
 
 const Layout: React.FC<DashboardLayoutProps> = ({ children, loading = false, updateSpace }) => {
   const [selectedSpace, setSelectedSpace] = useState<string>("");
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
-  const [spaces, setSpaces] = useState<Space[]>([]);
+  //const [spaces, setSpaces] = useState<Space[]>([]);
   const location = useLocation();
 
   const { user } = useUserStore(x => x);

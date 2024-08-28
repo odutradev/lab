@@ -32,7 +32,7 @@ const SignUp = () => {
         throw Error;
       }
       setUser(result);
-      setInterval(() => navigate('/dashboard'), 500);
+      setTimeout(() => navigate('/dashboard'), 500);
     }
     await toast.promise(
       send(),

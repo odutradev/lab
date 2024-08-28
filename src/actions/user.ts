@@ -72,7 +72,10 @@ export const signIn = async (data: ISignInData): Promise<UserOrError> => {
 export const signUp = async (data: ISignUpData) => {
     try {
         const response = await api.post("/user/signup", data);
-        return response.data;
+        const responseData =  response.data;
+        setAuthToken(responseData?.token);
+        const user = await getUser();
+        return user;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return { error: error.response.data.msg || 'Erro desconhecido' };
@@ -118,10 +121,13 @@ export const validateResetPassword = async (data: IRequestPassword): Promise<{ a
     }
 };
 
-export const resetPassword = async (data: IRequestPassword): Promise<{ token: string } | ResponseError> => {
+export const resetPassword = async (data: IRequestPassword): Promise<IUserData | ResponseError>  => {
     try {
         const response = await api.put("/user/reset-password", data);
-        return response.data;
+        const responseData =  response.data;
+        setAuthToken(responseData?.token);
+        const user = await getUser();
+        return user;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             return { error: error.response.data.msg || 'Erro desconhecido' };

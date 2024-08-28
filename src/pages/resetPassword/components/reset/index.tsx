@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import React from 'react';
 
-import setAuthToken from '../../../../services/setAuthToken';
 import { resetPassword } from '../../../../actions/user';
 import { ResetPasswordStepProps } from '../../types';
+import useUserStore from '../../../../store/user';
 
 const Reset: React.FC<ResetPasswordStepProps> = ({ state }) => {
+    const { setUser } = useUserStore(x => x);
     const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +23,7 @@ const Reset: React.FC<ResetPasswordStepProps> = ({ state }) => {
                 toast.warning(result.error);
                 throw new Error(result.error);
             }
-            setAuthToken(result.token);
+            setUser(result);
             setTimeout(() => navigate('/dashboard'), 500);
         };
         await toast.promise(

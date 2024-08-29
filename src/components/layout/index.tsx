@@ -12,15 +12,11 @@ import Loading from '../loading';
 
 const Layout: React.FC<LayoutProps> = ({ children, loading = false }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
-  const { user } = useUserStore(x => x);
+  const { user, setUser } = useUserStore(x => x);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
-
-  useEffect(() => {
-    getUser();
-  },[])
 
   return (
     <Box sx={{ display: 'flex' }}>

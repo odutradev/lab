@@ -1,16 +1,38 @@
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 
-import { IUserSpaceData } from '../../../../actions/user';
+import { getUser, IUserData, IUserSpaceData } from '../../../../actions/user';
+import setSpaceToken from '../../../../services/setSpaceToken';
 import { createSpace } from '../../../../actions/space';
 import useUserStore from '../../../../store/user';
 import { SpaceSelectProps } from '../../types';
-import setSpaceToken from '../../../../services/setSpaceToken';
 
 const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange }) => {
+  const [creatingSpace, setCreatingSpace] = useState<boolean>(false); 
   const [selectedSpace, setSelectedSpace] = useState<string>('');
   const [spaces, setSpaces] = useState<IUserSpaceData[]>([]);
-  const { user } = useUserStore(x => x);
+  const { user, setUser } = useUserStore(x => x);
+
+  const getCurrentUser = async () => {
+    const response = await getUser();
+    setUser(response as IUserData);
+  };
+
+  const handleSetSpace = (space: IUserSpaceData) => {
+    setSelectedSpace(space._id);
+    handleSpaceChange(space);
+    setSpaceToken(space._id);
+  };
+
+  const handleChange = (event: SelectChangeEvent<string>) => {
+    const selectedId = event.target.value as string;
+    const selected = spaces.find(space => space._id === selectedId);
+    if (selected) handleSetSpace(selected);
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  },[]);
 
   useEffect(() => {
     const filteredSpaces = user?.spaces.filter(space => space.invite === false || space.invite === undefined) || [];
@@ -18,11 +40,13 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange }) => {
   
     if (filteredSpaces.length === 0) {
       (async () => {
+        if (creatingSpace) return;
         const result = await createSpace({ name: 'padrão' });
-        setSpaces([result as IUserSpaceData]);
-        setSelectedSpace((result as IUserSpaceData)._id);
-        setSpaceToken((result as IUserSpaceData)._id);
-        handleSpaceChange(result as IUserSpaceData);
+        if ('error' in result) return;
+        handleSetSpace(result.space);
+        setSpaces([result.space]);
+        setCreatingSpace(true); 
+        setUser(result.user);
       })();
     } else {
       setSpaces(filteredSpaces);
@@ -35,23 +59,10 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange }) => {
           handleSpaceChange(space);
         }
       } else if (filteredSpaces.length > 0) {
-        setSelectedSpace(filteredSpaces[0]._id);
-        setSpaceToken(filteredSpaces[0]._id);
-        handleSpaceChange(filteredSpaces[0]);
+        handleSetSpace(filteredSpaces[0]);
       }
     }
   }, [user?.spaces]);
-  
-
-  const handleChange = (event: SelectChangeEvent<string>) => {
-    const selectedId = event.target.value as string;
-    const selected = spaces.find(space => space._id === selectedId);
-    if (selected) {
-      setSelectedSpace(selectedId);
-      handleSpaceChange(selected);
-      setSpaceToken(selected._id);
-    }
-  };
 
   return (
     <div style={{ padding: '16px' }}>

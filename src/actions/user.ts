@@ -93,9 +93,9 @@ export const signUp = async (data: ISignUpData) => {
 export const getUser = async (): Promise<IUserData | ResponseError> => {
     try {
         const response = await api.get("/user/me");
-        console.log(response)
         return response.data;
     } catch (error) {
+        console.log(error)
         if (axios.isAxiosError(error) && error.response) {
             return { error: error.response.data.msg || 'Erro desconhecido' };
           }

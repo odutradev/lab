@@ -10,14 +10,15 @@ import Logout from "../pages/logout";
 
 const Router = () => {
     const PrivateRoute = () => localStorage.getItem("token") != null ? <Outlet  /> : <Navigate to="/signin" />;
+    const InitialRoute = () => localStorage.getItem("token") != null ? <Navigate to="/dashboard" replace/> : <Navigate to="/signin" />;
     
     return(
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/signin" replace/>}/>
           <Route path="/reset-password" element={<ResetPassword/>}/>
           <Route path="*" element={<Navigate to="/404" replace/>}/>
           <Route path="/logout" element={<Logout />}/>
+          <Route path="/" element={<InitialRoute/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>
           <Route path="/404" element={<Error />}/>

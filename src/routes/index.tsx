@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom"
 
 import ResetPassword from "../pages/resetPassword";
 import Dashboard from "../pages/dashboard";
+import Profile from "../pages/profile";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
 import Error from "../pages/error";
@@ -23,6 +24,7 @@ const Router = () => {
 
           <Route element={<PrivateRoute  />}>
            <Route path="/dashboard" element={<Dashboard/>}/>
+           <Route path="/dashboard/profile" element={<Profile/>}/>
           </Route>
 
         </Routes>

@@ -2,12 +2,13 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom"
 
 import ResetPassword from "../pages/resetPassword";
 import Dashboard from "../pages/dashboard";
+import Request from "../pages/requests";
 import Profile from "../pages/profile";
+import Logout from "../pages/logout";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
 import Error from "../pages/error";
-import Logout from "../pages/logout";
-import Request from "../pages/requests";
+import Users from "../pages/users";
 
 const Router = () => {
     const InitialRoute = () => localStorage.getItem("token") != null ? <Navigate to="/dashboard" replace/> : <Navigate to="/signin" />;
@@ -26,6 +27,7 @@ const Router = () => {
 
           <Route element={<PrivateRoute  />}>
            <Route path="/dashboard/admin/requests" element={<Request/>}/>
+           <Route path="/dashboard/admin/users" element={<Users/>}/>
            <Route path="/dashboard/profile" element={<Profile/>}/>
            <Route path="/dashboard" element={<Dashboard/>}/>
           </Route>

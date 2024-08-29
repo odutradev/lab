@@ -1,11 +1,11 @@
 import { persist } from 'zustand/middleware';
 import { create } from 'zustand';
 
-import { ICompanyData } from '../actions/company';
+import { ISpaceData } from '../actions/space';
 
 export interface ICompanyStore {
-    company: ICompanyData | null;
-    setCompany: (user: ICompanyData | null) => void;
+    company: ISpaceData | null;
+    setCompany: (user: ISpaceData | null) => void;
 };
 
 const useCompanyStore = create<ICompanyStore>()(

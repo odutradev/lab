@@ -13,11 +13,16 @@ export interface ISignUpData {
     password: string;
 };
 
-export interface IUserCompanyData {
+export interface IUserSpaceData {
     id: string;
     name: string;
     entryDate: Date;
     permissions: String[];
+    invitedBy?:{
+        name: string;
+        id: string;
+    };
+    invite?: boolean;
     _id: string;
 };
 
@@ -30,7 +35,7 @@ export interface IUserData {
     permissions: String[];
     createAt: Date;
     loggedAt?: Date;
-    spaces: IUserCompanyData[];
+    spaces: IUserSpaceData[];
     contact?: string;
     description?: string;
     payload?:{
@@ -88,6 +93,7 @@ export const signUp = async (data: ISignUpData) => {
 export const getUser = async (): Promise<IUserData | ResponseError> => {
     try {
         const response = await api.get("/user/me");
+        console.log(response)
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

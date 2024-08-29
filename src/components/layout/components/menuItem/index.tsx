@@ -14,7 +14,6 @@ const MenuItem: React.FC<MenuItemProps> = ({ text, route, icon, drawerOpen }) =>
     <ListItemButton
       component={Link}
       to={route}
-      selected={isSelected}
       sx={{
         justifyContent: drawerOpen ? 'initial' : 'center',
         px: 2.5,

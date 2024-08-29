@@ -19,6 +19,7 @@ interface DashboardLayoutProps {
   updateSpace: (spaceId?: string) => void;
 }
 import MenuItemComponent from './components/menuItem';
+import SpaceSelect from './components/spaceSelect';
 /*
 interface Space {
   name: string;
@@ -82,25 +83,7 @@ const Layout: React.FC<DashboardLayoutProps> = ({ children, loading = false, upd
       >
         <Stack spacing={2} p={1}>
           <div>
-            <div style={{ padding: '16px' }}>
-              {drawerOpen && (
-                <FormControl fullWidth sx={{ mt: 2 }}>
-                  <InputLabel id="space-select-label">Tabela</InputLabel>
-                  <Select
-                    labelId="space-select-label"
-                    value={selectedSpace}
-                    onChange={(event) => handleSpaceChange(event.target.value as string)}
-                    label="Tabela"
-                  >
-                    {[{ name: 'teste', _id: 'hkshdkhd' }].map((space) => (
-                      <MenuItem key={space._id} value={space._id}>
-                        {space.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            </div>
+            <SpaceSelect handleSpaceChange={() => {}}/>
             <Divider />
             <List>
               {defaultLinks.map(([icon, text, route]) => (

@@ -1,3 +1,5 @@
+import { IUserSpaceData } from "../../actions/user";
+
 export type MenuLink = [JSX.Element, string, string]; 
 
 export interface MenuItemProps {
@@ -6,3 +8,8 @@ export interface MenuItemProps {
     route: string;
     text: string;
 };
+
+export interface SpaceSelectProps {
+    handleSpaceChange: (value: IUserSpaceData) => void;
+};
+  

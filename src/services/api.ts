@@ -13,9 +13,9 @@ api.interceptors.request.use(
     if (token) {
       config.headers['authorization'] = token;
     }
-    const companyID = localStorage.getItem('companyID');
+    const companyID = localStorage.getItem('spaceID');
     if (companyID) {
-      config.headers['company'] = companyID;
+      config.headers['space'] = companyID;
     }
     return config;
   },

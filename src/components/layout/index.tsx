@@ -1,18 +1,17 @@
 import { Avatar, AppBar, Drawer, List, Divider, Typography, Toolbar, IconButton, Stack, Box } from '@mui/material';
-import React, { useState, useEffect} from 'react';
+import React, { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { adminLinks, defaultLinks, settingsLinks } from './links'
 import MenuItemComponent from './components/menuItem';
 import SpaceSelect from './components/spaceSelect';
-import { getUser } from '../../actions/user';
 import useUserStore from '../../store/user';
 import { LayoutProps } from './types';
 import Loading from '../loading';
 
 const Layout: React.FC<LayoutProps> = ({ children, loading = false }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
-  const { user, setUser } = useUserStore(x => x);
+  const { user  } = useUserStore(x => x);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);

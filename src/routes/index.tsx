@@ -7,10 +7,11 @@ import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
 import Error from "../pages/error";
 import Logout from "../pages/logout";
+import Request from "../pages/requests";
 
 const Router = () => {
-    const PrivateRoute = () => localStorage.getItem("token") != null ? <Outlet  /> : <Navigate to="/signin" />;
     const InitialRoute = () => localStorage.getItem("token") != null ? <Navigate to="/dashboard" replace/> : <Navigate to="/signin" />;
+    const PrivateRoute = () => localStorage.getItem("token") != null ? <Outlet  /> : <Navigate to="/signin" />;
     
     return(
       <BrowserRouter>
@@ -24,8 +25,9 @@ const Router = () => {
           <Route path="/404" element={<Error />}/>
 
           <Route element={<PrivateRoute  />}>
-           <Route path="/dashboard" element={<Dashboard/>}/>
+           <Route path="/dashboard/admin/requests" element={<Request/>}/>
            <Route path="/dashboard/profile" element={<Profile/>}/>
+           <Route path="/dashboard" element={<Dashboard/>}/>
           </Route>
 
         </Routes>

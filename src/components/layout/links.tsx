@@ -1,5 +1,4 @@
-import { Logout, AccountCircle, PersonSearch, Home } from '@mui/icons-material';
-
+import { Logout, AccountCircle, PersonSearch, Home, Checklist } from '@mui/icons-material';
 import { MenuLink } from './types';
 
 export const defaultLinks: MenuLink[] = [
@@ -13,4 +12,5 @@ export const settingsLinks: MenuLink[] = [
 
 export const adminLinks: MenuLink[] = [
     [<PersonSearch />, 'Usuários', '/dashboard/admin/users'],
+    [<Checklist />, 'Usuários', '/dashboard/admin/requests'],
 ];

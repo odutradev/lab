@@ -7,7 +7,7 @@ import { createSpace } from '../../../../actions/space';
 import useUserStore from '../../../../store/user';
 import { SpaceSelectProps } from '../../types';
 
-const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange }) => {
+const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen }) => {
   const [creatingSpace, setCreatingSpace] = useState<boolean>(false); 
   const [selectedSpace, setSelectedSpace] = useState<string>('');
   const [spaces, setSpaces] = useState<IUserSpaceData[]>([]);
@@ -32,7 +32,7 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange }) => {
 
   useEffect(() => {
     getCurrentUser();
-  },[]);
+  }, []);
 
   useEffect(() => {
     const filteredSpaces = user?.spaces.filter(space => space.invite === false || space.invite === undefined) || [];
@@ -66,21 +66,30 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange }) => {
 
   return (
     <div style={{ padding: '16px' }}>
-      <FormControl fullWidth sx={{ mt: 2 }}>
-        <InputLabel id="space-select-label">Tabela</InputLabel>
-        <Select
-          labelId="space-select-label"
-          value={selectedSpace}
-          onChange={handleChange}
-          label="Tabela"
-        >
-          {spaces.map(space => (
-            <MenuItem key={space._id} value={space._id}>
-              {space.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
+      {drawerOpen && (
+        <FormControl fullWidth sx={{ mt: 2 }}>
+          <InputLabel id="space-select-label">Tabela</InputLabel>
+          <Select
+            labelId="space-select-label"
+            value={selectedSpace}
+            onChange={handleChange}
+            label="Tabela"
+            sx={{
+              width: 'auto',
+              transition: 'width 0.3s ease-in-out',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              textOverflow: 'ellipsis',
+            }}
+          >
+            {spaces.map(space => (
+              <MenuItem key={space._id} value={space._id}>
+                {space.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
     </div>
   );
 };

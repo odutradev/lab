@@ -53,7 +53,7 @@ const Layout: React.FC<LayoutProps> = ({ children, loading = false }) => {
       >
         <Stack spacing={2} p={1}>
           <div>
-            <SpaceSelect handleSpaceChange={() => {}}/>
+            <SpaceSelect handleSpaceChange={() => {}} drawerOpen={drawerOpen}/>
             <Divider />
             <List>
               {defaultLinks.map(([icon, text, route]) => (

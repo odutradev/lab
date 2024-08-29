@@ -13,6 +13,7 @@ export interface MenuItemProps {
 
 export interface SpaceSelectProps {
     handleSpaceChange: (value: IUserSpaceData) => void;
+    drawerOpen: Boolean;
 };
   
 export interface LayoutProps {

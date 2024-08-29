@@ -6,13 +6,9 @@ import {
   Divider, Typography, Toolbar, IconButton, Stack, Box, Select, 
   MenuItem, FormControl, InputLabel 
 } from '@mui/material';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import AddToPhotos from '@mui/icons-material/AddToPhotos';
-import LogoutIcon from '@mui/icons-material/Logout';
-import LocalOffer from '@mui/icons-material/LocalOffer';
-import HomeIcon from '@mui/icons-material/Home';
+
 import MenuIcon from '@mui/icons-material/Menu';
+import { adminLinks, defaultLinks, settingsLinks } from './links'
 
 import useUserStore from '../../store/user';
 import Loading from '../loading';
@@ -48,20 +44,7 @@ const Layout: React.FC<DashboardLayoutProps> = ({ children, loading = false, upd
     updateSpace(event);
   };
 
-  const defaultLinks: [JSX.Element, string, string][] = [
-    [<HomeIcon />, 'Visão Geral', '/dashboard'],
-    [<AddToPhotos />, 'Tabelas', '/dashboard/spaces'],
-    [<LocalOffer />, 'Procedimentos', '/dashboard/services'],
-  ];
 
-  const settingsLinks: [JSX.Element, string, string][] = [
-    [<AccountCircleIcon />, 'Minha conta', '/dashboard/profile'],
-    [<LogoutIcon />, 'Sair', '/logout'],
-  ];
-
-  const adminLinks: [JSX.Element, string, string][] = [
-    [<PersonSearchIcon />, 'Usuários', '/dashboard/admin/users'],
-  ];
 
   return (
     <Box sx={{ display: 'flex' }}>

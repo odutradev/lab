@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 const api: AxiosInstance = axios.create({
-  baseURL: false ? "http://localhost:2500/v1/" : "https://api.lab.odutra.com/v1/",
+  baseURL: true ? "http://localhost:2500/v1/" : "https://api.lab.odutra.com/v1/",
   headers: {
     'Content-Type': 'application/json',
   },

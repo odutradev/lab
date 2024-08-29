@@ -1,0 +1,1 @@
+export type MenuLink = [JSX.Element, string, string]; 

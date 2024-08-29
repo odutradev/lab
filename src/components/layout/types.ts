@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 import { IUserSpaceData } from "../../actions/user";
 
 export type MenuLink = [JSX.Element, string, string]; 
@@ -13,3 +15,8 @@ export interface SpaceSelectProps {
     handleSpaceChange: (value: IUserSpaceData) => void;
 };
   
+export interface LayoutProps {
+    updateSpace?: (spaceId?: string) => void;
+    loading?: boolean | string;
+    children: ReactNode;
+  }

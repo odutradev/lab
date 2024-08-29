@@ -1,51 +1,26 @@
-import React, { useState, ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-
-import { 
-  Avatar, AppBar, Drawer, List, ListItem, ListItemIcon, ListItemText, 
-  Divider, Typography, Toolbar, IconButton, Stack, Box, Select, 
-  MenuItem, FormControl, InputLabel 
-} from '@mui/material';
-
+import { Avatar, AppBar, Drawer, List, Divider, Typography, Toolbar, IconButton, Stack, Box } from '@mui/material';
+import React, { useState, useEffect} from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
+
 import { adminLinks, defaultLinks, settingsLinks } from './links'
-
-import useUserStore from '../../store/user';
-import Loading from '../loading';
-
-interface DashboardLayoutProps {
-  children: ReactNode;
-  loading?: boolean | string;
-  updateSpace: (spaceId?: string) => void;
-}
 import MenuItemComponent from './components/menuItem';
 import SpaceSelect from './components/spaceSelect';
-/*
-interface Space {
-  name: string;
-  _id: string;
-}
-*/
+import { getUser } from '../../actions/user';
+import useUserStore from '../../store/user';
+import { LayoutProps } from './types';
+import Loading from '../loading';
 
-const Layout: React.FC<DashboardLayoutProps> = ({ children, loading = false, updateSpace }) => {
-  const [selectedSpace, setSelectedSpace] = useState<string>("");
+const Layout: React.FC<LayoutProps> = ({ children, loading = false }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
-  //const [spaces, setSpaces] = useState<Space[]>([]);
-  const location = useLocation();
-
   const { user } = useUserStore(x => x);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const handleSpaceChange = (event: string) => {
-    setSelectedSpace(event);
-    localStorage.setItem("space", event);
-    updateSpace(event);
-  };
-
-
+  useEffect(() => {
+    getUser();
+  },[])
 
   return (
     <Box sx={{ display: 'flex' }}>

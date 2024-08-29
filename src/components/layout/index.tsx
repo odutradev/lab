@@ -18,7 +18,7 @@ interface DashboardLayoutProps {
   loading?: boolean | string;
   updateSpace: (spaceId?: string) => void;
 }
-
+import MenuItemComponent from './components/menuItem';
 /*
 interface Space {
   name: string;
@@ -104,37 +104,13 @@ const Layout: React.FC<DashboardLayoutProps> = ({ children, loading = false, upd
             <Divider />
             <List>
               {defaultLinks.map(([icon, text, route]) => (
-                <ListItem  
-                  key={text} 
-                  component={Link} 
-                  to={route} 
-                  selected={location.pathname === route} 
-                  sx={{ 
-                    justifyContent: drawerOpen ? 'initial' : 'center', 
-                    px: 2.5,
-                    '&.Mui-selected': {
-                      backgroundColor: theme => theme.palette.action.selected,
-                    },
-                    '&.Mui-selected:hover': {
-                      backgroundColor: theme => theme.palette.action.selected,
-                    },
-                    '&:hover': {
-                      backgroundColor: theme => theme.palette.action.hover,
-                    },
-                  }}
-                >
-                  <ListItemIcon 
-                    sx={{ 
-                      minWidth: 0, 
-                      mr: drawerOpen ? 3 : 'auto', 
-                      justifyContent: 'center', 
-                      color: theme => theme.palette.text.primary,
-                    }}
-                  >
-                    {icon}
-                  </ListItemIcon>
-                  {drawerOpen && <ListItemText primary={text} sx={{ color: theme => theme.palette.text.primary }} />}
-                </ListItem>
+                <MenuItemComponent
+                  drawerOpen={drawerOpen}
+                  route={route}
+                  icon={icon} 
+                  text={text}
+                  key={route}
+                />
               ))}
             </List>
           </div>
@@ -143,37 +119,13 @@ const Layout: React.FC<DashboardLayoutProps> = ({ children, loading = false, upd
               <Divider />
               <List>
                 {adminLinks.map(([icon, text, route]) => (
-                  <ListItem  
-                    key={text} 
-                    component={Link} 
-                    to={route} 
-                    selected={location.pathname === route} 
-                    sx={{ 
-                      justifyContent: drawerOpen ? 'initial' : 'center', 
-                      px: 2.5,
-                      '&.Mui-selected': {
-                        backgroundColor: theme => theme.palette.action.selected,
-                      },
-                      '&.Mui-selected:hover': {
-                        backgroundColor: theme => theme.palette.action.selected,
-                      },
-                      '&:hover': {
-                        backgroundColor: theme => theme.palette.action.hover,
-                      },
-                    }}
-                  >
-                    <ListItemIcon 
-                      sx={{ 
-                        minWidth: 0, 
-                        mr: drawerOpen ? 3 : 'auto', 
-                        justifyContent: 'center', 
-                        color: theme => theme.palette.text.primary,
-                      }}
-                    >
-                      {icon}
-                    </ListItemIcon>
-                    {drawerOpen && <ListItemText primary={text} sx={{ color: theme => theme.palette.text.primary }} />}
-                  </ListItem>
+                  <MenuItemComponent
+                    drawerOpen={drawerOpen}
+                    route={route}
+                    icon={icon} 
+                    text={text}
+                    key={route}
+                  />
                 ))}
               </List>
             </div>
@@ -182,37 +134,13 @@ const Layout: React.FC<DashboardLayoutProps> = ({ children, loading = false, upd
             <Divider />
             <List>
               {settingsLinks.map(([icon, text, route]) => (
-                <ListItem  
-                  key={text} 
-                  component={Link} 
-                  to={route} 
-                  selected={location.pathname === route} 
-                  sx={{ 
-                    justifyContent: drawerOpen ? 'initial' : 'center', 
-                    px: 2.5,
-                    '&.Mui-selected': {
-                      backgroundColor: theme => theme.palette.action.selected,
-                    },
-                    '&.Mui-selected:hover': {
-                      backgroundColor: theme => theme.palette.action.selected,
-                    },
-                    '&:hover': {
-                      backgroundColor: theme => theme.palette.action.hover,
-                    },
-                  }}
-                >
-                  <ListItemIcon 
-                    sx={{ 
-                      minWidth: 0, 
-                      mr: drawerOpen ? 3 : 'auto', 
-                      justifyContent: 'center', 
-                      color: theme => theme.palette.text.primary,
-                    }}
-                  >
-                    {icon}
-                  </ListItemIcon>
-                  {drawerOpen && <ListItemText primary={text} sx={{ color: theme => theme.palette.text.primary }}/>}
-                </ListItem>
+                <MenuItemComponent
+                  drawerOpen={drawerOpen}
+                  route={route}
+                  icon={icon} 
+                  text={text}
+                  key={route}
+                />
               ))}
             </List>
           </div>

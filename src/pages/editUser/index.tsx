@@ -125,6 +125,7 @@ const EditUser = () => {
                                     value={new Date(user.createAt).toISOString().split('T')[0]}
                                     InputProps={{ readOnly: true }}
                                     fullWidth
+                                    disabled
                                 />
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>

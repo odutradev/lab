@@ -31,7 +31,7 @@ export interface IUserData {
     name: string;
     email: string;
     role: 'admin' | 'normal';
-    status: 'logged' | 'registered';
+    status: 'logged' | 'registered' | 'blocked' | 'pending';
     permissions: String[];
     createAt: Date;
     loggedAt?: Date;

@@ -62,10 +62,7 @@ const Request = () => {
     }, []);
 
     return (
-        <DashboardLayout loading={loading} updateSpace={() => {}}>
-            <Typography variant="h4" align="center" gutterBottom>
-                Usuários pendentes
-            </Typography>
+        <DashboardLayout loading={loading} title="SOLICITAÇÕES">
             <Grid container spacing={3} justifyContent="center" style={{ marginTop: '25px'}}>
                 {users.length > 0 ? (
                     users.map((user) => (

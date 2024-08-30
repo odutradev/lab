@@ -9,7 +9,7 @@ import useUserStore from '../../store/user';
 import { LayoutProps } from './types';
 import Loading from '../loading';
 
-const Layout: React.FC<LayoutProps> = ({ children, loading = false }) => {
+const Layout: React.FC<LayoutProps> = ({ children, title="LAB", loading = false }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
   const { user  } = useUserStore(x => x);
 
@@ -33,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children, loading = false }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
-            LAB
+            {title}
           </Typography>
           <Avatar>{user?.name?.slice(0, 2) || ""}</Avatar>
         </Toolbar>

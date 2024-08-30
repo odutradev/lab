@@ -33,10 +33,7 @@ const Users = () => {
     );
 
     return (
-        <DashboardLayout loading={loading} updateSpace={() => {}}>
-            <Typography variant="h4" align="center" gutterBottom>
-                Usuários
-            </Typography>
+        <DashboardLayout loading={loading} title="USUÁRIOS">
             <Grid container justifyContent="center" style={{ marginTop: '25px', marginBottom: '25px' }}>
                 <TextField
                     label="Pesquisar por nome ou email"

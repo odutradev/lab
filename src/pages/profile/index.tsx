@@ -43,7 +43,7 @@ const Profile = () => {
     };
 
     return (
-        <DashboardLayout updateSpace={() => {}}>
+        <DashboardLayout title="PERFIL">
             <Grid container justifyContent="center" style={{ marginTop: '25px' }}>
                 <Grid item xs={12} md={8} style={{ maxWidth: '80vw' }}>
                     {editUser ? (

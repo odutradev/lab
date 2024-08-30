@@ -20,4 +20,5 @@ export interface LayoutProps {
     updateSpace?: (spaceId?: string) => void;
     loading?: boolean | string;
     children: ReactNode;
+    title?: string;
   }

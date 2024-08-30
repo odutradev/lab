@@ -22,7 +22,7 @@ const EditUser = () => {
 
     const handleUpdateUser = async () => {
         if (user) {
-
+            
         }
     };
 

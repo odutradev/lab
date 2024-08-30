@@ -43,9 +43,9 @@ export const getUserById = async (userID: string): Promise<IUserData | ResponseE
     }
 };
 
-export const updateUserById = async (userID: string): Promise<IUserData | ResponseError> => {
+export const updateUserById = async (userID: string, data: Partial<IUserData>): Promise<IUserData | ResponseError> => {
     try {
-        const response = await api.put("/admin/user/update/" + userID);
+        const response = await api.put("/admin/user/update/" + userID, { data });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

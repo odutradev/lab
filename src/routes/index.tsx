@@ -9,6 +9,7 @@ import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
 import Error from "../pages/error";
 import Users from "../pages/users";
+import EditUser from "../pages/editUser";
 
 const Router = () => {
     const InitialRoute = () => localStorage.getItem("token") != null ? <Navigate to="/dashboard" replace/> : <Navigate to="/signin" />;
@@ -26,6 +27,7 @@ const Router = () => {
           <Route path="/404" element={<Error />}/>
 
           <Route element={<PrivateRoute  />}>
+           <Route path="/dashboard/admin/edit-user/:userID" element={<EditUser/>}/>
            <Route path="/dashboard/admin/requests" element={<Request/>}/>
            <Route path="/dashboard/admin/users" element={<Users/>}/>
            <Route path="/dashboard/profile" element={<Profile/>}/>

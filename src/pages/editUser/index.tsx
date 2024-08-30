@@ -1,6 +1,7 @@
 import { TextField, Button, Grid, Typography, MenuItem, Avatar } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
 import DashboardLayout from "../../components/layout";
 import { getUserById, updateUserById } from "../../actions/admin";
@@ -22,7 +23,22 @@ const EditUser = () => {
 
     const handleUpdateUser = async () => {
         if (user) {
-            
+            const send = async () => {
+                const result = await updateUserById(userID as string, user);
+                if (result && typeof result === 'object' && 'error' in result) {
+                    toast.warning(result.error);
+                    throw new Error(result.error);
+                }        
+                setTimeout(() => navigate(-1), 500)
+            };
+            await toast.promise(
+                send(),
+                {
+                    pending: 'Atualizando usuario',
+                    success: 'Usuario atualizado',
+                    error: 'Erro o atualizar',
+                }
+            );
         }
     };
 

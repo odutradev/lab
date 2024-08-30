@@ -1,24 +1,28 @@
 import { TextField, Button, Grid, Typography, MenuItem, Avatar } from "@mui/material";
-import { useState } from "react";
 import { toast } from "react-toastify";
 
 import DashboardLayout from "../../components/layout";
-
+import { IUserData, updateUser } from "../../actions/user";
 import useUserStore from "../../store/user";
-import { IUserData } from "../../actions/user";
+import { useEffect, useState } from "react";
 
 const Profile = () => {
-    const [loading, setLoading] = useState<boolean>(false);
+    const [editUser, setEditUser] = useState<IUserData | null>();
     const { user, setUser } = useUserStore(x => x);
 
+    useEffect(() => {
+        setEditUser(user);
+    }, [user])
+
     const handleUpdateUser = async () => {
-        if (user) {
+        if (editUser) {
             const send = async () => {
-                const result = await updateUserById(userID as string, user);
+                const result = await updateUser(editUser);
                 if (result && typeof result === 'object' && 'error' in result) {
                     toast.warning(result.error);
                     throw new Error(result.error);
                 }        
+                setUser(result);
             };
             await toast.promise(
                 send(),
@@ -32,30 +36,30 @@ const Profile = () => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUser({
-            ...user!,
+        setEditUser({
+            ...editUser!,
             [e.target.name]: e.target.value,
         });
     };
 
     return (
-        <DashboardLayout loading={loading} updateSpace={() => {}}>
+        <DashboardLayout updateSpace={() => {}}>
             <Grid container justifyContent="center" style={{ marginTop: '25px' }}>
                 <Grid item xs={12} md={8} style={{ maxWidth: '80vw' }}>
-                    {user ? (
+                    {editUser ? (
                         <>
                             <Grid container direction="column" alignItems="center" style={{ marginBottom: '25px' }}>
                                 <Avatar
                                     style={{ width: 80, height: 80, marginBottom: '10px' }}
                                 >
-                                    {user.name.split(' ').map(name => name[0]).join('').toUpperCase()}
+                                    {editUser.name.split(' ').map(name => name[0]).join('').toUpperCase()}
                                 </Avatar>
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
                                 <TextField
                                     label="Nome"
                                     name="name"
-                                    value={user.name}
+                                    value={editUser.name}
                                     onChange={handleChange}
                                     fullWidth
                                 />
@@ -64,7 +68,7 @@ const Profile = () => {
                                 <TextField
                                     label="Email"
                                     name="email"
-                                    value={user.email}
+                                    value={editUser.email}
                                     onChange={handleChange}
                                     fullWidth
                                 />
@@ -74,7 +78,7 @@ const Profile = () => {
                                     select
                                     label="Cargo"
                                     name="role"
-                                    value={user.role}
+                                    value={editUser.role}
                                     onChange={handleChange}
                                     fullWidth
                                     disabled
@@ -88,7 +92,7 @@ const Profile = () => {
                                     select
                                     label="Status"
                                     name="status"
-                                    value={user.status}
+                                    value={editUser.status}
                                     onChange={handleChange}
                                     fullWidth
                                     disabled
@@ -105,7 +109,8 @@ const Profile = () => {
                                     name="createAt"
                                     type="date"
                                     InputLabelProps={{ shrink: true }}
-                                    value={new Date(user.createAt).toISOString().split('T')[0]}
+                                    disabled
+                                    value={new Date(editUser.createAt).toISOString().split('T')[0]}
                                     InputProps={{ readOnly: true }}
                                     fullWidth
                                 />
@@ -114,7 +119,7 @@ const Profile = () => {
                                 <TextField
                                     label="Contato"
                                     name="contact"
-                                    value={user.contact || ''}
+                                    value={editUser.contact || ''}
                                     onChange={handleChange}
                                     fullWidth
                                 />
@@ -125,7 +130,7 @@ const Profile = () => {
                                     name="description"
                                     multiline
                                     rows={4}
-                                    value={user.description || ''}
+                                    value={editUser.description || ''}
                                     onChange={handleChange}
                                     fullWidth
                                 />
@@ -134,7 +139,7 @@ const Profile = () => {
                                 <TextField
                                     label="Espaços"
                                     name="spaces"
-                                    value={user.spaces.map(space => space.name).join(', ')}
+                                    value={editUser.spaces.map(space => space.name).join(', ')}
                                     disabled
                                     fullWidth
                                 />

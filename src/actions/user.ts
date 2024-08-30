@@ -103,6 +103,19 @@ export const getUser = async (): Promise<IUserData | ResponseError> => {
     }
 };
 
+export const updateUser = async (data: Partial<IUserData>): Promise<IUserData | ResponseError> => {
+    try {
+        const response = await api.put("/user/update", { data });
+        return response.data;
+    } catch (error) {
+        console.log(error)
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
 export const requestResetPassword = async (data: IRequestPassword): Promise<{} | ResponseError> => {
     try {
         const response = await api.post("/user/request/reset-password", data);

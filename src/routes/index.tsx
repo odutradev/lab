@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom";
+import React from "react";
 
 import ResetPassword from "../pages/resetPassword";
 import Dashboard from "../pages/dashboard";

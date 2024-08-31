@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 
 import ResetPassword from "../pages/resetPassword";
+import AccountBlocked from "../pages/accountBlocked";
 import Dashboard from "../pages/dashboard";
 import EditUser from "../pages/editUser";
 import Request from "../pages/requests";
@@ -37,6 +38,7 @@ const routes = [
         routes: [
             ["/reset-password", <ResetPassword/>],
             ["*", <Navigate to="/404" replace/>],
+            ['/account-blocked', <AccountBlocked />],
             ['/signin', <SignIn />],
             ['/signup', <SignUp />],
             ['', <InitialRoute />],

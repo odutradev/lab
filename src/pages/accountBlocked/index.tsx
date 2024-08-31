@@ -1,6 +1,19 @@
 import { Box, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
+import { getUser } from '../../actions/user';
 
 const AccountBlocked = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    (async () => {
+      const response = await getUser();
+      if ('error' in response) return;
+      if (response.status != 'blocked') navigate('/')
+    })()
+  }, [])
 
   return (
     <Box

@@ -39,8 +39,8 @@ const routes = [
             ["*", <Navigate to="/404" replace/>],
             ['/signin', <SignIn />],
             ['/signup', <SignUp />],
-            ['/logout', <Logout />],
             ['', <InitialRoute />],
+            ['/logout', <Logout />],
             ['/404', <Error />],
         ]
     },

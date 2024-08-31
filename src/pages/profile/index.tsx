@@ -1,18 +1,14 @@
 import { TextField, Button, Grid, Typography, MenuItem, Avatar } from "@mui/material";
 import { toast } from "react-toastify";
 
-import DashboardLayout from "../../components/layout";
 import { IUserData, updateUser } from "../../actions/user";
+import DashboardLayout from "../../components/layout";
 import useUserStore from "../../store/user";
 import { useEffect, useState } from "react";
 
 const Profile = () => {
     const [editUser, setEditUser] = useState<IUserData | null>();
     const { user, setUser } = useUserStore(x => x);
-
-    useEffect(() => {
-        setEditUser(user);
-    }, [user])
 
     const handleUpdateUser = async () => {
         if (editUser) {
@@ -41,6 +37,11 @@ const Profile = () => {
             [e.target.name]: e.target.value,
         });
     };
+
+    useEffect(() => {
+        setEditUser(user);
+    }, [user])
+
 
     return (
         <DashboardLayout title="PERFIL">

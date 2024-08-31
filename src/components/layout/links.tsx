@@ -11,6 +11,6 @@ export const settingsLinks: MenuLink[] = [
 ];
 
 export const adminLinks: MenuLink[] = [
-    [<PersonSearch />, 'Usuários', '/dashboard/admin/users'],
     [<Checklist />, 'Solicitações', '/dashboard/admin/requests'],
+    [<PersonSearch />, 'Usuários', '/dashboard/admin/users'],
 ];

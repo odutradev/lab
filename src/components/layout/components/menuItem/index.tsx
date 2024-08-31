@@ -8,7 +8,6 @@ import { MenuItemProps } from '../../types';
 const MenuItem: React.FC<MenuItemProps> = ({ text, route, icon, drawerOpen }) => {
   const location = useLocation();
   const theme = useTheme();
-  const isSelected = location.pathname === route;
 
   return (
     <ListItemButton
@@ -17,7 +16,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ text, route, icon, drawerOpen }) =>
       sx={{
         justifyContent: drawerOpen ? 'initial' : 'center',
         px: 2.5,
-        backgroundColor: isSelected ? theme.palette.action.selected : 'inherit',
+        backgroundColor: location.pathname === route ? theme.palette.action.selected : 'inherit',
         '&.Mui-selected:hover': {
           backgroundColor: theme.palette.action.selected,
         },

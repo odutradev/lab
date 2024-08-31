@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import DashboardLayout from "../../components/layout";
 import { getAllUsers } from "../../actions/admin";
 import { IUserData } from "../../actions/user";
@@ -19,10 +20,6 @@ const Users = () => {
         setUsers(response);
     };
 
-    useEffect(() => {
-        getCurrentUsers();
-    }, []);
-
     const handleRowClick = (userId: string) => {
         navigate('/dashboard/admin/edit-user/' + userId);
     };
@@ -31,6 +28,10 @@ const Users = () => {
         user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    useEffect(() => {
+        getCurrentUsers();
+    }, []);
 
     return (
         <DashboardLayout loading={loading} title="USUÁRIOS" disableGetUser positionRequired="admin">

@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 
 import { IUserSpaceData } from "../../actions/user";
 
+export type PositionRequired = 'normal' | 'admin' | undefined;
+
 export type MenuLink = [JSX.Element, string, string]; 
 
 export interface MenuItemProps {
@@ -10,8 +12,6 @@ export interface MenuItemProps {
     route: string;
     text: string;
 };
-
-export type PositionRequired = 'normal' | 'admin' | undefined;
 
 export interface SpaceSelectProps {
     handleSpaceChange: (value: IUserSpaceData) => void;
@@ -27,4 +27,4 @@ export interface LayoutProps {
     disableGetUser?: boolean;
     children: ReactNode;
     title?: string;
-  }
+};

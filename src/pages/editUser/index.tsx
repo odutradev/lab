@@ -3,8 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import DashboardLayout from "../../components/layout";
 import { getUserById, updateUserById } from "../../actions/admin";
+import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
 
 const EditUser = () => {

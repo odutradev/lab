@@ -9,13 +9,15 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import React from 'react';
 
+import GlobalStyle from './styles/globalStyles';
 import Router from './routes/index.tsx';
 import theme from './styles/theme.ts';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <CssBaseline/>
+      <CssBaseline />
+      <GlobalStyle /> {/* Adiciona os estilos globais */}
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -31,4 +33,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <Router />
     </ThemeProvider>
   </React.StrictMode>,
-)
+);

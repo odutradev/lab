@@ -7,13 +7,6 @@ const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
   }
 
-  body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
-    overflow: auto;
-  }
-
   *::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -30,6 +23,16 @@ const GlobalStyles = createGlobalStyle`
 
   *::-webkit-scrollbar-thumb:hover {
     background: rgba(179, 54, 54, 0.9); 
+  }
+
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px #363636 inset !important;
+    -webkit-text-fill-color: #e0e0e0 !important;
+    background-color: #363636 !important; 
+  }
+
+  input:-webkit-autofill::placeholder {
+    color: #e0e0e0 !important;
   }
 `;
 

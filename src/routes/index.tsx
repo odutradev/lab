@@ -1,24 +1,18 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 
-import useUserStore from "../store/user";
 import routesPaths from "./routes";
 
 const Router = () => {
-    const { user } = useUserStore(x => x);
+  const token = localStorage.getItem("token");
 
-    const PrivateRoute = () => localStorage.getItem("token") != null ? <Outlet  /> : <Navigate to="/signin" />;
-    const AdminRoute = () => user?.role == 'admin' ? <Outlet  /> : <Navigate to="/signin" />;
- 
     return(
       <BrowserRouter>
         <Routes>
+        
             {
-              routesPaths.map(({path, type, routes}) => {
-
-
-                return routes.map(([itemPath, element]) => (
-                  <Route path={path + itemPath} element={element}/>
-                ))
+              routesPaths.map(({path, privateRoute, routes}) => {
+                
+                return routes.map(([itemPath, element]) => <Route path={path + itemPath} element={(privateRoute == true && token == null) ? <Navigate to="/signin" /> :  element}/>)
 
               })
             }

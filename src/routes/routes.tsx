@@ -16,7 +16,7 @@ const InitialRoute = () => localStorage.getItem("token") != null ? <Navigate to=
 const routes = [
     {
         path: "/dashboard",
-        type: "private",
+        privateRoute: true,
         routes: [
             ["/profile", <Profile/>],
             ["/", <Dashboard/>],
@@ -24,7 +24,7 @@ const routes = [
     },
     {
         path: "/dashboard/admin",
-        type: "admin",
+        privateRoute: true,
         routes: [
             ["/edit-user/:userID", <EditUser/>],
             ["/requests", <Request/>],
@@ -33,7 +33,7 @@ const routes = [
     },
     {
         path: "/",
-        type: "default",
+        privateRoute: false,
         routes: [
             ["/reset-password", <ResetPassword/>],
             ["*", <Navigate to="/404" replace/>],

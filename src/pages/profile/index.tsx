@@ -9,8 +9,8 @@ import ProfileModal from "./components/modal";
 
 const Profile = () => {
     const [editUser, setEditUser] = useState<IUserData | null>(null);
-    const { user } = useUserStore(x => x);
     const [openModal, setOpenModal] = useState(false);
+    const { user } = useUserStore(x => x);
 
     const handleUpdateUser = async () => {
         if (editUser) {
@@ -45,6 +45,10 @@ const Profile = () => {
     useEffect(() => {
         setEditUser(user);
     }, [user]);
+
+    useEffect(() => {
+        if (editUser?.images != user?.images) handleUpdateUser();
+    },[editUser?.images])
 
     return (
         <DashboardLayout title="PERFIL">

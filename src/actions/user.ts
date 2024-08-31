@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import setAuthToken from '../services/setAuthToken.ts';
+import useUserStore from '../store/user.ts';
 import api from '../services/api.ts';
 
 export interface ISignInData {
@@ -65,8 +66,13 @@ export const signIn = async (data: ISignInData): Promise<UserOrError> => {
         const responseData =  response.data;
         setAuthToken(responseData?.token);
         const user = await getUser();
+        if (user){
+            const { setUser } = useUserStore.getState();
+            setUser(user as IUserData);
+        };
         return user;
     } catch (error) {
+        console.log(error)
         if (axios.isAxiosError(error) && error.response) {
             return { error: error.response.data.msg || 'Erro desconhecido' };
           }
@@ -80,6 +86,10 @@ export const signUp = async (data: ISignUpData) => {
         const responseData =  response.data;
         setAuthToken(responseData?.token);
         const user = await getUser();
+        if (user){
+            const { setUser } = useUserStore.getState();
+            setUser(user as IUserData);
+        };
         return user;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -93,6 +103,11 @@ export const signUp = async (data: ISignUpData) => {
 export const getUser = async (): Promise<IUserData | ResponseError> => {
     try {
         const response = await api.get("/user/me");
+        const user = response.data;
+        if (user){
+            const { setUser } = useUserStore.getState();
+            setUser(user as IUserData);
+        };
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -105,6 +120,11 @@ export const getUser = async (): Promise<IUserData | ResponseError> => {
 export const updateUser = async (data: Partial<IUserData>): Promise<IUserData | ResponseError> => {
     try {
         const response = await api.put("/user/update", { data });
+        const user = response.data;
+        if (user){
+            const { setUser } = useUserStore.getState();
+            setUser(user as IUserData);
+        };
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

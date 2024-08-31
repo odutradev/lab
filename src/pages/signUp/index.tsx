@@ -11,11 +11,9 @@ import { BackgroudCover, Image, FormContainer, CustomPaper, FullHeightGrid } fro
 import { ISignUpData, signUp } from '../../actions/user';
 import cover from '../../assets/imgs/cover.png';
 import lite from '../../assets/imgs/lite.svg';
-import useUserStore from '../../store/user';
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { setUser } = useUserStore(x => x);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,7 +29,7 @@ const SignUp = () => {
         toast.warning(result.error);
         throw Error;
       }
-      setUser(result);
+
       const checkToken = setInterval(() => {
         const token = localStorage.getItem('token');
         if (token) {

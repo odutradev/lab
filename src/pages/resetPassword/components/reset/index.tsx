@@ -5,10 +5,8 @@ import React from 'react';
 
 import { resetPassword } from '../../../../actions/user';
 import { ResetPasswordStepProps } from '../../types';
-import useUserStore from '../../../../store/user';
 
 const Reset: React.FC<ResetPasswordStepProps> = ({ state }) => {
-    const { setUser } = useUserStore(x => x);
     const navigate = useNavigate();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -23,7 +21,6 @@ const Reset: React.FC<ResetPasswordStepProps> = ({ state }) => {
                 toast.warning(result.error);
                 throw new Error(result.error);
             }
-            setUser(result);
             setTimeout(() => navigate('/dashboard'), 500);
         };
         await toast.promise(

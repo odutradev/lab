@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 const Profile = () => {
     const [editUser, setEditUser] = useState<IUserData | null>();
-    const { user, setUser } = useUserStore(x => x);
+    const { user } = useUserStore(x => x);
 
     const handleUpdateUser = async () => {
         if (editUser) {
@@ -18,7 +18,6 @@ const Profile = () => {
                     toast.warning(result.error);
                     throw new Error(result.error);
                 }        
-                setUser(result);
             };
             await toast.promise(
                 send(),

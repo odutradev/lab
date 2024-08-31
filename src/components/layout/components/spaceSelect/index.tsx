@@ -2,7 +2,7 @@ import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@m
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getUser, IUserData, IUserSpaceData } from '../../../../actions/user';
+import { getUser, IUserSpaceData } from '../../../../actions/user';
 import setSpaceToken from '../../../../services/setSpaceToken';
 import { createSpace } from '../../../../actions/space';
 import useUserStore from '../../../../store/user';
@@ -12,12 +12,11 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
   const [creatingSpace, setCreatingSpace] = useState<boolean>(false); 
   const [selectedSpace, setSelectedSpace] = useState<string>('');
   const [spaces, setSpaces] = useState<IUserSpaceData[]>([]);
-  const { user, setUser } = useUserStore(x => x);
+  const { user } = useUserStore(x => x);
   const navigate = useNavigate();
 
   const getCurrentUser = async () => {
-    const response = await getUser();
-    setUser(response as IUserData);
+   await getUser();
   };
 
   const handleSetSpace = (space: IUserSpaceData) => {
@@ -51,7 +50,6 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
         handleSetSpace(result.space);
         setSpaces([result.space]);
         setCreatingSpace(true); 
-        setUser(result.user);
       })();
     } else {
       setSpaces(filteredSpaces);

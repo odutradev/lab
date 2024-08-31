@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 
 import uploadImage from "../../../../services/uploadImage";
+import { ProfileDropzone } from "./styles";
 import { ModalProps } from "../../types";
 
-const ProfileModal:React.FC<ModalProps> = ({onHandleLink}) => {
+const ProfileModal:React.FC<ModalProps> = ({onHandleLink, handleCloseModal}) => {
     const [uploading, setUploading] = useState(false);
     const [file, setFile] = useState<File | null>(null);
 
@@ -35,8 +36,8 @@ const ProfileModal:React.FC<ModalProps> = ({onHandleLink}) => {
                 {uploading ? (
                     <CircularProgress />
                 ) : (
-                    <Box sx={{ border: 'none', backgroundColor: 'transparent', borderRadius: 2, padding: 2, width: '100%', maxWidth: 400 }}>
-                        <DropzoneArea
+                    <Box sx={{ border: 'none' , borderRadius: 2, padding: 2, width: '100%', maxWidth: 400, justifyContent: 'center', alignItems: 'center' }}>
+                        <ProfileDropzone
                             onChange={(newFiles: File[]) => {
                                 setFile(newFiles[0] || null); 
                             }}
@@ -48,6 +49,7 @@ const ProfileModal:React.FC<ModalProps> = ({onHandleLink}) => {
                             }] : []}
                             showPreviews={true}
                             showPreviewsInDropzone={false}
+                            showAlerts={false}
                             showFileNames={false}
                             showFileNamesInPreview={false}
                             dropzoneClass="custom-dropzone"
@@ -56,6 +58,14 @@ const ProfileModal:React.FC<ModalProps> = ({onHandleLink}) => {
                 )}
             </Grid>
             <Grid item xs={12}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    style={{marginRight: '10px'}}
+                    onClick={handleCloseModal}
+                >
+                   Cancelar
+                </Button>
                 <Button
                     variant="contained"
                     color="primary"

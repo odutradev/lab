@@ -1,4 +1,4 @@
-import { TextField, Button, Grid, Typography, MenuItem, Avatar, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { TextField, Button, Grid, Typography, MenuItem, Avatar, Dialog, DialogContent } from "@mui/material";
 import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 
@@ -175,18 +175,12 @@ const Profile = () => {
                 </Grid>
             </Grid>
             <Dialog open={openModal} onClose={handleCloseModal}>
-                <DialogTitle>Atualizar Imagem</DialogTitle>
                 <DialogContent>
-                    <ProfileModal onHandleLink={(link) => {
+                    <ProfileModal handleCloseModal={handleCloseModal} onHandleLink={(link) => {
                         handleCloseModal();
                         setEditUser(prev => prev ? { ...prev, images: { ...prev.images, avatar: link as string }} : null);
                     }}/>
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseModal} color="primary">
-                        Fechar
-                    </Button>
-                </DialogActions>
             </Dialog>
         </DashboardLayout>
     );

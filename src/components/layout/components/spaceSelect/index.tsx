@@ -35,8 +35,8 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
   useEffect(() => {
     if (!disableGetUser) getCurrentUser();
     if (positionRequired && (user?.role != positionRequired) && (user?.role != 'admin')) navigate('/');
-    if (user?.status == 'blocked') navigate('account-blocked');
-    if (user?.status == 'pending') navigate('account-pending');
+    if (user?.status == 'blocked') navigate('/account-blocked');
+    if (user?.status == 'pending') navigate('/account-pending');
   }, []);
 
   useEffect(() => {

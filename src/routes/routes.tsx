@@ -1,7 +1,8 @@
 import { Navigate } from "react-router-dom";
 
-import ResetPassword from "../pages/resetPassword";
+import AccountPending from "../pages/accountPending";
 import AccountBlocked from "../pages/accountBlocked";
+import ResetPassword from "../pages/resetPassword";
 import Dashboard from "../pages/dashboard";
 import EditUser from "../pages/editUser";
 import Request from "../pages/requests";
@@ -36,9 +37,10 @@ const routes = [
         path: "/",
         privateRoute: false,
         routes: [
+            ['/account-blocked', <AccountBlocked />],
+            ['/account-pending', <AccountPending />],
             ["/reset-password", <ResetPassword/>],
             ["*", <Navigate to="/404" replace/>],
-            ['/account-blocked', <AccountBlocked />],
             ['/signin', <SignIn />],
             ['/signup', <SignUp />],
             ['', <InitialRoute />],

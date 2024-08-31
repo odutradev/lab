@@ -32,7 +32,13 @@ const SignUp = () => {
         throw Error;
       }
       setUser(result);
-      setTimeout(() => navigate('/dashboard'), 500);
+      const checkToken = setInterval(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          clearInterval(checkToken);
+          navigate('/dashboard');
+        }
+      }, 500);
     }
     await toast.promise(
       send(),

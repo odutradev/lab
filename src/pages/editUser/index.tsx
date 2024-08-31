@@ -58,7 +58,7 @@ const EditUser = () => {
     }, [userID]);
 
     return (
-        <DashboardLayout loading={loading} title="EDITAR USUÁRIO" disableGetUser>
+        <DashboardLayout loading={loading} title="EDITAR USUÁRIO" disableGetUser positionRequired="admin">
             <Grid container justifyContent="center" style={{ marginTop: '25px' }}>
                 <Grid item xs={12} md={8} style={{ maxWidth: '80vw' }}>
                     {user ? (

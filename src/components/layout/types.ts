@@ -11,14 +11,18 @@ export interface MenuItemProps {
     text: string;
 };
 
+export type PositionRequired = 'normal' | 'admin' | undefined;
+
 export interface SpaceSelectProps {
     handleSpaceChange: (value: IUserSpaceData) => void;
+    positionRequired: PositionRequired;
     disableGetUser: boolean;
     drawerOpen: boolean;
 };
   
 export interface LayoutProps {
     updateSpace?: (spaceId?: string) => void;
+    positionRequired?: PositionRequired;
     loading?: boolean | string;
     disableGetUser?: boolean;
     children: ReactNode;

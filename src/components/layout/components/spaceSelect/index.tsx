@@ -1,5 +1,6 @@
 import { FormControl, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { getUser, IUserData, IUserSpaceData } from '../../../../actions/user';
 import setSpaceToken from '../../../../services/setSpaceToken';
@@ -7,11 +8,12 @@ import { createSpace } from '../../../../actions/space';
 import useUserStore from '../../../../store/user';
 import { SpaceSelectProps } from '../../types';
 
-const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen, disableGetUser }) => {
+const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen, disableGetUser, positionRequired }) => {
   const [creatingSpace, setCreatingSpace] = useState<boolean>(false); 
   const [selectedSpace, setSelectedSpace] = useState<string>('');
   const [spaces, setSpaces] = useState<IUserSpaceData[]>([]);
   const { user, setUser } = useUserStore(x => x);
+  const navigate = useNavigate();
 
   const getCurrentUser = async () => {
     const response = await getUser();
@@ -33,7 +35,10 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
   useEffect(() => {
     if (!disableGetUser){
       getCurrentUser();
-    }
+    };
+    if (positionRequired && (user?.role != positionRequired) && (user?.role != 'admin')){
+      navigate('/');
+    };
   }, []);
 
   useEffect(() => {

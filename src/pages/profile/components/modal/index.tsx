@@ -1,5 +1,4 @@
 import { Button, CircularProgress, Grid, Box } from "@mui/material";
-import { DropzoneArea } from 'mui-file-dropzone';
 import { toast } from "react-toastify";
 import { useState } from "react";
 

@@ -1,14 +1,16 @@
-import { TextField, Button, Grid, Typography, MenuItem, Avatar } from "@mui/material";
+import { TextField, Button, Grid, Typography, MenuItem, Avatar, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { toast } from "react-toastify";
+import { useState, useEffect } from "react";
 
 import { IUserData, updateUser } from "../../actions/user";
 import DashboardLayout from "../../components/layout";
 import useUserStore from "../../store/user";
-import { useEffect, useState } from "react";
+import ProfileModal from "./components/modal";
 
 const Profile = () => {
-    const [editUser, setEditUser] = useState<IUserData | null>();
+    const [editUser, setEditUser] = useState<IUserData | null>(null);
     const { user } = useUserStore(x => x);
+    const [openModal, setOpenModal] = useState(false);
 
     const handleUpdateUser = async () => {
         if (editUser) {
@@ -37,10 +39,12 @@ const Profile = () => {
         });
     };
 
+    const handleOpenModal = () => setOpenModal(true);
+    const handleCloseModal = () => setOpenModal(false);
+
     useEffect(() => {
         setEditUser(user);
-    }, [user])
-
+    }, [user]);
 
     return (
         <DashboardLayout title="PERFIL">
@@ -51,6 +55,7 @@ const Profile = () => {
                             <Grid container direction="column" alignItems="center" style={{ marginBottom: '25px' }}>
                                 <Avatar
                                     style={{ width: 80, height: 80, marginBottom: '10px' }}
+                                    onClick={handleOpenModal}
                                 >
                                     {editUser.name.split(' ').map(name => name[0]).join('').toUpperCase()}
                                 </Avatar>
@@ -164,6 +169,20 @@ const Profile = () => {
                     )}
                 </Grid>
             </Grid>
+            <Dialog open={openModal} onClose={handleCloseModal}>
+                <DialogTitle>Atualizar Imagem</DialogTitle>
+                <DialogContent>
+                    <ProfileModal onHandleLink={(link) => {
+                        handleCloseModal();
+                        setEditUser({...editUser!, images: { banner: "", avatar: link as string}})
+                    }}/>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseModal} color="primary">
+                        Fechar
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </DashboardLayout>
     );
 };

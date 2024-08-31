@@ -6,6 +6,7 @@ interface ResponseError {
 
 const uploadImage = async (image: File | string): Promise<string | ResponseError> => {
     try {
+        console.log(image)
         const config = {
             method: 'post',
             maxBodyLength: Infinity,
@@ -24,6 +25,7 @@ const uploadImage = async (image: File | string): Promise<string | ResponseError
         const response = await axios(config);
         return response.data.data.link;
     } catch (error) {
+        console.log(error)
         if (axios.isAxiosError(error) && error.response) {
             return { error: error.response.data.error || 'Erro desconhecido' };
         }

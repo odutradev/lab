@@ -125,6 +125,22 @@ const Profile = () => {
                                     fullWidth
                                 />
                             </Grid>
+                            {
+                                editUser.approvedAt && (
+                                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                                        <TextField
+                                            label="Data de Aprovação"
+                                            name="createAt"
+                                            type="date"
+                                            InputLabelProps={{ shrink: true }}
+                                            value={new Date(editUser.approvedAt).toISOString().split('T')[0]}
+                                            InputProps={{ readOnly: true }}
+                                            fullWidth
+                                            disabled
+                                        />
+                                    </Grid>
+                                )
+                            }
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
                                 <TextField
                                     label="Contato"

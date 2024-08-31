@@ -33,9 +33,8 @@ export interface IUserData {
     email: string;
     role: 'admin' | 'normal';
     status: 'logged' | 'registered' | 'blocked' | 'pending';
-    permissions: String[];
     createAt: Date;
-    loggedAt?: Date;
+    approvedAt?: Date;
     spaces: IUserSpaceData[];
     contact?: string;
     description?: string;

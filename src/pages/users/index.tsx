@@ -33,7 +33,7 @@ const Users = () => {
     );
 
     return (
-        <DashboardLayout loading={loading} title="USUÁRIOS">
+        <DashboardLayout loading={loading} title="USUÁRIOS" disableGetUser>
             <Grid container justifyContent="center" style={{ marginTop: '25px', marginBottom: '25px' }}>
                 <TextField
                     label="Pesquisar por nome ou email"

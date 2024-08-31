@@ -13,12 +13,14 @@ export interface MenuItemProps {
 
 export interface SpaceSelectProps {
     handleSpaceChange: (value: IUserSpaceData) => void;
-    drawerOpen: Boolean;
+    disableGetUser: boolean;
+    drawerOpen: boolean;
 };
   
 export interface LayoutProps {
     updateSpace?: (spaceId?: string) => void;
     loading?: boolean | string;
+    disableGetUser?: boolean;
     children: ReactNode;
     title?: string;
   }

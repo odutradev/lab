@@ -9,7 +9,7 @@ import useUserStore from '../../store/user';
 import { LayoutProps } from './types';
 import Loading from '../loading';
 
-const Layout: React.FC<LayoutProps> = ({ children, title="LAB", loading = false }) => {
+const Layout: React.FC<LayoutProps> = ({ children, title="LAB", loading = false, disableGetUser=false }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
   const { user  } = useUserStore(x => x);
 
@@ -53,7 +53,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title="LAB", loading = false 
       >
         <Stack spacing={2} p={1}>
           <div>
-            <SpaceSelect handleSpaceChange={() => {}} drawerOpen={drawerOpen}/>
+            <SpaceSelect handleSpaceChange={() => {}} drawerOpen={drawerOpen} disableGetUser={disableGetUser}/>
             <Divider />
             <List>
               {defaultLinks.map(([icon, text, route]) => (

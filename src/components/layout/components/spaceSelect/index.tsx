@@ -7,7 +7,7 @@ import { createSpace } from '../../../../actions/space';
 import useUserStore from '../../../../store/user';
 import { SpaceSelectProps } from '../../types';
 
-const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen }) => {
+const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen, disableGetUser }) => {
   const [creatingSpace, setCreatingSpace] = useState<boolean>(false); 
   const [selectedSpace, setSelectedSpace] = useState<string>('');
   const [spaces, setSpaces] = useState<IUserSpaceData[]>([]);
@@ -31,7 +31,9 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
   };
 
   useEffect(() => {
-    getCurrentUser();
+    if (!disableGetUser){
+      getCurrentUser();
+    }
   }, []);
 
   useEffect(() => {

@@ -24,9 +24,9 @@ const Profile = () => {
             await toast.promise(
                 send(),
                 {
-                    pending: 'Atualizando usuario',
-                    success: 'Usuario atualizado',
-                    error: 'Erro o atualizar',
+                    pending: 'Atualizando usuário',
+                    success: 'Usuário atualizado',
+                    error: 'Erro ao atualizar',
                 }
             );
         }
@@ -54,10 +54,11 @@ const Profile = () => {
                         <>
                             <Grid container direction="column" alignItems="center" style={{ marginBottom: '25px' }}>
                                 <Avatar
+                                    src={editUser.images.avatar || undefined}
                                     style={{ width: 80, height: 80, marginBottom: '10px' }}
                                     onClick={handleOpenModal}
                                 >
-                                    {editUser.name.split(' ').map(name => name[0]).join('').toUpperCase()}
+                                    {!editUser.images.avatar && editUser.name.split(' ').map(name => name[0]).join('').toUpperCase()}
                                 </Avatar>
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
@@ -174,7 +175,7 @@ const Profile = () => {
                 <DialogContent>
                     <ProfileModal onHandleLink={(link) => {
                         handleCloseModal();
-                        setEditUser({...editUser!, images: { banner: "", avatar: link as string}})
+                        setEditUser(prev => prev ? { ...prev, images: { ...prev.images, avatar: link as string }} : null);
                     }}/>
                 </DialogContent>
                 <DialogActions>

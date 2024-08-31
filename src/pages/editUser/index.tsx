@@ -34,9 +34,9 @@ const EditUser = () => {
             await toast.promise(
                 send(),
                 {
-                    pending: 'Atualizando usuario',
-                    success: 'Usuario atualizado',
-                    error: 'Erro o atualizar',
+                    pending: 'Atualizando usuário',
+                    success: 'Usuário atualizado',
+                    error: 'Erro ao atualizar',
                 }
             );
         }
@@ -65,9 +65,10 @@ const EditUser = () => {
                         <>
                             <Grid container direction="column" alignItems="center" style={{ marginBottom: '25px' }}>
                                 <Avatar
+                                    src={user.images?.avatar || undefined}
                                     style={{ width: 80, height: 80, marginBottom: '10px' }}
                                 >
-                                    {user.name.split(' ').map(name => name[0]).join('').toUpperCase()}
+                                    {!user.images?.avatar && user.name.split(' ').map(name => name[0]).join('').toUpperCase()}
                                 </Avatar>
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>

@@ -95,7 +95,6 @@ export const getUser = async (): Promise<IUserData | ResponseError> => {
         const response = await api.get("/user/me");
         return response.data;
     } catch (error) {
-        console.log(error)
         if (axios.isAxiosError(error) && error.response) {
             return { error: error.response.data.msg || 'Erro desconhecido' };
           }
@@ -108,7 +107,6 @@ export const updateUser = async (data: Partial<IUserData>): Promise<IUserData | 
         const response = await api.put("/user/update", { data });
         return response.data;
     } catch (error) {
-        console.log(error)
         if (axios.isAxiosError(error) && error.response) {
             return { error: error.response.data.msg || 'Erro desconhecido' };
           }

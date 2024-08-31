@@ -1,8 +1,8 @@
 import axios from 'axios';
 
+import { getUser, IUserData, IUserSpaceData } from './user.ts';
 import setSpaceToken from '../services/setSpaceToken.ts';
 import api from '../services/api.ts';
-import { getUser, IUserData, IUserSpaceData } from './user.ts';
 
 interface ISpaceCreate {
     name: string
@@ -12,8 +12,8 @@ interface ResponseError  {
     error: string;
 };
 
-type SpaceOrError = IUserSpaceData | ResponseError;
 type SpaceAndUserOrError = { space: IUserSpaceData, user: IUserData} | ResponseError;
+type SpaceOrError = IUserSpaceData | ResponseError;
 
 export const getSpace = async (spaceID?: string): Promise<SpaceOrError> => {
     try {

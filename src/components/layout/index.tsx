@@ -49,31 +49,33 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
         sx={{
           width: drawerOpen ? 240 : 60,
           flexShrink: 0,
+          height: '100vh',
           '& .MuiDrawer-paper': {
             width: drawerOpen ? 240 : 60,
+            height: '100%',
             transition: 'width 0.3s',
             boxSizing: 'border-box',
+            display: 'flex',
+            flexDirection: 'column'
           },
         }}
       >
-        <Stack spacing={2} p={1}>
-          <div>
-            <SpaceSelect handleSpaceChange={() => {}} drawerOpen={drawerOpen} disableGetUser={disableGetUser} positionRequired={positionRequired} />
-            <Divider />
-            <List>
-              {defaultLinks.map(([icon, text, route]) => (
-                <MenuItemComponent
-                  drawerOpen={drawerOpen}
-                  route={route}
-                  icon={icon} 
-                  text={text}
-                  key={route}
-                />
-              ))}
-            </List>
-          </div>
+        <Stack spacing={2} p={1} sx={{ flexGrow: 1 }}>
+          <SpaceSelect handleSpaceChange={() => {}} drawerOpen={drawerOpen} disableGetUser={disableGetUser} positionRequired={positionRequired} />
+          <Divider />
+          <List>
+            {defaultLinks.map(([icon, text, route]) => (
+              <MenuItemComponent
+                drawerOpen={drawerOpen}
+                route={route}
+                icon={icon} 
+                text={text}
+                key={route}
+              />
+            ))}
+          </List>
           {user?.role === 'admin' && (
-            <div>
+            <>
               <Divider />
               <List>
                 {adminLinks.map(([icon, text, route]) => (
@@ -86,22 +88,22 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
                   />
                 ))}
               </List>
-            </div>
+            </>
           )}
-          <div>
-            <Divider />
-            <List>
-              {settingsLinks.map(([icon, text, route]) => (
-                <MenuItemComponent
-                  drawerOpen={drawerOpen}
-                  route={route}
-                  icon={icon} 
-                  text={text}
-                  key={route}
-                />
-              ))}
-            </List>
-          </div>
+        </Stack>
+        <Stack spacing={2} p={1} sx={{ marginTop: 'auto' }}>
+          <Divider />
+          <List>
+            {settingsLinks.map(([icon, text, route]) => (
+              <MenuItemComponent
+                drawerOpen={drawerOpen}
+                route={route}
+                icon={icon} 
+                text={text}
+                key={route}
+              />
+            ))}
+          </List>
         </Stack>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3, transition: 'margin-left 0.3s' }}>

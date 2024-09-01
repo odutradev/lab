@@ -1,4 +1,5 @@
-import { List, Divider, Toolbar, Stack, Box } from '@mui/material';
+import { List, Divider, Toolbar, Stack, Box, Accordion, AccordionSummary, AccordionDetails, Typography, Tooltip, useMediaQuery, useTheme } from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React, { useState } from 'react';
 
 import { adminLinks, defaultLinks, settingsLinks } from './links';
@@ -13,6 +14,8 @@ import Loading from '../loading';
 const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = false, disableGetUser = false, positionRequired }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
   const { user } = useUserStore(x => x);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -25,45 +28,120 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
         <Stack spacing={2} p={1} sx={{ flexGrow: 1 }}>
           <SpaceSelect handleSpaceChange={() => {}} drawerOpen={drawerOpen} disableGetUser={disableGetUser} positionRequired={positionRequired} />
           <Divider />
-          <List>
-            {defaultLinks.map(([icon, text, route]) => (
-              <MenuItemComponent
-                drawerOpen={drawerOpen}
-                route={route}
-                icon={icon} 
-                text={text}
-                key={route}
-              />
-            ))}
-          </List>
-          {user?.role === 'admin' && (
-            <>
-              <Divider />
+
+          <Accordion
+            defaultExpanded={!isMobile}
+            sx={{
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+              border: 'none',
+              backgroundImage: 'none',
+              '&::before': { display: 'none' },
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                backgroundColor: 'transparent',
+                padding: isMobile ? '8px' : '10px',
+                minHeight: 'unset',
+                border: 'none',
+                backgroundImage: 'none',
+                '&.Mui-expanded': { minHeight: 'unset' },
+                '& > .MuiAccordionSummary-content': { margin: 0 },
+                '& .MuiTypography-root': { display: drawerOpen ? 'block' : 'none' } 
+              }}
+            >
+              <Typography>GERAL</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ padding: isMobile ? '8px 0' : 0 }}>
               <List>
-                {adminLinks.map(([icon, text, route]) => (
-                  <MenuItemComponent
-                    drawerOpen={drawerOpen}
-                    route={route}
-                    icon={icon} 
-                    text={text}
+                {defaultLinks.map(([icon, text, route]) => (
+                  <Tooltip 
+                    title={drawerOpen ? '' : text} 
+                    arrow
                     key={route}
-                  />
+                  >
+                    <span>
+                      <MenuItemComponent
+                        drawerOpen={drawerOpen}
+                        route={route}
+                        icon={icon} 
+                        text={text}
+                      />
+                    </span>
+                  </Tooltip>
                 ))}
               </List>
-            </>
+            </AccordionDetails>
+          </Accordion>
+          <Divider />
+          {user?.role === 'admin' && (
+            <Accordion
+              sx={{
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
+                border: 'none',
+                backgroundImage: 'none',
+                '&::before': { display: 'none' },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{
+                  backgroundColor: 'transparent',
+                  padding: isMobile ? '8px' : '10px',
+                  minHeight: 'unset',
+                  border: 'none',
+                  backgroundImage: 'none',
+                  '&.Mui-expanded': { minHeight: 'unset' },
+                  '& > .MuiAccordionSummary-content': { margin: 0 },
+                  '& .MuiTypography-root': { display: drawerOpen ? 'block' : 'none' } 
+                }}
+              >
+                <Typography>ADMINISTRADOR</Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ padding: isMobile ? '8px 0' : 0 }}>
+                <List>
+                  {adminLinks.map(([icon, text, route]) => (
+                    <Tooltip 
+                      title={drawerOpen ? '' : text} 
+                      arrow
+                      key={route}
+                    >
+                      <span>
+                        <MenuItemComponent
+                          drawerOpen={drawerOpen}
+                          route={route}
+                          icon={icon} 
+                          text={text}
+                        />
+                      </span>
+                    </Tooltip>
+                  ))}
+                </List>
+              </AccordionDetails>
+            </Accordion>
           )}
         </Stack>
         <Stack spacing={2} p={1} sx={{ marginTop: 'auto' }}>
           <Divider />
           <List>
             {settingsLinks.map(([icon, text, route]) => (
-              <MenuItemComponent
-                drawerOpen={drawerOpen}
-                route={route}
-                icon={icon} 
-                text={text}
+              <Tooltip 
+                title={drawerOpen ? '' : text}
+                arrow
                 key={route}
-              />
+              >
+                <span>
+                  <MenuItemComponent
+                    drawerOpen={drawerOpen}
+                    route={route}
+                    icon={icon} 
+                    text={text}
+                  />
+                </span>
+              </Tooltip>
             ))}
           </List>
         </Stack>

@@ -13,13 +13,17 @@ import { LayoutProps } from './types';
 import Loading from '../loading';
 
 const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = false, disableGetUser = false, positionRequired }) => {
-  const { menu, updateDrawerOpen } = useMenuStore(x => x);
+  const { menu, updateDrawerOpen, updatePasteOpen } = useMenuStore(x => x);
   const { user } = useUserStore(x => x);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDrawerToggle = () => {
     updateDrawerOpen(!menu.drawerOpen);
+  };
+
+  const handleAccordionToggle = (type: 'default' | 'admin') => {
+    updatePasteOpen(type, !menu.pastes[type].open);
   };
 
   return (
@@ -31,6 +35,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
           <Divider />
 
           <Accordion
+            expanded={menu.pastes.default.open}
+            onChange={() => handleAccordionToggle('default')}
             defaultExpanded={!isMobile}
             sx={{
               backgroundColor: 'transparent',
@@ -80,6 +86,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
           <Divider />
           {user?.role === 'admin' && (
             <Accordion
+              expanded={menu.pastes.admin.open}
+              onChange={() => handleAccordionToggle('admin')}
               sx={{
                 backgroundColor: 'transparent',
                 boxShadow: 'none',

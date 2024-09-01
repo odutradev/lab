@@ -59,6 +59,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
                 {defaultLinks.map(([icon, text, route]) => (
                   <Tooltip 
                     title={drawerOpen ? '' : text} 
+                    placement="right"
                     arrow
                     key={route}
                   >
@@ -106,6 +107,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
                   {adminLinks.map(([icon, text, route]) => (
                     <Tooltip 
                       title={drawerOpen ? '' : text} 
+                      placement="right"
                       arrow
                       key={route}
                     >
@@ -130,6 +132,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
             {settingsLinks.map(([icon, text, route]) => (
               <Tooltip 
                 title={drawerOpen ? '' : text}
+                placement="right"
                 arrow
                 key={route}
               >

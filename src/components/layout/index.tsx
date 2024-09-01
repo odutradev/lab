@@ -1,32 +1,33 @@
 import { List, Divider, Toolbar, Stack, Box, Accordion, AccordionSummary, AccordionDetails, Typography, Tooltip, useMediaQuery, useTheme } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import React, { useState } from 'react';
+import React from 'react';
 
 import { adminLinks, defaultLinks, settingsLinks } from './links';
 import MenuItemComponent from './components/menuItem';
 import SpaceSelect from './components/spaceSelect';
 import MenuDrawer from './components/menuDrawer';
 import useUserStore from '../../store/user';
+import useMenuStore from '../../store/menu';
 import TopBar from './components/topBar';
 import { LayoutProps } from './types';
 import Loading from '../loading';
 
 const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = false, disableGetUser = false, positionRequired }) => {
-  const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
+  const { menu, updateDrawerOpen } = useMenuStore(x => x);
   const { user } = useUserStore(x => x);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);
+    updateDrawerOpen(!menu.drawerOpen);
   };
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <TopBar title={title} handleDrawerToggle={handleDrawerToggle} drawerOpen={drawerOpen}/>
-      <MenuDrawer drawerOpen={drawerOpen}>
+      <TopBar title={title} handleDrawerToggle={handleDrawerToggle} drawerOpen={menu.drawerOpen}/>
+      <MenuDrawer drawerOpen={menu.drawerOpen}>
         <Stack spacing={2} p={1} sx={{ flexGrow: 1 }}>
-          <SpaceSelect handleSpaceChange={() => {}} drawerOpen={drawerOpen} disableGetUser={disableGetUser} positionRequired={positionRequired} />
+          <SpaceSelect handleSpaceChange={() => {}} drawerOpen={menu.drawerOpen} disableGetUser={disableGetUser} positionRequired={positionRequired} />
           <Divider />
 
           <Accordion
@@ -49,7 +50,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
                 backgroundImage: 'none',
                 '&.Mui-expanded': { minHeight: 'unset' },
                 '& > .MuiAccordionSummary-content': { margin: 0 },
-                '& .MuiTypography-root': { display: drawerOpen ? 'block' : 'none' } 
+                '& .MuiTypography-root': { display: menu.drawerOpen ? 'block' : 'none' } 
               }}
             >
               <Typography>GERAL</Typography>
@@ -58,14 +59,14 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
               <List>
                 {defaultLinks.map(([icon, text, route]) => (
                   <Tooltip 
-                    title={drawerOpen ? '' : text} 
+                    title={menu.drawerOpen ? '' : text} 
                     placement="right"
                     arrow
                     key={route}
                   >
                     <span>
                       <MenuItemComponent
-                        drawerOpen={drawerOpen}
+                        drawerOpen={menu.drawerOpen}
                         route={route}
                         icon={icon} 
                         text={text}
@@ -97,7 +98,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
                   backgroundImage: 'none',
                   '&.Mui-expanded': { minHeight: 'unset' },
                   '& > .MuiAccordionSummary-content': { margin: 0 },
-                  '& .MuiTypography-root': { display: drawerOpen ? 'block' : 'none' } 
+                  '& .MuiTypography-root': { display: menu.drawerOpen ? 'block' : 'none' } 
                 }}
               >
                 <Typography>ADMINISTRADOR</Typography>
@@ -106,14 +107,14 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
                 <List>
                   {adminLinks.map(([icon, text, route]) => (
                     <Tooltip 
-                      title={drawerOpen ? '' : text} 
+                      title={menu.drawerOpen ? '' : text} 
                       placement="right"
                       arrow
                       key={route}
                     >
                       <span>
                         <MenuItemComponent
-                          drawerOpen={drawerOpen}
+                          drawerOpen={menu.drawerOpen}
                           route={route}
                           icon={icon} 
                           text={text}
@@ -131,14 +132,14 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
           <List>
             {settingsLinks.map(([icon, text, route]) => (
               <Tooltip 
-                title={drawerOpen ? '' : text}
+                title={menu.drawerOpen ? '' : text}
                 placement="right"
                 arrow
                 key={route}
               >
                 <span>
                   <MenuItemComponent
-                    drawerOpen={drawerOpen}
+                    drawerOpen={menu.drawerOpen}
                     route={route}
                     icon={icon} 
                     text={text}

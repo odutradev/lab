@@ -31,7 +31,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
       <TopBar title={title} handleDrawerToggle={handleDrawerToggle} drawerOpen={menu.drawerOpen}/>
       <MenuDrawer drawerOpen={menu.drawerOpen}>
         <Stack spacing={2} p={1} sx={{ flexGrow: 1 }}>
-          <SpaceSelect handleSpaceChange={() => {}} drawerOpen={menu.drawerOpen} disableGetUser={disableGetUser} positionRequired={positionRequired} />
+          <SpaceSelect drawerOpen={menu.drawerOpen} disableGetUser={disableGetUser} positionRequired={positionRequired} />
           <Divider />
 
           <Accordion

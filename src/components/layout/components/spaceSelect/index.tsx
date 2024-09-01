@@ -9,7 +9,7 @@ import useUserStore from '../../../../store/user';
 import useMenuStore from '../../../../store/menu';
 import { SpaceSelectProps } from '../../types';
 
-const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen, disableGetUser, positionRequired }) => {
+const SpaceSelect: React.FC<SpaceSelectProps> = ({ drawerOpen, disableGetUser, positionRequired }) => {
   const { menu, updateSelectSpace, updateSpaces } = useMenuStore(x => x);
   const [creatingSpace, setCreatingSpace] = useState<boolean>(false); 
   const { user } = useUserStore(x => x);
@@ -21,7 +21,6 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
 
   const handleSetSpace = (space: IUserSpaceData) => {
     updateSelectSpace(space._id);
-    handleSpaceChange(space);
     setSpaceToken(space._id);
   };
 
@@ -59,7 +58,6 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
         if (space) {
           updateSelectSpace(space._id);
           setSpaceToken(space._id);
-          handleSpaceChange(space);
         }
       } else if (filteredSpaces.length > 0) {
         handleSetSpace(filteredSpaces[0]);

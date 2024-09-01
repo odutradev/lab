@@ -3,11 +3,11 @@ import { MenuLink } from './types';
 
 export const defaultLinks: MenuLink[] = [
     [<Home />, 'Visão Geral', '/dashboard'],
+    [<Apps />, 'Espaços', '/dashboard/spaces'],
 ];
 
 export const settingsLinks: MenuLink[] = [
     [<AccountCircle />, 'Minha conta', '/dashboard/profile'],
-    [<Apps />, 'Espaços', '/dashboard/spaces'],
     [<Logout />, 'Sair', '/logout'],
 ];
 

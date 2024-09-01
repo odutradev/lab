@@ -25,6 +25,11 @@ export interface TopBarProps {
     drawerOpen: boolean;
     title: string;
 };
+
+export interface MenuDrawerProps {
+    drawerOpen: boolean;
+    children: ReactNode;
+};
   
 export interface LayoutProps {
     updateSpace?: (spaceId?: string) => void;

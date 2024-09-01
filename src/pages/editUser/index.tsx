@@ -91,6 +91,16 @@ const EditUser = () => {
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
                                 <TextField
+                                    label="ID"
+                                    name="ID"
+                                    value={user._id}
+                                    onChange={handleChange}
+                                    fullWidth
+                                    disabled
+                                />
+                            </Grid>
+                            <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                                <TextField
                                     select
                                     label="Cargo"
                                     name="role"

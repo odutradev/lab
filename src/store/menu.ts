@@ -1,6 +1,8 @@
 import { persist } from 'zustand/middleware';
 import { create } from 'zustand';
 
+import { IUserSpaceData } from '../actions/user';
+
 export interface IMenuData {
     drawerOpen: boolean;
     pastes: {
@@ -11,13 +13,17 @@ export interface IMenuData {
             open: boolean;
         },
     };
+    spaces: IUserSpaceData[];
+    selectedSpace: string;
 };
 
 export interface IMenuStore {
     menu: IMenuData;
-    setMenu: (menu: IMenuData) => void;
-    updateDrawerOpen: (drawerOpen: boolean) => void;
     updatePasteOpen: (pasteType: 'default' | 'admin', open: boolean) => void;
+    updateSelectSpace: (selectedSpace: string) => void;
+    updateSpaces: (spaces: IUserSpaceData[]) => void;
+    updateDrawerOpen: (drawerOpen: boolean) => void;
+    setMenu: (menu: IMenuData) => void;
 };
 
 const defaultMenu: IMenuData = {
@@ -30,6 +36,8 @@ const defaultMenu: IMenuData = {
             open: false,
         },
     },
+    spaces: [],
+    selectedSpace: ''
 };
 
 const useMenuStore = create<IMenuStore>()(
@@ -41,6 +49,18 @@ const useMenuStore = create<IMenuStore>()(
                 menu: {
                     ...state.menu,
                     drawerOpen,
+                },
+            })),
+            updateSelectSpace: (selectedSpace) => set((state) => ({
+                menu: {
+                    ...state.menu,
+                    selectedSpace
+                },
+            })),
+            updateSpaces: (spaces) => set((state) => ({
+                menu: {
+                    ...state.menu,
+                    spaces
                 },
             })),
             updatePasteOpen: (pasteType, open) => set((state) => ({

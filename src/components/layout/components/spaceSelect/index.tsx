@@ -6,12 +6,12 @@ import { getUser, IUserSpaceData } from '../../../../actions/user';
 import setSpaceToken from '../../../../services/setSpaceToken';
 import { createSpace } from '../../../../actions/space';
 import useUserStore from '../../../../store/user';
+import useMenuStore from '../../../../store/menu';
 import { SpaceSelectProps } from '../../types';
 
 const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen, disableGetUser, positionRequired }) => {
+  const { menu, updateSelectSpace, updateSpaces } = useMenuStore(x => x);
   const [creatingSpace, setCreatingSpace] = useState<boolean>(false); 
-  const [selectedSpace, setSelectedSpace] = useState<string>('');
-  const [spaces, setSpaces] = useState<IUserSpaceData[]>([]);
   const { user } = useUserStore(x => x);
   const navigate = useNavigate();
 
@@ -20,14 +20,14 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
   };
 
   const handleSetSpace = (space: IUserSpaceData) => {
-    setSelectedSpace(space._id);
+    updateSelectSpace(space._id);
     handleSpaceChange(space);
     setSpaceToken(space._id);
   };
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     const selectedId = event.target.value as string;
-    const selected = spaces.find(space => space._id === selectedId);
+    const selected = menu.spaces.find(space => space._id === selectedId);
     if (selected) handleSetSpace(selected);
   };
 
@@ -48,16 +48,16 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
         const result = await createSpace({ name: 'padrão' });
         if ('error' in result) return;
         handleSetSpace(result.space);
-        setSpaces([result.space]);
+        updateSpaces([result.space]);
         setCreatingSpace(true); 
       })();
     } else {
-      setSpaces(filteredSpaces);
+      updateSpaces(filteredSpaces);
       
       if (localSpaceId && filteredSpaces.some(space => space._id === localSpaceId)) {
         const space = filteredSpaces.find(space => space._id === localSpaceId);
         if (space) {
-          setSelectedSpace(space._id);
+          updateSelectSpace(space._id);
           setSpaceToken(space._id);
           handleSpaceChange(space);
         }
@@ -74,7 +74,7 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
           <InputLabel id="space-select-label">Tabela</InputLabel>
           <Select
             labelId="space-select-label"
-            value={selectedSpace}
+            value={menu.selectedSpace}
             onChange={handleChange}
             label="Tabela"
             sx={{
@@ -85,7 +85,7 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ handleSpaceChange, drawerOpen
               textOverflow: 'ellipsis',
             }}
           >
-            {spaces.map(space => (
+            {menu.spaces && menu.spaces.map(space => (
               <MenuItem key={space._id} value={space._id}>
                 {space.name}
               </MenuItem>

@@ -8,6 +8,7 @@ import SpaceSelect from './components/spaceSelect';
 import useUserStore from '../../store/user';
 import { LayoutProps } from './types';
 import Loading from '../loading';
+import TopBar from './components/topBar';
 
 const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = false, disableGetUser = false, positionRequired }) => {
   const [drawerOpen, setDrawerOpen] = useState<boolean>(true);
@@ -19,30 +20,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar 
-        position="fixed" 
-        sx={{ 
-          zIndex: (theme) => theme.zIndex.drawer + 1, 
-          width: `calc(100% - ${drawerOpen ? 240 : 60}px)`, 
-          ml: `${drawerOpen ? 240 : 60}px`, 
-          transition: 'width 0.3s, margin-left 0.3s' 
-        }}
-      >
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu" onClick={handleDrawerToggle}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
-            {title}
-          </Typography>
-          <Avatar
-            src={user?.images?.avatar || undefined}
-            sx={{ width: 40, height: 40 }}
-          >
-            {!user?.images?.avatar && user?.name?.slice(0, 2).toUpperCase()}
-          </Avatar>
-        </Toolbar>
-      </AppBar>
+      <TopBar title={title} handleDrawerToggle={handleDrawerToggle} drawerOpen={drawerOpen}/>
       <Drawer
         variant="permanent"
         open={drawerOpen}

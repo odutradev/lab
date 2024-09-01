@@ -19,6 +19,12 @@ export interface SpaceSelectProps {
     disableGetUser: boolean;
     drawerOpen: boolean;
 };
+
+export interface TopBarProps {
+    handleDrawerToggle: () => void;
+    drawerOpen: boolean;
+    title: string;
+};
   
 export interface LayoutProps {
     updateSpace?: (spaceId?: string) => void;

@@ -10,6 +10,7 @@ import Profile from "../pages/profile";
 import Logout from "../pages/logout";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
+import Spaces from "../pages/spaces";
 import Error from "../pages/error";
 import Users from "../pages/users";
 
@@ -21,6 +22,7 @@ const routes = [
         privateRoute: true,
         routes: [
             ["/profile", <Profile/>],
+            ["/spaces", <Spaces/>],
             ["/", <Dashboard/>],
         ]
     },

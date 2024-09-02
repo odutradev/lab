@@ -58,11 +58,11 @@ const Profile = () => {
                         <>
                             <Grid container direction="column" alignItems="center" style={{ marginBottom: '25px' }}>
                                 <Avatar
-                                    src={editUser.images.avatar || undefined}
+                                    src={editUser?.images?.avatar || undefined}
                                     style={{ width: 80, height: 80, marginBottom: '10px' }}
                                     onClick={handleOpenModal}
                                 >
-                                    {!editUser.images.avatar && editUser.name.split(' ').map(name => name[0]).join('').toUpperCase()}
+                                    {!editUser?.images?.avatar && editUser.name.split(' ').map(name => name[0]).join('').toUpperCase()}
                                 </Avatar>
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>

@@ -112,10 +112,23 @@ export const updateSpaceById = async (spaceID: string, data: Partial<ISpaceData>
           return { error: 'Erro na requisição' };
     }
 };
+
 export const deleteSpaceById = async (spaceID: string): Promise<{ success: boolean } | ResponseError> => {
     try {
         const response = await api.delete("/space/delete/" + spaceID);
         getUser();
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
+export const inviteUser = async (spaceID: string, guestEmail: string): Promise<SpaceAndUserOrError> => {
+    try {
+        const response = await api.post("/space/invite/",  { spaceID, guestEmail});
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

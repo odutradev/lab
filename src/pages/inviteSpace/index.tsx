@@ -115,19 +115,24 @@ const InviteSpace = () => {
                                         Usuários Participantes
                                     </Typography>
                                     <List>
-                                        {spaceUsers.map((user) => (
-                                            <Box key={user._id}>
-                                                <ListItem alignItems="flex-start">
-                                                    <ListItemAvatar>
-                                                        <Avatar src={user.images?.avatar} />
-                                                    </ListItemAvatar>
-                                                    <ListItemText
-                                                        primary={user.name}
-                                                        secondary={`${user.email} - ${user.role}`}
-                                                    />
-                                                </ListItem>
-                                            </Box>
-                                        ))}
+                                    {spaceUsers.map((spaceUser) => {
+                                                    const userSpace = spaceUser?.spaces.find(x => x.id == spaceID);
+                                                    const hasSpaceMember = userSpace?.invite == false;
+                                                    const hasSpaceInvited = userSpace?.invite == true;
+                                            return (
+                                                <Box key={spaceUser._id}>
+                                                    <ListItem alignItems="flex-start">
+                                                        <ListItemAvatar>
+                                                            <Avatar src={spaceUser.images?.avatar} />
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary={spaceUser.name + `${hasSpaceMember ? ' (membro)' : ''}` + `${hasSpaceInvited ? ' (convidado)' : ''}`}
+                                                            secondary={`${spaceUser.email} - ${spaceUser.role}`}
+                                                        />
+                                                    </ListItem>
+                                                </Box>
+                                            )
+                                        })}
                                     </List>
                                 </Grid>
                             )}

@@ -252,19 +252,19 @@ const EditSpace = () => {
                                         Usuários Participantes
                                     </Typography>
                                     <List>
-                                        {spaceUsers.map((user) => {
-                                                    const userSpace = user?.spaces.find(x => x.id == spaceID);
+                                        {spaceUsers.map((spaceUser) => {
+                                                    const userSpace = spaceUser?.spaces.find(x => x.id == spaceID);
                                                     const hasSpaceMember = userSpace?.invite == false;
                                                     const hasSpaceInvited = userSpace?.invite == true;
                                             return (
-                                                <Box key={user._id}>
+                                                <Box key={spaceUser._id}>
                                                     <ListItem alignItems="flex-start">
                                                         <ListItemAvatar>
-                                                            <Avatar src={user.images?.avatar} />
+                                                            <Avatar src={spaceUser.images?.avatar} />
                                                         </ListItemAvatar>
                                                         <ListItemText
-                                                            primary={user.name + `${hasSpaceMember ? ' (membro)' : ''}` + `${hasSpaceInvited ? ' (convidado)' : ''}`}
-                                                            secondary={`${user.email} - ${user.role}`}
+                                                            primary={spaceUser.name + `${hasSpaceMember ? ' (membro)' : ''}` + `${hasSpaceInvited ? ' (convidado)' : ''}`}
+                                                            secondary={`${spaceUser.email} - ${spaceUser.role}`}
                                                         />
                                                     </ListItem>
                                                 </Box>

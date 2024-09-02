@@ -3,11 +3,11 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
-import { toast } from "react-toastify";
 import { useState } from "react";
 
 import DashboardLayout from "../../components/layout";
 import { createSpace } from "../../actions/space";
+import useAction from "../../hooks/useAction";
 import useMenuStore from "../../store/menu";
 import useUserStore from "../../store/user";
 
@@ -31,25 +31,18 @@ const Spaces = () => {
         navigate(`/dashboard/invite-space/${id}`);
     };
 
-    const handleCreateSpace = async () => {
-        const send = async () => {
-            const result = await createSpace({ name: spaceName });
-            if (result && typeof result === 'object' && 'error' in result) {
-                toast.warning(result.error);
-                throw new Error(result.error);
-            }
-        };
-        await toast.promise(
-            send(),
-            {
-                pending: 'Criando espaço',
-                success: 'Espaço criado',
-                error: 'Erro ao criar',
-            }
-        );
-        setOpenModal(false);
-        setSpaceName('');
-    };
+    const handleCreateSpace = () => useAction({
+        action: async () =>  await createSpace({ name: spaceName }),
+        callback: () => {
+            setOpenModal(false);
+            setSpaceName('');
+        },
+        toastMessages:  {
+            pending: 'Criando espaço',
+            success: 'Espaço criado',
+            error: 'Erro ao criar',
+        }
+    });
 
     const mySpaces = user?.spaces.filter(space => space.invite === false || space.invite === undefined);
     const invitations = user?.spaces.filter(space => space.invite === true);

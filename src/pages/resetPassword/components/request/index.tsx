@@ -1,9 +1,9 @@
 import { Box, Button, Container, Grid, TextField, Typography, Paper } from '@mui/material';
-import { toast } from 'react-toastify';
 import React from 'react';
 
 import { requestResetPassword } from '../../../../actions/user';
 import { ResetPasswordStepProps } from '../../types';
+import useAction from '../../../../hooks/useAction';
 
 const Request: React.FC<ResetPasswordStepProps> = ({ state, setState }) => {
 
@@ -13,22 +13,16 @@ const Request: React.FC<ResetPasswordStepProps> = ({ state, setState }) => {
         const form: { email: string } = {
             email: data.get('email') as string,
         };
-        const send = async () => {
-            const result = await requestResetPassword(form);
-            if (result && typeof result === 'object' && 'error' in result) {
-                toast.warning(result.error);
-                throw new Error(result.error);
-            }        
-            setTimeout(() => setState({ ...state, ...form, step: 'validate' }), 500);
-        };
-        await toast.promise(
-            send(),
-            {
+
+        useAction({
+            action: async () =>  await requestResetPassword(form),
+            callback: () => setState({ ...state, ...form, step: 'validate' }),
+            toastMessages: {
                 pending: 'Enviando solicitação',
                 success: 'Solicitação enviada',
                 error: 'Erro na solicitação',
             }
-        );
+        });
     };
 
     return (

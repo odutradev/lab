@@ -1,15 +1,13 @@
-import {
-    TextField, Button, Grid, Typography, Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Modal
-} from "@mui/material";
+import { TextField, Button, Grid, Typography, Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Modal } from "@mui/material";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import { useParams, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 
 import { getSpaceById, ISpaceData, updateSpaceById, deleteSpaceById, getSpaceUsersById, inviteUser } from "../../actions/space";
 import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
+import useAction from "../../hooks/useAction";
 
 const EditSpace = () => {
     const [spaceUsers, setSpaceUsers] = useState<IUserData[] | null>(null);
@@ -33,50 +31,35 @@ const EditSpace = () => {
         setSpaceUsers(responseUsers);
     };
 
-    const handleUpdateSpace = async () => {
-        if (space) {
-            const send = async () => {
-                const result = await updateSpaceById(spaceID as string, space);
-                if (result && typeof result === 'object' && 'error' in result) {
-                    toast.warning(result.error);
-                    throw new Error(result.error);
-                }
-                setTimeout(() => navigate(-1), 500);
-            };
-            await toast.promise(
-                send(),
-                {
-                    pending: 'Atualizando espaço',
-                    success: 'Espaço atualizado',
-                    error: 'Erro ao atualizar',
-                }
-            );
+    const handleUpdateSpace = () => useAction({
+        action: async () =>  await updateSpaceById(spaceID as string, space as ISpaceData),
+        callback: () => navigate(-1),
+        toastMessages: {
+            pending: 'Atualizando espaço',
+            success: 'Espaço atualizado',
+            error: 'Erro ao atualizar',
         }
-    };
+    });
+    
+    const handleInvite = () => useAction({
+        action: async () =>  await inviteUser(spaceID as string, emailToInvite),
+        callback: () => navigate(-1),
+        toastMessages: {
+            pending: 'Enviando convite',
+            success: 'Convite enviado',
+            error: 'Erro ao convidar',
+        }
+    });
 
-    const handleInvite = async () => {
-        if (space && emailToInvite) {
-            const send = async () => {
-                const result = await inviteUser(spaceID as string, emailToInvite);
-                if (result && typeof result === 'object' && 'error' in result) {
-                    toast.warning(result.error);
-                    throw new Error(result.error);
-                }
-                setTimeout(() => {
-                    setOpenInviteModal(false);
-                    navigate(-1);
-                }, 500);
-            };
-            await toast.promise(
-                send(),
-                {
-                    pending: 'Enviando convite',
-                    success: 'Convite enviado',
-                    error: 'Erro ao convidar',
-                }
-            );
+    const handleDeleteUser = () => useAction({
+        action: async () =>  await deleteSpaceById(spaceID as string),
+        callback: () => navigate(-1),
+        toastMessages: {
+            pending: 'Apagando espaço',
+            success: 'Espaço apagado',
+            error: 'Erro ao apagar',
         }
-    };
+    });
 
     const handleBack = () => {
         navigate(-1);
@@ -87,27 +70,6 @@ const EditSpace = () => {
             ...space!,
             [e.target.name]: e.target.value,
         });
-    };
-
-    const handleDeleteUser = async () => {
-        if (space) {
-            const send = async () => {
-                const result = await deleteSpaceById(spaceID as string);
-                if (result && typeof result === 'object' && 'error' in result) {
-                    toast.warning(result.error);
-                    throw new Error(result.error);
-                }
-                setTimeout(() => navigate(-1), 500);
-            };
-            await toast.promise(
-                send(),
-                {
-                    pending: 'Apagando espaço',
-                    success: 'Espaço apagado',
-                    error: 'Erro ao apagar',
-                }
-            );
-        }
     };
 
     const openModal = () => {

@@ -1,7 +1,6 @@
 import TextField from '@mui/material/TextField';
 import { useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
-import { toast } from 'react-toastify';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,6 +11,7 @@ import { ISignUpData, signUp } from '../../actions/user';
 import useHasAuth from '../../hooks/useHasAuth';
 import cover from '../../assets/imgs/cover.png';
 import lite from '../../assets/imgs/lite.svg';
+import useAction from '../../hooks/useAction';
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -24,29 +24,24 @@ const SignUp = () => {
       name: data.get('name') as string,
       password: data.get('password') as string,
     };
-    const send = async () => {
-      const result = await signUp(form);
-      if ('error' in result) {
-        toast.warning(result.error);
-        throw Error;
-      }
 
-      const checkToken = setInterval(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-          clearInterval(checkToken);
-          navigate('/dashboard');
-        }
-      }, 500);
-    }
-    await toast.promise(
-      send(),
-      {
+    useAction({
+      action: async () => await signUp(form),
+      callback: () => {
+        const checkToken = setInterval(() => {
+          const token = localStorage.getItem('token');
+          if (token) {
+            clearInterval(checkToken);
+            navigate('/dashboard');
+          }
+        }, 500);
+      },
+      toastMessages: {
         pending: 'Efetuando autenticação',
         success: 'Autenticação bem-sucedida',
         error: 'Erro na autenticação'
       }
-    );
+    });
   };
 
 useEffect(() => {

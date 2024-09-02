@@ -1,9 +1,9 @@
 import { Box, Button, Container, Grid, TextField, Typography, Paper } from '@mui/material';
-import { toast } from 'react-toastify';
 import React, { useRef } from 'react';
 
 import { validateResetPassword } from '../../../../actions/user';
 import { ResetPasswordStepProps } from '../../types';
+import useAction from '../../../../hooks/useAction';
 
 const Validate: React.FC<ResetPasswordStepProps> = ({ state, setState }) => {
     const inputRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
@@ -13,22 +13,16 @@ const Validate: React.FC<ResetPasswordStepProps> = ({ state, setState }) => {
         const form: { code: string } = {
             code: inputRefs.map(ref => ref.current?.value || '').join('')
         };
-        const send = async () => {
-            const result = await validateResetPassword({...state, ...form});
-            if (result && typeof result === 'object' && 'error' in result) {
-                toast.warning(result.error);
-                throw new Error(result.error);
-            }        
-            setTimeout(() => setState({ ...state, ...form, step: 'reset' }), 500);
-        };
-        await toast.promise(
-            send(),
-            {
+
+        useAction({
+            action: async () =>  await validateResetPassword({...state, ...form}),
+            callback: () => setState({ ...state, ...form, step: 'reset' }),
+            toastMessages: {
                 pending: 'Validando código',
                 success: 'Código validado',
                 error: 'Erro na validação',
             }
-        );
+        });
     };
 
     const handleInputChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {

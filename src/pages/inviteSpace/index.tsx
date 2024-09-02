@@ -1,12 +1,12 @@
 import { TextField, Button, Grid, Typography, Avatar, Box, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 
 import { getSpaceById, ISpaceData, acceptInvite, denyInvite, getSpaceUsersById } from "../../actions/space";
 import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
 import useUserStore from "../../store/user";
+import useAction from "../../hooks/useAction";
 
 const InviteSpace = () => {
     const [spaceUsers, setSpaceUsers] = useState<IUserData[] | null>(null);
@@ -29,43 +29,24 @@ const InviteSpace = () => {
         setSpaceUsers(responseUsers);
     };
 
-    const handleAccept = async () => {
-        const send = async () => {
-            const result = await acceptInvite(spaceID as string, user?._id as string);
-            if (result && typeof result === 'object' && 'error' in result) {
-                toast.warning(result.error);
-                throw new Error(result.error);
-            }        
-            setTimeout(() => navigate(-1), 500);
-        };
-        await toast.promise(
-            send(),
-            {
-                pending: 'Aceitando convite',
-                success: 'Convite aceito',
-                error: 'Erro ao aceito',
-            }
-        );
-    };
-
-    const handleDeny = async () => {
-        const send = async () => {
-            const result = await denyInvite(spaceID as string, user?._id as string);
-            if (result && typeof result === 'object' && 'error' in result) {
-                toast.warning(result.error);
-                throw new Error(result.error);
-            }        
-            setTimeout(() => navigate(-1), 500);
-        };
-        await toast.promise(
-            send(),
-            {
-                pending: 'Negando convite',
-                success: 'Convite negado',
-                error: 'Erro ao negar',
-            }
-        );
-    };
+    const handleAccept = () => useAction({
+        action: async () =>  await acceptInvite(spaceID as string, user?._id as string),
+        callback: () => navigate(-1),
+        toastMessages: {
+            pending: 'Aceitando convite',
+            success: 'Convite aceito',
+            error: 'Erro ao aceito',
+        }
+    });
+    const handleDeny = () => useAction({
+        action: async () =>  await denyInvite(spaceID as string, user?._id as string),
+        callback: () => navigate(-1),
+        toastMessages: {
+            pending: 'Negando convite',
+            success: 'Convite negado',
+            error: 'Erro ao negar',
+        }
+    });
 
     useEffect(() => {
         getParamsSpace();

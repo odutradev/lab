@@ -2,11 +2,11 @@ import { TextField, Button, Grid, Typography, MenuItem, Avatar, Box } from "@mui
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { toast } from "react-toastify";
 
 import { getUserById, updateUserById, deleteUser } from "../../actions/admin";
 import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
+import useAction from "../../hooks/useAction";
 
 const EditUser = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -22,26 +22,25 @@ const EditUser = () => {
         setUser(response);
     };
 
-    const handleUpdateUser = async () => {
-        if (user) {
-            const send = async () => {
-                const result = await updateUserById(userID as string, user);
-                if (result && typeof result === 'object' && 'error' in result) {
-                    toast.warning(result.error);
-                    throw new Error(result.error);
-                }        
-                setTimeout(() => navigate(-1), 500);
-            };
-            await toast.promise(
-                send(),
-                {
-                    pending: 'Atualizando usuário',
-                    success: 'Usuário atualizado',
-                    error: 'Erro ao atualizar',
-                }
-            );
+    const handleUpdateUser = () => useAction({
+        action: async () =>  await updateUserById(userID as string, user as IUserData),
+        callback: () => navigate(-1),
+        toastMessages: {
+            pending: 'Atualizando usuário',
+            success: 'Usuário atualizado',
+            error: 'Erro ao atualizar',
         }
-    };
+    });
+
+    const handleDeleteUser = () => useAction({
+        action: async () =>  await deleteUser(userID as string),
+        callback: () => navigate(-1),
+        toastMessages: {
+            pending: 'Apagando usuário',
+            success: 'Usuário apagado',
+            error: 'Erro ao apagar',
+        }
+    });
 
     const handleBack = () => {
         navigate(-1); 
@@ -52,27 +51,6 @@ const EditUser = () => {
             ...user!,
             [e.target.name]: e.target.value,
         });
-    };
-
-    const handleDeleteUser = async () => {
-        if (userID) {
-            const send = async () => {
-                const result = await deleteUser(userID as string);
-                if (result && typeof result === 'object' && 'error' in result) {
-                    toast.warning(result.error);
-                    throw new Error(result.error);
-                }        
-                setTimeout(() => navigate(-1), 500);
-            };
-            await toast.promise(
-                send(),
-                {
-                    pending: 'Apagando usuário',
-                    success: 'Usuário apagado',
-                    error: 'Erro ao apagar',
-                }
-            );
-        }
     };
 
     useEffect(() => {

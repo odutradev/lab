@@ -1,10 +1,10 @@
 import { Box, Button, Container, Grid, TextField, Typography, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import React from 'react';
 
 import { resetPassword } from '../../../../actions/user';
 import { ResetPasswordStepProps } from '../../types';
+import useAction from '../../../../hooks/useAction';
 
 const Reset: React.FC<ResetPasswordStepProps> = ({ state }) => {
     const navigate = useNavigate();
@@ -15,22 +15,16 @@ const Reset: React.FC<ResetPasswordStepProps> = ({ state }) => {
         const form = {
             password: data.get('password') as string,
         };
-        const send = async () => {
-            const result = await resetPassword({ ...state, ...form });
-            if (result && typeof result === 'object' && 'error' in result) {
-                toast.warning(result.error);
-                throw new Error(result.error);
-            }
-            setTimeout(() => navigate('/dashboard'), 500);
-        };
-        await toast.promise(
-            send(),
-            {
+
+        useAction({
+            action: async () =>  await resetPassword({ ...state, ...form }),
+            callback: () => navigate('/dashboard'),
+            toastMessages: {
                 pending: 'Redefinindo senha',
                 success: 'Senha redefinida com sucesso',
                 error: 'Erro ao redefinir a senha',
             }
-        );
+        });
     };
 
     return (

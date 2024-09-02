@@ -1,11 +1,11 @@
 import { Card, CardContent, Typography, Grid, IconButton, Box } from "@mui/material";
 import { CheckCircle, Cancel } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 
 import { getAllPendingUsers, approveUser, disapproveUser } from "../../actions/admin";
 import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
+import useAction from "../../hooks/useAction";
 
 const Request = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -18,44 +18,30 @@ const Request = () => {
         if ('error' in response) return;
         setUsers(response);
     };
-
-    const handleApprove = async (userId: string) => {
-        const send = async () => {
-            const result = await approveUser(userId);
-            if (result && typeof result === 'object' && 'error' in result) {
-                toast.warning(result.error);
-                throw new Error(result.error);
-            }        
+    
+    const handleApprove = (userId: string) => useAction({
+        action: async () =>  await approveUser(userId),
+        callback: () => {
             getCurrentUsers();
-        };
-        await toast.promise(
-            send(),
-            {
-                pending: 'Aprovando usuario',
-                success: 'Usuario aprovado',
-                error: 'Erro o aprovar',
-            }
-        );
-    };
+        },
+        toastMessages: {
+            pending: 'Aprovando usuario',
+            success: 'Usuario aprovado',
+            error: 'Erro o aprovar',
+        }
+    });
 
-    const handleDisapprove = async (userId: string) => {
-        const send = async () => {
-            const result = await disapproveUser(userId);
-            if (result && typeof result === 'object' && 'error' in result) {
-                toast.warning(result.error);
-                throw new Error(result.error);
-            }        
+    const handleDisapprove = (userId: string) => useAction({
+        action: async () =>  await disapproveUser(userId),
+        callback: () => {
             getCurrentUsers();
-        };
-        await toast.promise(
-            send(),
-            {
-                pending: 'Desaprovando usuario',
-                success: 'Usuario desaprovado',
-                error: 'Erro ao desaprovar',
-            }
-        );
-    };
+        },
+        toastMessages: {
+            pending: 'Desaprovando usuario',
+            success: 'Usuario desaprovado',
+            error: 'Erro ao desaprovar',
+        }
+    });
 
     useEffect(() => {
         getCurrentUsers();

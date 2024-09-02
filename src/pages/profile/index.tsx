@@ -1,36 +1,25 @@
 import { TextField, Button, Grid, Typography, MenuItem, Avatar, Dialog, DialogContent } from "@mui/material";
-import { toast } from "react-toastify";
 import { useState, useEffect } from "react";
 
 import { IUserData, updateUser } from "../../actions/user";
 import DashboardLayout from "../../components/layout";
 import useUserStore from "../../store/user";
 import ProfileModal from "./components/modal";
+import useAction from "../../hooks/useAction";
 
 const Profile = () => {
     const [editUser, setEditUser] = useState<IUserData | null>(null);
     const [openModal, setOpenModal] = useState(false);
     const { user } = useUserStore(x => x);
 
-    const handleUpdateUser = async () => {
-        if (editUser) {
-            const send = async () => {
-                const result = await updateUser(editUser);
-                if (result && typeof result === 'object' && 'error' in result) {
-                    toast.warning(result.error);
-                    throw new Error(result.error);
-                }        
-            };
-            await toast.promise(
-                send(),
-                {
-                    pending: 'Atualizando usuário',
-                    success: 'Usuário atualizado',
-                    error: 'Erro ao atualizar',
-                }
-            );
+    const handleUpdateUser = () => useAction({
+        action: async () =>  await updateUser(editUser as IUserData),
+        toastMessages:                 {
+            pending: 'Atualizando usuário',
+            success: 'Usuário atualizado',
+            error: 'Erro ao atualizar',
         }
-    };
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditUser({

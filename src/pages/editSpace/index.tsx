@@ -1,31 +1,30 @@
-import { TextField, Button, Grid, Typography, MenuItem, Avatar, Box } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { TextField, Button, Grid, Typography, Avatar, Box } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import { getUserById, updateUserById, deleteUser } from "../../actions/admin";
+import { getSpaceById, ISpaceData, updateSpaceById } from "../../actions/space";
 import DashboardLayout from "../../components/layout";
-import { IUserData } from "../../actions/user";
 
 const EditSpace = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [user, setUser] = useState<IUserData | null>(null);
-    const { userID } = useParams();
+    const [space, setSpace] = useState<ISpaceData | null>(null);
+    const { spaceID } = useParams();
     const navigate = useNavigate();
 
-    const getParamsUser = async () => {
+    const getParamsSpace = async () => {
         setLoading(true);
-        const response = await getUserById(userID as string);
+        const response = await getSpaceById(spaceID as string);
         setLoading(false);
         if ('error' in response) return;
-        setUser(response);
+        setSpace(response);
     };
 
-    const handleUpdateUser = async () => {
-        if (user) {
+    const handleUpdateSpace = async () => {
+        if (space) {
             const send = async () => {
-                const result = await updateUserById(userID as string, user);
+                const result = await updateSpaceById(spaceID as string, space);
                 if (result && typeof result === 'object' && 'error' in result) {
                     toast.warning(result.error);
                     throw new Error(result.error);
@@ -35,8 +34,8 @@ const EditSpace = () => {
             await toast.promise(
                 send(),
                 {
-                    pending: 'Atualizando usuário',
-                    success: 'Usuário atualizado',
+                    pending: 'Atualizando espaço',
+                    success: 'Espaço atualizado',
                     error: 'Erro ao atualizar',
                 }
             );
@@ -48,16 +47,17 @@ const EditSpace = () => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setUser({
-            ...user!,
+        setSpace({
+            ...space!,
             [e.target.name]: e.target.value,
         });
     };
 
     const handleDeleteUser = async () => {
-        if (userID) {
+        /*
+        if (space) {
             const send = async () => {
-                const result = await deleteUser(userID as string);
+                const result = await deleteUser(spaceID as string);
                 if (result && typeof result === 'object' && 'error' in result) {
                     toast.warning(result.error);
                     throw new Error(result.error);
@@ -73,24 +73,25 @@ const EditSpace = () => {
                 }
             );
         }
+            */
     };
 
     useEffect(() => {
-        getParamsUser();
-    }, [userID]);
+        getParamsSpace();
+    }, [spaceID]);
 
     return (
-        <DashboardLayout loading={loading} title="EDITAR ESPAÇO" disableGetUser positionRequired="admin">
+        <DashboardLayout loading={loading} title="EDITAR ESPAÇO" disableGetUser>
             <Grid container justifyContent="center" style={{ marginTop: '25px' }}>
                 <Grid item xs={12} md={8} style={{ maxWidth: '80vw' }}>
-                    {user ? (
+                    {space ? (
                         <>
                             <Grid container direction="row" alignItems="center" justifyContent="center" gap={"10px"} style={{ marginBottom: '25px' }}>
                                 <Avatar
-                                    src={user.images?.avatar || undefined}
+                                    src={space.images?.avatar || undefined}
                                     style={{ width: 80, height: 80, marginBottom: '10px' }}
                                 >
-                                    {!user.images?.avatar && user.name.split(' ').map(name => name[0]).join('').toUpperCase()}
+                                    {!space.images?.avatar && space.name.split(' ').map(name => name[0]).join('').toUpperCase()}
                                 </Avatar>
                                 <Box
                                     display="flex"
@@ -111,16 +112,7 @@ const EditSpace = () => {
                                 <TextField
                                     label="Nome"
                                     name="name"
-                                    value={user.name}
-                                    onChange={handleChange}
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                <TextField
-                                    label="Email"
-                                    name="email"
-                                    value={user.email}
+                                    value={space.name}
                                     onChange={handleChange}
                                     fullWidth
                                 />
@@ -129,39 +121,11 @@ const EditSpace = () => {
                                 <TextField
                                     label="ID"
                                     name="ID"
-                                    value={user._id}
+                                    value={space._id}
                                     onChange={handleChange}
                                     fullWidth
                                     disabled
                                 />
-                            </Grid>
-                            <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                <TextField
-                                    select
-                                    label="Cargo"
-                                    name="role"
-                                    value={user.role}
-                                    onChange={handleChange}
-                                    fullWidth
-                                >
-                                    <MenuItem value="admin">Administrador</MenuItem>
-                                    <MenuItem value="normal">Normal</MenuItem>
-                                </TextField>
-                            </Grid>
-                            <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                <TextField
-                                    select
-                                    label="Status"
-                                    name="status"
-                                    value={user.status}
-                                    onChange={handleChange}
-                                    fullWidth
-                                >
-                                    <MenuItem value="logged">Logado</MenuItem>
-                                    <MenuItem value="registered">Registrado</MenuItem>
-                                    <MenuItem value="blocked">Bloqueado</MenuItem>
-                                    <MenuItem value="pending">Pendente</MenuItem>
-                                </TextField>
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
                                 <TextField
@@ -169,35 +133,10 @@ const EditSpace = () => {
                                     name="createAt"
                                     type="date"
                                     InputLabelProps={{ shrink: true }}
-                                    value={new Date(user.createAt).toISOString().split('T')[0]}
+                                    value={new Date(space.createAt).toISOString().split('T')[0]}
                                     InputProps={{ readOnly: true }}
                                     fullWidth
                                     disabled
-                                />
-                            </Grid>
-                            {
-                                user.approvedAt && (
-                                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                        <TextField
-                                            label="Data de Aprovação"
-                                            name="createAt"
-                                            type="date"
-                                            InputLabelProps={{ shrink: true }}
-                                            value={new Date(user.approvedAt).toISOString().split('T')[0]}
-                                            InputProps={{ readOnly: true }}
-                                            fullWidth
-                                            disabled
-                                        />
-                                    </Grid>
-                                )
-                            }
-                            <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                <TextField
-                                    label="Contato"
-                                    name="contact"
-                                    value={user.contact || ''}
-                                    onChange={handleChange}
-                                    fullWidth
                                 />
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
@@ -206,17 +145,8 @@ const EditSpace = () => {
                                     name="description"
                                     multiline
                                     rows={4}
-                                    value={user.description || ''}
+                                    value={space.description || ''}
                                     onChange={handleChange}
-                                    fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                <TextField
-                                    label="Espaços"
-                                    name="spaces"
-                                    value={user.spaces.map(space => space.name).join(', ')}
-                                    disabled
                                     fullWidth
                                 />
                             </Grid>
@@ -227,15 +157,15 @@ const EditSpace = () => {
                                     </Button>
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <Button variant="contained" color="primary" onClick={handleUpdateUser} fullWidth>
-                                        Atualizar Usuário
+                                    <Button variant="contained" color="primary" onClick={handleUpdateSpace} fullWidth>
+                                        Atualizar Espaço
                                     </Button>
                                 </Grid>
                             </Grid>
                         </>
                     ) : (
                         <Typography variant="h6" align="center" color="textSecondary" style={{ marginTop: '20px' }}>
-                            Usuário não encontrado.
+                            Espaço não encontrado.
                         </Typography>
                     )}
                 </Grid>

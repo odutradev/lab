@@ -18,6 +18,7 @@ export interface ISpaceData {
     payload?: {
       redirect?: string;
     };
+    _id: string;
 };
 
 interface ISpaceCreate {

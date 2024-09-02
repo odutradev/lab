@@ -4,6 +4,7 @@ import AccountPending from "../pages/accountPending";
 import AccountBlocked from "../pages/accountBlocked";
 import ResetPassword from "../pages/resetPassword";
 import Dashboard from "../pages/dashboard";
+import EditSpace from "../pages/editSpace";
 import EditUser from "../pages/editUser";
 import Request from "../pages/requests";
 import Profile from "../pages/profile";
@@ -21,6 +22,7 @@ const routes = [
         path: "/dashboard",
         privateRoute: true,
         routes: [
+            ["/edit-space/:spaceID", <EditSpace/>],
             ["/profile", <Profile/>],
             ["/spaces", <Spaces/>],
             ["/", <Dashboard/>],

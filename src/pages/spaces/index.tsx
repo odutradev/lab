@@ -27,6 +27,9 @@ const Spaces = () => {
     const handleCardClick = (id: string) => {
         navigate(`/dashboard/edit-space/${id}`);
     };
+    const handleCardInviteClick = (id: string) => {
+        navigate(`/dashboard/invite-space/${id}`);
+    };
 
     const handleCreateSpace = async () => {
         const send = async () => {
@@ -126,7 +129,7 @@ const Spaces = () => {
                                 {invitations.map(space => (
                                     <Grid item key={space.id} xs={12} sm={6} md={4} lg={3}>
                                         <Card
-                                            onClick={() => handleCardClick(space.id)}
+                                            onClick={() => handleCardInviteClick(space.id)}
                                             style={{
                                                 cursor: 'pointer',
                                                 display: 'flex',

@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import AccountPending from "../pages/accountPending";
 import AccountBlocked from "../pages/accountBlocked";
 import ResetPassword from "../pages/resetPassword";
+import InviteSpace from "../pages/inviteSpace";
 import Dashboard from "../pages/dashboard";
 import EditSpace from "../pages/editSpace";
 import EditUser from "../pages/editUser";
@@ -22,6 +23,7 @@ const routes = [
         path: "/dashboard",
         privateRoute: true,
         routes: [
+            ["/invite-space/:spaceID", <InviteSpace/>],
             ["/edit-space/:spaceID", <EditSpace/>],
             ["/profile", <Profile/>],
             ["/spaces", <Spaces/>],

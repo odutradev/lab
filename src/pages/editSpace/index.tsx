@@ -4,7 +4,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import { getSpaceById, ISpaceData, updateSpaceById } from "../../actions/space";
+import { getSpaceById, ISpaceData, updateSpaceById, deleteSpaceById, getSpaceUsersById } from "../../actions/space";
 import DashboardLayout from "../../components/layout";
 
 const EditSpace = () => {
@@ -54,10 +54,9 @@ const EditSpace = () => {
     };
 
     const handleDeleteUser = async () => {
-        /*
         if (space) {
             const send = async () => {
-                const result = await deleteUser(spaceID as string);
+                const result = await deleteSpaceById(spaceID as string);
                 if (result && typeof result === 'object' && 'error' in result) {
                     toast.warning(result.error);
                     throw new Error(result.error);
@@ -67,13 +66,12 @@ const EditSpace = () => {
             await toast.promise(
                 send(),
                 {
-                    pending: 'Apagando usuário',
-                    success: 'Usuário apagado',
+                    pending: 'Apagando espaço',
+                    success: 'Espaço apagado',
                     error: 'Erro ao apagar',
                 }
             );
-        }
-            */
+        };
     };
 
     useEffect(() => {

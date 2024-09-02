@@ -151,6 +151,19 @@ export const acceptInvite = async (spaceID: string, userID: string): Promise<Spa
     }
 };
 
+export const leaveSpace = async (spaceID: string, userID: string): Promise<SpaceAndUserOrError> => {
+    try {
+        const response = await api.put("/space/leave",  { spaceID, userID});
+        getUser()
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
 export const denyInvite = async (spaceID: string, userID: string): Promise<SpaceAndUserOrError> => {
     try {
         const response = await api.post("/space/invite/deny",  { spaceID, userID});

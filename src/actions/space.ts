@@ -138,6 +138,32 @@ export const inviteUser = async (spaceID: string, guestEmail: string): Promise<S
     }
 };
 
+export const acceptInvite = async (spaceID: string, userID: string): Promise<SpaceAndUserOrError> => {
+    try {
+        const response = await api.post("/space/invite/accept",  { spaceID, userID});
+        getUser()
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
+export const denyInvite = async (spaceID: string, userID: string): Promise<SpaceAndUserOrError> => {
+    try {
+        const response = await api.post("/space/invite/deny",  { spaceID, userID});
+        getUser()
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
 export const createSpace = async (data: ISpaceCreate): Promise<SpaceAndUserOrError> => {
     try {
         const response = await api.post("/space/create", data);

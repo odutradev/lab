@@ -36,7 +36,7 @@ const Profile = () => {
     }, [user]);
 
     useEffect(() => {
-        if (editUser?.images != user?.images) handleUpdateUser();
+        if (editUser?.images && (editUser?.images != user?.images)) handleUpdateUser();
     },[editUser?.images])
 
     return (

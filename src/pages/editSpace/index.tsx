@@ -15,6 +15,7 @@ const EditSpace = () => {
     const [openInviteModal, setOpenInviteModal] = useState<boolean>(false);
     const [emailToInvite, setEmailToInvite] = useState<string>('');
     const [space, setSpace] = useState<ISpaceData | null>(null);
+    const [hasMember, setHasMember] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const { spaceID } = useParams();
     const { user } = useUserStore();
@@ -26,6 +27,8 @@ const EditSpace = () => {
             getSpaceById(spaceID as string),
             getSpaceUsersById(spaceID as string)
         ]);
+        const userSpace = user?.spaces.find(x => x.id == spaceID);
+        setHasMember(userSpace?.invite == true || userSpace?.invite == false)
         setLoading(false);
         if ('error' in responseSpace) return;
         setSpace(responseSpace);
@@ -100,34 +103,40 @@ const EditSpace = () => {
                                 >
                                     {!space.images?.avatar && space.name.split(' ').map(name => name[0]).join('').toUpperCase()}
                                 </Avatar>
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    width={40}
-                                    height={40}
-                                    borderRadius="50%"
-                                    bgcolor="red"
-                                    boxShadow={1}
-                                    onClick={handleDeleteUser}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <DeleteIcon style={{ fontSize: 20, color: '#fafafa' }} />
-                                </Box>
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    justifyContent="center"
-                                    width={40}
-                                    height={40}
-                                    borderRadius="50%"
-                                    bgcolor=""
-                                    boxShadow={1}
-                                    onClick={openModal}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    <PersonAddAlt1Icon style={{ fontSize: 20, color: '#fafafa' }} />
-                                </Box>
+                                {
+                                    !hasMember && (
+                                        <>                              
+                                            <Box
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                                width={40}
+                                                height={40}
+                                                borderRadius="50%"
+                                                bgcolor="red"
+                                                boxShadow={1}
+                                                onClick={handleDeleteUser}
+                                                style={{ cursor: 'pointer' }}
+                                            >
+                                                <DeleteIcon style={{ fontSize: 20, color: '#fafafa' }} />
+                                            </Box>
+                                            <Box
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                                width={40}
+                                                height={40}
+                                                borderRadius="50%"
+                                                bgcolor=""
+                                                boxShadow={1}
+                                                onClick={openModal}
+                                                style={{ cursor: 'pointer' }}
+                                            >
+                                                <PersonAddAlt1Icon style={{ fontSize: 20, color: '#fafafa' }} />
+                                            </Box>
+                                        </>
+                                    )
+                                }
                             </Grid>
                             <Modal open={openInviteModal} onClose={closeModal}>
                                 <Box
@@ -212,19 +221,24 @@ const EditSpace = () => {
                                         Usuários Participantes
                                     </Typography>
                                     <List>
-                                        {spaceUsers.map((user) => (
-                                            <Box key={user._id}>
-                                                <ListItem alignItems="flex-start">
-                                                    <ListItemAvatar>
-                                                        <Avatar src={user.images?.avatar} />
-                                                    </ListItemAvatar>
-                                                    <ListItemText
-                                                        primary={user.name}
-                                                        secondary={`${user.email} - ${user.role}`}
-                                                    />
-                                                </ListItem>
-                                            </Box>
-                                        ))}
+                                        {spaceUsers.map((user) => {
+                                                    const userSpace = user?.spaces.find(x => x.id == spaceID);
+                                                    const hasSpaceMember = userSpace?.invite == false;
+                                                    const hasSpaceInvited = userSpace?.invite == true;
+                                            return (
+                                                <Box key={user._id}>
+                                                    <ListItem alignItems="flex-start">
+                                                        <ListItemAvatar>
+                                                            <Avatar src={user.images?.avatar} />
+                                                        </ListItemAvatar>
+                                                        <ListItemText
+                                                            primary={user.name + `${hasSpaceMember ? ' (membro)' : ''}` + `${hasSpaceInvited ? ' (convidado)' : ''}`}
+                                                            secondary={`${user.email} - ${user.role}`}
+                                                        />
+                                                    </ListItem>
+                                                </Box>
+                                            )
+                                        })}
                                     </List>
                                 </Grid>
                             )}

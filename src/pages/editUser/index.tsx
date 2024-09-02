@@ -1,9 +1,10 @@
-import { TextField, Button, Grid, Typography, MenuItem, Avatar } from "@mui/material";
+import { TextField, Button, Grid, Typography, MenuItem, Avatar, Box } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import { getUserById, updateUserById } from "../../actions/admin";
+import { getUserById, updateUserById, deleteUser } from "../../actions/admin";
 import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
 
@@ -29,7 +30,7 @@ const EditUser = () => {
                     toast.warning(result.error);
                     throw new Error(result.error);
                 }        
-                setTimeout(() => navigate(-1), 500)
+                setTimeout(() => navigate(-1), 500);
             };
             await toast.promise(
                 send(),
@@ -53,6 +54,27 @@ const EditUser = () => {
         });
     };
 
+    const handleDeleteUser = async () => {
+        if (userID) {
+            const send = async () => {
+                const result = await deleteUser(userID as string);
+                if (result && typeof result === 'object' && 'error' in result) {
+                    toast.warning(result.error);
+                    throw new Error(result.error);
+                }        
+                setTimeout(() => navigate(-1), 500);
+            };
+            await toast.promise(
+                send(),
+                {
+                    pending: 'Apagando usuário',
+                    success: 'Usuário apagado',
+                    error: 'Erro ao apagar',
+                }
+            );
+        }
+    };
+
     useEffect(() => {
         getParamsUser();
     }, [userID]);
@@ -63,13 +85,27 @@ const EditUser = () => {
                 <Grid item xs={12} md={8} style={{ maxWidth: '80vw' }}>
                     {user ? (
                         <>
-                            <Grid container direction="column" alignItems="center" style={{ marginBottom: '25px' }}>
+                            <Grid container direction="row" alignItems="center" justifyContent="center" gap={"10px"} style={{ marginBottom: '25px' }}>
                                 <Avatar
                                     src={user.images?.avatar || undefined}
                                     style={{ width: 80, height: 80, marginBottom: '10px' }}
                                 >
                                     {!user.images?.avatar && user.name.split(' ').map(name => name[0]).join('').toUpperCase()}
                                 </Avatar>
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    width={40}
+                                    height={40}
+                                    borderRadius="50%"
+                                    bgcolor="red"
+                                    boxShadow={1}
+                                    onClick={handleDeleteUser}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <DeleteIcon style={{ fontSize: 20, color: '#fafafa' }} />
+                                </Box>
                             </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
                                 <TextField

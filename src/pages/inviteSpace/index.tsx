@@ -49,6 +49,7 @@ const InviteSpace = () => {
     });
 
     useEffect(() => {
+        if (!user?.spaces.find(x => x.id == spaceID)) return navigate(-1);
         getParamsSpace();
     }, [spaceID]);
 

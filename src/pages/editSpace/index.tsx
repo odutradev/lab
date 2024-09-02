@@ -8,14 +8,16 @@ import { getSpaceById, ISpaceData, updateSpaceById, deleteSpaceById, getSpaceUse
 import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
 import useAction from "../../hooks/useAction";
+import useUserStore from "../../store/user";
 
 const EditSpace = () => {
     const [spaceUsers, setSpaceUsers] = useState<IUserData[] | null>(null);
+    const [openInviteModal, setOpenInviteModal] = useState<boolean>(false);
+    const [emailToInvite, setEmailToInvite] = useState<string>('');
     const [space, setSpace] = useState<ISpaceData | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [emailToInvite, setEmailToInvite] = useState<string>('');
-    const [openInviteModal, setOpenInviteModal] = useState<boolean>(false);
     const { spaceID } = useParams();
+    const { user } = useUserStore();
     const navigate = useNavigate();
 
     const getParamsSpace = async () => {
@@ -81,6 +83,7 @@ const EditSpace = () => {
     };
 
     useEffect(() => {
+        if (!user?.spaces.find(x => x.id == spaceID)) return handleBack();
         getParamsSpace();
     }, [spaceID]);
 

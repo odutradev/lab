@@ -1,10 +1,13 @@
-import { TextField, Button, Grid, Typography, Avatar, Box, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import {
+    TextField, Button, Grid, Typography, Avatar, Box, List, ListItem, ListItemAvatar, ListItemText, Modal
+} from "@mui/material";
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import { useParams, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-import { getSpaceById, ISpaceData, updateSpaceById, deleteSpaceById, getSpaceUsersById } from "../../actions/space";
+import { getSpaceById, ISpaceData, updateSpaceById, deleteSpaceById, getSpaceUsersById, inviteUser } from "../../actions/space";
 import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
 
@@ -12,6 +15,8 @@ const EditSpace = () => {
     const [spaceUsers, setSpaceUsers] = useState<IUserData[] | null>(null);
     const [space, setSpace] = useState<ISpaceData | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
+    const [emailToInvite, setEmailToInvite] = useState<string>('');
+    const [openInviteModal, setOpenInviteModal] = useState<boolean>(false);
     const { spaceID } = useParams();
     const navigate = useNavigate();
 
@@ -49,6 +54,30 @@ const EditSpace = () => {
         }
     };
 
+    const handleInvite = async () => {
+        if (space && emailToInvite) {
+            const send = async () => {
+                const result = await inviteUser(spaceID as string, emailToInvite);
+                if (result && typeof result === 'object' && 'error' in result) {
+                    toast.warning(result.error);
+                    throw new Error(result.error);
+                }
+                setTimeout(() => {
+                    setOpenInviteModal(false);
+                    navigate(-1);
+                }, 500);
+            };
+            await toast.promise(
+                send(),
+                {
+                    pending: 'Enviando convite',
+                    success: 'Convite enviado',
+                    error: 'Erro ao convidar',
+                }
+            );
+        }
+    };
+
     const handleBack = () => {
         navigate(-1);
     };
@@ -79,6 +108,14 @@ const EditSpace = () => {
                 }
             );
         }
+    };
+
+    const openModal = () => {
+        setOpenInviteModal(true);
+    };
+
+    const closeModal = () => {
+        setOpenInviteModal(false);
     };
 
     useEffect(() => {
@@ -112,7 +149,55 @@ const EditSpace = () => {
                                 >
                                     <DeleteIcon style={{ fontSize: 20, color: '#fafafa' }} />
                                 </Box>
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    width={40}
+                                    height={40}
+                                    borderRadius="50%"
+                                    bgcolor=""
+                                    boxShadow={1}
+                                    onClick={openModal}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    <PersonAddAlt1Icon style={{ fontSize: 20, color: '#fafafa' }} />
+                                </Box>
                             </Grid>
+                            <Modal open={openInviteModal} onClose={closeModal}>
+                                <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    width={'40vw'}
+                                    p={4}
+                                    bgcolor="#363636"
+                                    borderRadius={4}
+                                    style={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                        outline: 'none'
+                                    }}
+                                >
+                                    <Typography variant="h6" gutterBottom>
+                                        Convidar Usuário
+                                    </Typography>
+                                    <TextField
+                                        label="E-mail do Usuário"
+                                        value={emailToInvite}
+                                        onChange={(e) => setEmailToInvite(e.target.value)}
+                                        fullWidth
+                                        style={{ marginBottom: '20px' }}
+                                    />
+                                    <Button variant="contained" color="primary" onClick={handleInvite}>
+                                        Enviar Convite
+                                    </Button>
+                                </Box>
+                            </Modal>
+
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
                                 <TextField
                                     label="Nome"
@@ -187,14 +272,14 @@ const EditSpace = () => {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <Button variant="contained" color="primary" onClick={handleUpdateSpace} fullWidth>
-                                        Atualizar Espaço
+                                        Salvar
                                     </Button>
                                 </Grid>
                             </Grid>
                         </>
                     ) : (
-                        <Typography variant="h6" align="center" color="textSecondary" style={{ marginTop: '20px' }}>
-                            Espaço não encontrado.
+                        <Typography variant="h5" color="textSecondary">
+                            Espaço não encontrado
                         </Typography>
                     )}
                 </Grid>

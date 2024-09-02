@@ -7,9 +7,11 @@ import { useState } from "react";
 
 import DashboardLayout from "../../components/layout";
 import useMenuStore from "../../store/menu";
+import useUserStore from "../../store/user";
 
 const Spaces = () => {
     const { menu } = useMenuStore(x => x);
+    const { user } = useUserStore(x => x);
     const [tabValue, setTabValue] = useState<number>(0);
     const navigate = useNavigate();
     const theme = useTheme();
@@ -26,8 +28,9 @@ const Spaces = () => {
         navigate('/dashboard/create-space');
     };
 
-    const mySpaces = menu.spaces.filter(space => space.invite === false || space.invite === undefined);
-    const invitations = menu.spaces.filter(space => space.invite === true);
+    const mySpaces = user?.spaces.filter(space => space.invite === false || space.invite === undefined);
+    const invitations = user?.spaces.filter(space => space.invite === true);
+    console.log(menu.spaces)
 
     return (
         <DashboardLayout title="ESPAÇOS">
@@ -42,7 +45,7 @@ const Spaces = () => {
                 <Box p={2} marginTop='25px'>
                     {tabValue === 0 ? (
                         <Grid container spacing={2} justifyContent="center">
-                            {mySpaces.length > 0 ? (
+                            { mySpaces && mySpaces.length > 0 ? (
                                 <>
                                     {mySpaces.map(space => (
                                         <Grid item key={space.id} xs={12} sm={6} md={4} lg={3}>
@@ -99,7 +102,7 @@ const Spaces = () => {
                             )}
                         </Grid>
                     ) : (
-                        invitations.length > 0 ? (
+                        invitations && invitations.length > 0 ? (
                             <Grid container spacing={2} justifyContent="center">
                                 {invitations.map(space => (
                                     <Grid item key={space.id} xs={12} sm={6} md={4} lg={3}>

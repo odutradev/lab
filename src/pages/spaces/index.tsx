@@ -1,4 +1,5 @@
-import { Box, Grid, Typography, Card, CardContent, Tabs, Tab } from "@mui/material";
+import { Box, Grid, Typography, Card, CardContent, Tabs, Tab, Chip } from "@mui/material";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
@@ -13,16 +14,16 @@ const Spaces = () => {
     const navigate = useNavigate();
     const theme = useTheme();
 
-    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleTabChange = (newValue: number) => {
         setTabValue(newValue);
     };
 
     const handleCardClick = (id: string) => {
-        navigate(`/space/${id}`);
+        navigate(`/dashboard/edit-space/${id}`);
     };
 
     const handleCreateSpace = () => {
-        navigate('/create-space');
+        navigate('/dashboard/create-space');
     };
 
     const mySpaces = menu.spaces.filter(space => space.invite === false || space.invite === undefined);
@@ -31,7 +32,10 @@ const Spaces = () => {
     return (
         <DashboardLayout title="ESPAÇOS">
             <Box textAlign="center" p={2}>
-                <Tabs value={tabValue} onChange={handleTabChange} centered>
+                <Tabs value={tabValue} onChange={(e, value) => {
+                    handleTabChange(value)
+                    typeof e
+                    }} centered>
                     <Tab label="Meus Espaços" />
                     <Tab label="Convites" />
                 </Tabs>
@@ -57,6 +61,15 @@ const Spaces = () => {
                                             >
                                                 <CardContent style={{ textAlign: 'center' }}>
                                                     <Typography variant="h6">{space.name}</Typography>
+                                                    {space.id === menu.selectedSpace && (
+                                                        <Chip
+                                                            color="primary"
+                                                            icon={<CheckCircleOutlineIcon />}
+                                                            size="small"
+                                                            label="selecionado"
+                                                            style={{ marginTop: 8 }}
+                                                        />
+                                                    )}
                                                 </CardContent>
                                             </Card>
                                         </Grid>

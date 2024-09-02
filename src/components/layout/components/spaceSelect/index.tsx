@@ -20,13 +20,13 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ drawerOpen, disableGetUser, p
   };
 
   const handleSetSpace = (space: IUserSpaceData) => {
-    updateSelectSpace(space._id);
-    setSpaceToken(space._id);
+    updateSelectSpace(space.id);
+    setSpaceToken(space.id);
   };
 
   const handleChange = (event: SelectChangeEvent<string>) => {
     const selectedId = event.target.value as string;
-    const selected = menu.spaces.find(space => space._id === selectedId);
+    const selected = menu.spaces.find(space => space.id === selectedId);
     if (selected) handleSetSpace(selected);
   };
 
@@ -53,11 +53,11 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ drawerOpen, disableGetUser, p
     } else {
       updateSpaces(filteredSpaces);
       
-      if (localSpaceId && filteredSpaces.some(space => space._id === localSpaceId)) {
-        const space = filteredSpaces.find(space => space._id === localSpaceId);
+      if (localSpaceId && filteredSpaces.some(space => space.id === localSpaceId)) {
+        const space = filteredSpaces.find(space => space.id === localSpaceId);
         if (space) {
-          updateSelectSpace(space._id);
-          setSpaceToken(space._id);
+          updateSelectSpace(space.id);
+          setSpaceToken(space.id);
         }
       } else if (filteredSpaces.length > 0) {
         handleSetSpace(filteredSpaces[0]);
@@ -84,7 +84,7 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ drawerOpen, disableGetUser, p
             }}
           >
             {menu.spaces && menu.spaces.map(space => (
-              <MenuItem key={space._id} value={space._id}>
+              <MenuItem key={space.id} value={space.id}>
                 {space.name}
               </MenuItem>
             ))}

@@ -2,9 +2,10 @@ import { TextField, Button, Grid, Typography, Avatar, Box, List, ListItem, ListI
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import { useParams, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useState, useEffect } from "react";
 
-import { getSpaceById, ISpaceData, updateSpaceById, deleteSpaceById, getSpaceUsersById, inviteUser } from "../../actions/space";
+import { getSpaceById, ISpaceData, updateSpaceById, deleteSpaceById, getSpaceUsersById, inviteUser, leaveSpace } from "../../actions/space";
 import DashboardLayout from "../../components/layout";
 import { IUserData } from "../../actions/user";
 import useAction from "../../hooks/useAction";
@@ -63,6 +64,16 @@ const EditSpace = () => {
             pending: 'Apagando espaço',
             success: 'Espaço apagado',
             error: 'Erro ao apagar',
+        }
+    });
+
+    const handleLeaveSpace = () => useAction({
+        action: async () =>  await leaveSpace(spaceID as string, user?._id as string),
+        callback: () => navigate(-1),
+        toastMessages: {
+            pending: 'Saindo do espaço',
+            success: 'Você saiu do espaço',
+            error: 'Erro ao sair',
         }
     });
 
@@ -133,6 +144,26 @@ const EditSpace = () => {
                                                 style={{ cursor: 'pointer' }}
                                             >
                                                 <PersonAddAlt1Icon style={{ fontSize: 20, color: '#fafafa' }} />
+                                            </Box>
+                                        </>
+                                    )
+                                }
+                                {
+                                    hasMember && (
+                                        <>                              
+                                            <Box
+                                                display="flex"
+                                                alignItems="center"
+                                                justifyContent="center"
+                                                width={40}
+                                                height={40}
+                                                borderRadius="50%"
+                                                bgcolor="red"
+                                                boxShadow={1}
+                                                onClick={handleLeaveSpace}
+                                                style={{ cursor: 'pointer' }}
+                                            >
+                                                <LogoutIcon style={{ fontSize: 20, color: '#fafafa' }} />
                                             </Box>
                                         </>
                                     )

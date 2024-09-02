@@ -30,6 +30,7 @@ interface ResponseError  {
 };
 
 type SpaceAndUserOrError = { space: IUserSpaceData, user: IUserData} | ResponseError;
+type SpaceUsersOrError = ISpaceData[] | ResponseError;
 type SpaceOrError = IUserSpaceData | ResponseError;
 type AllSpaceOrError = ISpaceData | ResponseError;
 
@@ -37,6 +38,32 @@ export const getSpace = async (spaceID?: string): Promise<SpaceOrError> => {
     try {
         if (spaceID) setSpaceToken(spaceID);
         const response = await api.get("/space/get");
+        const data =  response.data;
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
+export const getSpaceUsers = async (): Promise<SpaceUsersOrError> => {
+    try {
+        const response = await api.get("/space/users");
+        const data =  response.data;
+        return data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
+export const getSpaceUsersById = async (spaceID: string): Promise<SpaceUsersOrError> => {
+    try {
+        const response = await api.get("/space/users/" + spaceID);
         const data =  response.data;
         return data;
     } catch (error) {
@@ -72,9 +99,22 @@ export const updateSpace = async (data: Partial<ISpaceData>): Promise<AllSpaceOr
           return { error: 'Erro na requisição' };
     }
 };
+
 export const updateSpaceById = async (spaceID: string, data: Partial<ISpaceData>): Promise<AllSpaceOrError> => {
     try {
         const response = await api.put("/space/update/" + spaceID, { data });
+        getUser();
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+export const deleteSpaceById = async (spaceID: string): Promise<{ success: boolean } | ResponseError> => {
+    try {
+        const response = await api.delete("/space/delete/" + spaceID);
         getUser();
         return response.data;
     } catch (error) {

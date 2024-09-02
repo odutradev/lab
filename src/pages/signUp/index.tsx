@@ -5,10 +5,11 @@ import { toast } from 'react-toastify';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import * as React from 'react';
+import { useEffect} from 'react';
 
 import { BackgroudCover, Image, FormContainer, CustomPaper, FullHeightGrid } from './styles';
 import { ISignUpData, signUp } from '../../actions/user';
+import useHasAuth from '../../hooks/useHasAuth';
 import cover from '../../assets/imgs/cover.png';
 import lite from '../../assets/imgs/lite.svg';
 
@@ -47,6 +48,10 @@ const SignUp = () => {
       }
     );
   };
+
+useEffect(() => {
+  useHasAuth();
+},[])
 
   return (
     <FullHeightGrid>

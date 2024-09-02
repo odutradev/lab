@@ -85,54 +85,57 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
           </Accordion>
           <Divider />
           {user?.role === 'admin' && (
-            <Accordion
-              expanded={menu.pastes.admin.open}
-              onChange={() => handleAccordionToggle('admin')}
-              sx={{
-                backgroundColor: 'transparent',
-                boxShadow: 'none',
-                border: 'none',
-                backgroundImage: 'none',
-                '&::before': { display: 'none' },
-              }}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+            <>
+              <Accordion
+                expanded={menu.pastes.admin.open}
+                onChange={() => handleAccordionToggle('admin')}
                 sx={{
                   backgroundColor: 'transparent',
-                  padding: isMobile ? '8px' : '10px',
-                  minHeight: 'unset',
+                  boxShadow: 'none',
                   border: 'none',
                   backgroundImage: 'none',
-                  '&.Mui-expanded': { minHeight: 'unset' },
-                  '& > .MuiAccordionSummary-content': { margin: 0 },
-                  '& .MuiTypography-root': { display: menu.drawerOpen ? 'block' : 'none' } 
+                  '&::before': { display: 'none' },
                 }}
               >
-                <Typography>ADMINISTRADOR</Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ padding: isMobile ? '8px 0' : 0 }}>
-                <List>
-                  {adminLinks.map(([icon, text, route]) => (
-                    <Tooltip 
-                      title={menu.drawerOpen ? '' : text} 
-                      placement="right"
-                      arrow
-                      key={route}
-                    >
-                      <span>
-                        <MenuItemComponent
-                          drawerOpen={menu.drawerOpen}
-                          route={route}
-                          icon={icon} 
-                          text={text}
-                        />
-                      </span>
-                    </Tooltip>
-                  ))}
-                </List>
-              </AccordionDetails>
-            </Accordion>
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  sx={{
+                    backgroundColor: 'transparent',
+                    padding: isMobile ? '8px' : '10px',
+                    minHeight: 'unset',
+                    border: 'none',
+                    backgroundImage: 'none',
+                    '&.Mui-expanded': { minHeight: 'unset' },
+                    '& > .MuiAccordionSummary-content': { margin: 0 },
+                    '& .MuiTypography-root': { display: menu.drawerOpen ? 'block' : 'none' } 
+                  }}
+                >
+                  <Typography>ADMINISTRADOR</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ padding: isMobile ? '8px 0' : 0 }}>
+                  <List>
+                    {adminLinks.map(([icon, text, route]) => (
+                      <Tooltip 
+                        title={menu.drawerOpen ? '' : text} 
+                        placement="right"
+                        arrow
+                        key={route}
+                      >
+                        <span>
+                          <MenuItemComponent
+                            drawerOpen={menu.drawerOpen}
+                            route={route}
+                            icon={icon} 
+                            text={text}
+                          />
+                        </span>
+                      </Tooltip>
+                    ))}
+                  </List>
+                </AccordionDetails>
+              </Accordion>
+              <Divider />
+            </>
           )}
         </Stack>
         <Stack spacing={2} p={1} sx={{ marginTop: 'auto' }}>

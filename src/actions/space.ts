@@ -30,7 +30,7 @@ interface ResponseError  {
 };
 
 type SpaceAndUserOrError = { space: IUserSpaceData, user: IUserData} | ResponseError;
-type SpaceUsersOrError = ISpaceData[] | ResponseError;
+type SpaceUsersOrError = IUserData[] | ResponseError;
 type SpaceOrError = IUserSpaceData | ResponseError;
 type AllSpaceOrError = ISpaceData | ResponseError;
 

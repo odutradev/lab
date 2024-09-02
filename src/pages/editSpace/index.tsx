@@ -1,4 +1,4 @@
-import { TextField, Button, Grid, Typography, Avatar, Box } from "@mui/material";
+import { TextField, Button, Grid, Typography, Avatar, Box, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useState, useEffect } from "react";
@@ -6,19 +6,26 @@ import { toast } from "react-toastify";
 
 import { getSpaceById, ISpaceData, updateSpaceById, deleteSpaceById, getSpaceUsersById } from "../../actions/space";
 import DashboardLayout from "../../components/layout";
+import { IUserData } from "../../actions/user";
 
 const EditSpace = () => {
-    const [loading, setLoading] = useState<boolean>(false);
+    const [spaceUsers, setSpaceUsers] = useState<IUserData[] | null>(null);
     const [space, setSpace] = useState<ISpaceData | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
     const { spaceID } = useParams();
     const navigate = useNavigate();
 
     const getParamsSpace = async () => {
         setLoading(true);
-        const response = await getSpaceById(spaceID as string);
+        var [responseSpace, responseUsers] = await Promise.all([
+            getSpaceById(spaceID as string),
+            getSpaceUsersById(spaceID as string)
+        ]);
         setLoading(false);
-        if ('error' in response) return;
-        setSpace(response);
+        if ('error' in responseSpace) return;
+        setSpace(responseSpace);
+        if ('error' in responseUsers) return;
+        setSpaceUsers(responseUsers);
     };
 
     const handleUpdateSpace = async () => {
@@ -28,7 +35,7 @@ const EditSpace = () => {
                 if (result && typeof result === 'object' && 'error' in result) {
                     toast.warning(result.error);
                     throw new Error(result.error);
-                }        
+                }
                 setTimeout(() => navigate(-1), 500);
             };
             await toast.promise(
@@ -43,7 +50,7 @@ const EditSpace = () => {
     };
 
     const handleBack = () => {
-        navigate(-1); 
+        navigate(-1);
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +67,7 @@ const EditSpace = () => {
                 if (result && typeof result === 'object' && 'error' in result) {
                     toast.warning(result.error);
                     throw new Error(result.error);
-                }        
+                }
                 setTimeout(() => navigate(-1), 500);
             };
             await toast.promise(
@@ -71,7 +78,7 @@ const EditSpace = () => {
                     error: 'Erro ao apagar',
                 }
             );
-        };
+        }
     };
 
     useEffect(() => {
@@ -148,6 +155,30 @@ const EditSpace = () => {
                                     fullWidth
                                 />
                             </Grid>
+
+                            {spaceUsers && spaceUsers.length > 0 && (
+                                <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                                    <Typography variant="h6" style={{ marginBottom: '10px' }}>
+                                        Usuários Participantes
+                                    </Typography>
+                                    <List>
+                                        {spaceUsers.map((user) => (
+                                            <Box key={user._id}>
+                                                <ListItem alignItems="flex-start">
+                                                    <ListItemAvatar>
+                                                        <Avatar src={user.images?.avatar} />
+                                                    </ListItemAvatar>
+                                                    <ListItemText
+                                                        primary={user.name}
+                                                        secondary={`${user.email} - ${user.role}`}
+                                                    />
+                                                </ListItem>
+                                            </Box>
+                                        ))}
+                                    </List>
+                                </Grid>
+                            )}
+
                             <Grid container spacing={2} justifyContent="center">
                                 <Grid item xs={12} md={6}>
                                     <Button variant="outlined" onClick={handleBack} fullWidth>

@@ -12,6 +12,9 @@ export interface IMenuData {
         admin: {
             open: boolean;
         },
+        routine: {
+            open: boolean;
+        },
     };
     spaces: IUserSpaceData[];
     selectedSpace: string;
@@ -19,7 +22,7 @@ export interface IMenuData {
 
 export interface IMenuStore {
     menu: IMenuData;
-    updatePasteOpen: (pasteType: 'default' | 'admin', open: boolean) => void;
+    updatePasteOpen: (pasteType: 'default' | 'admin' | 'routine', open: boolean) => void;
     updateSelectSpace: (selectedSpace: string) => void;
     updateSpaces: (spaces: IUserSpaceData[]) => void;
     updateDrawerOpen: (drawerOpen: boolean) => void;
@@ -33,6 +36,9 @@ const defaultMenu: IMenuData = {
             open: true,
         },
         admin: {
+            open: false,
+        },
+        routine: {
             open: false,
         },
     },

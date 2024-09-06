@@ -2,7 +2,7 @@ import { List, Divider, Toolbar, Stack, Box, Accordion, AccordionSummary, Accord
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from 'react';
 
-import { adminLinks, defaultLinks, settingsLinks } from './links';
+import { adminLinks, defaultLinks, settingsLinks, routineLinks } from './links';
 import MenuItemComponent from './components/menuItem';
 import SpaceSelect from './components/spaceSelect';
 import MenuDrawer from './components/menuDrawer';
@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
     updateDrawerOpen(!menu.drawerOpen);
   };
 
-  const handleAccordionToggle = (type: 'default' | 'admin') => {
+  const handleAccordionToggle = (type: 'default' | 'admin' | 'routine') => {
     updatePasteOpen(type, !menu.pastes[type].open);
   };
 
@@ -84,6 +84,56 @@ const Layout: React.FC<LayoutProps> = ({ children, title = "LAB", loading = fals
             </AccordionDetails>
           </Accordion>
           <Divider />
+          <Accordion
+            expanded={menu.pastes.routine.open}
+            onChange={() => handleAccordionToggle('routine')}
+            defaultExpanded={!isMobile}
+            sx={{
+              backgroundColor: 'transparent',
+              boxShadow: 'none',
+              border: 'none',
+              backgroundImage: 'none',
+              '&::before': { display: 'none' },
+            }}
+          >
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              sx={{
+                backgroundColor: 'transparent',
+                padding: isMobile ? '8px' : '10px',
+                minHeight: 'unset',
+                border: 'none',
+                backgroundImage: 'none',
+                '&.Mui-expanded': { minHeight: 'unset' },
+                '& > .MuiAccordionSummary-content': { margin: 0 },
+                '& .MuiTypography-root': { display: menu.drawerOpen ? 'block' : 'none' } 
+              }}
+            >
+              <Typography>ROTINA</Typography>
+            </AccordionSummary>
+            <AccordionDetails sx={{ padding: isMobile ? '8px 0' : 0 }}>
+              <List>
+                {routineLinks.map(([icon, text, route]) => (
+                  <Tooltip 
+                    title={menu.drawerOpen ? '' : text} 
+                    placement="right"
+                    arrow
+                    key={route}
+                  >
+                    <span>
+                      <MenuItemComponent
+                        drawerOpen={menu.drawerOpen}
+                        route={route}
+                        icon={icon} 
+                        text={text}
+                      />
+                    </span>
+                  </Tooltip>
+                ))}
+              </List>
+            </AccordionDetails>
+          </Accordion>
+            <Divider />
           {user?.role === 'admin' && (
             <>
               <Accordion

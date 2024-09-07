@@ -13,6 +13,7 @@ import Logout from "../pages/logout";
 import SignIn from "../pages/signIn";
 import SignUp from "../pages/signUp";
 import Spaces from "../pages/spaces";
+import Tasks from "../pages/tasks";
 import Error from "../pages/error";
 import Users from "../pages/users";
 
@@ -27,6 +28,7 @@ const routes = [
             ["/edit-space/:spaceID", <EditSpace/>],
             ["/profile", <Profile/>],
             ["/spaces", <Spaces/>],
+            ["/tasks", <Tasks/>],
             ["/", <Dashboard/>],
         ]
     },

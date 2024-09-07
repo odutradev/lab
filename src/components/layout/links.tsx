@@ -6,7 +6,7 @@ export const defaultLinks: MenuLink[] = [
     [<Apps />, 'Espaços', '/dashboard/spaces'],
 ];
 export const routineLinks: MenuLink[] = [
-    [<List />, 'Tarefas', '/tasks'],
+    [<List />, 'Tarefas', '/dashboard/tasks'],
 ];
 
 export const settingsLinks: MenuLink[] = [

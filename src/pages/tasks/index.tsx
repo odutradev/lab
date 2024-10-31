@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getAllTasks, ITaskAndSubs } from "../../actions/task";
 import DashboardLayout from "../../components/layout";
 import useAction from "../../hooks/useAction";
+import Task from "./components/task";
 
 const Tasks = () => {
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -60,13 +61,7 @@ const Tasks = () => {
                         </Typography>
                         <Card variant="outlined" sx={{ padding: '10px', minHeight: '300px' }}>
                             {tasks.length > 0 ? (
-                                tasks.map((task) => (
-                                    <div key={task.identificator} style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
-                                        <Typography variant="body1">{task.identificator} - {task.description}</Typography>
-                                        <Typography variant="body2">Prioridade: {task.priority}</Typography>
-                                        <Typography variant="body2">Status: {task.status}</Typography>
-                                    </div>
-                                ))
+                                tasks.map((task) => <Task task={task}/>)
                             ) : (
                                 <Typography variant="body2" align="center" color="textSecondary">
                                     Sem tarefas

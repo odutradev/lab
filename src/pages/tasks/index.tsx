@@ -1,6 +1,6 @@
 import {  Grid } from "@mui/material";
 import { useEffect, useState } from "react";
-import { DndContext, closestCenter, DragOverlay } from "@dnd-kit/core";
+import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
   useSortable,
@@ -15,6 +15,7 @@ import Task from "./components/task";
 import Header from "./components/header";
 import Column from "./components/column";
 import { TaskStatus } from "./types";
+import Overlay from "./components/overlay";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<ITaskAndSubs[]>([]);
@@ -100,14 +101,7 @@ const Tasks = () => {
             </Column>
           ))}
         </Grid>
-        <DragOverlay>
-          {activeTaskId ? (
-            <Task
-              task={tasks.find((task: ITaskAndSubs) => String(task.identificator) === String(activeTaskId)) as ITaskAndSubs}
-              isOverlay
-            />
-          ) : null}
-        </DragOverlay>
+        <Overlay tasks={tasks} activeTaskId={activeTaskId} />
       </DndContext>
     </DashboardLayout>
   );

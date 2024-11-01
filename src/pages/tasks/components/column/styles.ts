@@ -11,3 +11,16 @@ export const CustomColumn = styled(Card)`
     display: flex;
     height: 100%;
 `;
+
+export const CustomTitleCard = styled(Card)`
+    justify-content: center;
+    align-items: center;
+    border-radius: 2px;
+    height: auto;
+    padding: 4px;
+
+    h6 {
+        font-size: 16px;
+        margin: 0;
+    }
+`;

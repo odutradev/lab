@@ -118,6 +118,7 @@ const Tasks = () => {
           {activeTaskId ? (
             <Task
               task={tasks.find((task: ITaskAndSubs) => String(task.identificator) === String(activeTaskId)) as ITaskAndSubs}
+              isOverlay
             />
           ) : null}
         </DragOverlay>

@@ -15,7 +15,7 @@ export interface ITask {
     creator: string;
     createAt: Date;
     startIn?: Date;
-    index?: number;
+    order?: number;
     space: string;
     endIn?: Date;
     _id: string;
@@ -82,6 +82,18 @@ export const getTaskById = async (taskID: string): Promise<TaskAndSubsOrError> =
 export const updateTaskById = async (taskID: string, data: Partial<ITaskAndSubs>): Promise<TaskAndSubsOrError> => {
     try {
         const response = await api.put("/task/update/" + taskID, { data });
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+            return { error: error.response.data.msg || 'Erro desconhecido' };
+          }
+          return { error: 'Erro na requisição' };
+    }
+};
+
+export const updateAllTasks = async (data: Partial<ITaskAndSubs>[]): Promise<TaskAndSubsOrError> => {
+    try {
+        const response = await api.put("/task/update-all", { data });
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {

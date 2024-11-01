@@ -9,12 +9,12 @@ import {
 } from "@dnd-kit/sortable";
 
 
-import { getAllTasks, ITaskAndSubs } from "../../actions/task";
+import { getAllTasks, ITaskAndSubs, updateAllTasks } from "../../actions/task";
 import DashboardLayout from "../../components/layout";
 import Task from "./components/task";
 import Header from "./components/header";
 import Column from "./components/column";
-import { TaskStatus } from "./types";
+import { TaskStatus, TaskStatusTypes } from "./types";
 import Overlay from "./components/overlay";
 
 const Tasks = () => {
@@ -73,6 +73,19 @@ const Tasks = () => {
   };
 
   useEffect(() => {
+      tasksByStatus.forEach((item) => item.tasks.forEach((task, index) => {
+        let taskIndex = tasks.findIndex(x => x._id == task._id);
+        var reorderedTasks = tasks;
+        tasks[taskIndex].order = index;
+        tasks[taskIndex].status = item.status as TaskStatusTypes;
+        setTasks(reorderedTasks)
+        updateAllTasks(reorderedTasks);
+      }))
+  }, [tasksByStatus])
+
+
+
+  useEffect(() => {
     getTasks();
   }, []);
 
@@ -93,7 +106,7 @@ const Tasks = () => {
                   strategy={verticalListSortingStrategy}
                 >
                   {tasks.length > 0 ? (
-                    tasks.map((task) => <Task key={task._id} task={task} />)
+                    tasks.sort((a, b) => (a.order || 0) -(b.order || 0)).map((task) => <Task key={task._id} task={task} />)
                   ) : (
                     <EmptyColumnDropTarget id={status} />
                   )}

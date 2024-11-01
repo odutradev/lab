@@ -18,6 +18,7 @@ export interface ITask {
     index?: number;
     space: string;
     endIn?: Date;
+    _id: string;
 };
 
 export type ITaskAndSubs = ITask & {

@@ -1,6 +1,6 @@
 import { Button, Card, Grid, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import { DndContext, closestCenter, DragOverlay } from "@dnd-kit/core";
 import {
   SortableContext,
   useSortable,
@@ -17,6 +17,7 @@ import Task from "./components/task";
 const Tasks = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [tasks, setTasks] = useState<ITaskAndSubs[]>([]);
+  const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
 
   const getTasks = async () => {
     const response = await getAllTasks();
@@ -55,6 +56,10 @@ const Tasks = () => {
     return <div ref={setNodeRef} {...attributes} {...listeners} style={{ height: "100%" }} />;
   };
 
+  const handleDragStart = ({ active }: any) => {
+    setActiveTaskId(active.id);
+  };
+
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
 
@@ -81,7 +86,9 @@ const Tasks = () => {
         order: index + 1,
       })));
     }
-};
+
+    setActiveTaskId(null);
+  };
 
   useEffect(() => {
     getTasks();
@@ -102,7 +109,11 @@ const Tasks = () => {
           Criar Tarefa
         </Button>
       </Grid>
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
+      >
         <Grid container spacing={2} justifyContent="space-around">
           {tasksByStatus.map(({ status, tasks }) => (
             <Grid item xs={12} sm={6} md={2.4} key={status}>
@@ -137,6 +148,13 @@ const Tasks = () => {
             </Grid>
           ))}
         </Grid>
+        <DragOverlay>
+          {activeTaskId ? (
+            <Task
+              task={tasks.find((task: ITaskAndSubs) => String(task.identificator) === String(activeTaskId)) as ITaskAndSubs}
+            />
+          ) : null}
+        </DragOverlay>
       </DndContext>
     </DashboardLayout>
   );
@@ -149,6 +167,7 @@ const DraggableTask = ({ task }: { task: ITaskAndSubs }) => {
     transition,
     zIndex: isDragging ? 1000 : "auto",
     boxShadow: isDragging ? "0 5px 15px rgba(0,0,0,0.2)" : "none",
+    cursor: isDragging ? "grabbing" : "auto",
   };
 
   return (

@@ -1,7 +1,7 @@
 import { Card, CardContent, Typography, Box, Chip } from "@mui/material";
-import { ITask } from "../../../../actions/task";
+import { ITask, ITaskAndSubs } from "../../../../actions/task";
 
-const Task = ({ task } : { task: ITask }) => {
+const Task = ({ task } : { task: ITask | ITaskAndSubs }) => {
     return (
         <Card variant="outlined" sx={{ 
             borderRadius: 2, 

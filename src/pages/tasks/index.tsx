@@ -63,7 +63,7 @@ const Tasks = () => {
     const oldIndex = tasks.findIndex((task) => task.identificator === active.id);
     const newStatus = over.data?.current?.sortable.containerId;
 
-    if (over.data && over.data.current) {
+    if (newStatus && newStatus !== tasks[oldIndex].status) {
       setTasks((prevTasks) => {
         const updatedTasks = prevTasks.map((task) =>
           task.identificator === active.id ? { ...task, status: newStatus } : task
@@ -74,13 +74,14 @@ const Tasks = () => {
     }
 
     const newIndex = tasks.findIndex((task) => task.identificator === over.id);
-    const reorderedTasks = arrayMove(tasks, oldIndex, newIndex);
-
-    setTasks(reorderedTasks.map((task, index) => ({
-      ...task,
-      order: index + 1,
-    })));
-  };
+    if (newIndex !== -1 && oldIndex !== newIndex) {
+      const reorderedTasks = arrayMove(tasks, oldIndex, newIndex);
+      setTasks(reorderedTasks.map((task, index) => ({
+        ...task,
+        order: index + 1,
+      })));
+    }
+};
 
   useEffect(() => {
     getTasks();

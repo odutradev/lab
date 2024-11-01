@@ -106,7 +106,7 @@ const Tasks = () => {
                   {tasks.length > 0 ? (
                     tasks.sort((a, b) => (a.order || 0) -(b.order || 0)).map((task) => <Task key={task._id} task={task} />)
                   ) : (
-                    <EmptyColumnDropTarget id={status} />
+                    <EmptyColumnDropTarget id={status as string} />
                   )}
                 </SortableContext>
             </Column>

@@ -1,4 +1,4 @@
-import {  Card, Grid, Typography } from "@mui/material";
+import {  Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { DndContext, closestCenter, DragOverlay } from "@dnd-kit/core";
 import {
@@ -13,6 +13,8 @@ import { getAllTasks, ITaskAndSubs } from "../../actions/task";
 import DashboardLayout from "../../components/layout";
 import Task from "./components/task";
 import Header from "./components/header";
+import Column from "./components/column";
+import { TaskStatus } from "./types";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<ITaskAndSubs[]>([]);
@@ -83,22 +85,7 @@ const Tasks = () => {
         <Header/>
         <Grid container spacing={2} justifyContent="space-around">
           {tasksByStatus.map(({ status, tasks }) => (
-            <Grid item xs={12} sm={6} md={2.4} key={status}>
-              <Typography variant="h6" align="center" gutterBottom>
-                {status.charAt(0).toUpperCase() + status.slice(1)}
-              </Typography>
-              <Card
-                variant="outlined"
-                sx={{
-                  padding: "10px",
-                  minHeight: "300px",
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: tasks.length ? "flex-start" : "center",
-                  alignItems: "center",
-                  border: "none"
-                }}
-              >
+            <Column title={TaskStatus[status as keyof typeof TaskStatus]}>
                 <SortableContext
                   items={tasks.map((task) => task.identificator)}
                   id={status}
@@ -110,8 +97,7 @@ const Tasks = () => {
                     <EmptyColumnDropTarget id={status} />
                   )}
                 </SortableContext>
-              </Card>
-            </Grid>
+            </Column>
           ))}
         </Grid>
         <DragOverlay>

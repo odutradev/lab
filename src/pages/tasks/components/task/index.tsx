@@ -1,8 +1,27 @@
 import { Card, CardContent, Typography, Box, Chip } from "@mui/material";
 import { ITask, ITaskAndSubs } from "../../../../actions/task";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
+
+  
 const Task = ({ task } : { task: ITask | ITaskAndSubs }) => {
+
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.identificator });
+    const style = {
+      transform: CSS.Transform.toString(transform),
+      transition,
+      zIndex: isDragging ? 1000 : "auto",
+      boxShadow: isDragging ? "0 5px 15px rgba(0,0,0,0.2)" : "none",
+      cursor: isDragging ? "grabbing" : "auto",
+      width: '100%'
+    };
+  
+
+
     return (
+        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+
         <Card variant="outlined" sx={{ 
             borderRadius: 2, 
             boxShadow: 1, 
@@ -32,6 +51,7 @@ const Task = ({ task } : { task: ITask | ITaskAndSubs }) => {
                 </Typography>
             </CardContent>
         </Card>
+        </div>
     );
 };
 

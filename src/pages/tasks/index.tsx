@@ -7,7 +7,7 @@ import {
   verticalListSortingStrategy,
   arrayMove,
 } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+
 
 import { getAllTasks, ITaskAndSubs } from "../../actions/task";
 import DashboardLayout from "../../components/layout";
@@ -138,7 +138,7 @@ const Tasks = () => {
                   strategy={verticalListSortingStrategy}
                 >
                   {tasks.length > 0 ? (
-                    tasks.map((task) => <DraggableTask key={task.identificator} task={task} />)
+                    tasks.map((task) => <Task key={task._id} task={task} />)
                   ) : (
                     <EmptyColumnDropTarget id={status} />
                   )}
@@ -156,24 +156,6 @@ const Tasks = () => {
         </DragOverlay>
       </DndContext>
     </DashboardLayout>
-  );
-};
-
-const DraggableTask = ({ task }: { task: ITaskAndSubs }) => {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.identificator });
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    zIndex: isDragging ? 1000 : "auto",
-    boxShadow: isDragging ? "0 5px 15px rgba(0,0,0,0.2)" : "none",
-    cursor: isDragging ? "grabbing" : "auto",
-    width: '100%'
-  };
-
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <Task task={task} />
-    </div>
   );
 };
 

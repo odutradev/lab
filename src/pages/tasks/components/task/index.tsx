@@ -3,6 +3,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 import { ITask, ITaskAndSubs } from "../../../../actions/task";
+import { TaskStatus } from "../../types";
 import { DraggableTask } from "./styles";
   
 const Task = ({ task, isOverlay } : { task: ITask | ITaskAndSubs, isOverlay?: boolean}) => {
@@ -23,7 +24,7 @@ const Task = ({ task, isOverlay } : { task: ITask | ITaskAndSubs, isOverlay?: bo
                             {task.identificator}
                         </Typography>
                         <Chip 
-                            label={task.status.charAt(0).toUpperCase() + task.status.slice(1)} 
+                            label={TaskStatus[task.status as keyof typeof TaskStatus].charAt(0).toUpperCase() + TaskStatus[task.status as keyof typeof TaskStatus].slice(1)} 
                             color={task.status === 'completed' ? 'success' : task.status === 'pending' ? 'warning' : 'default'}
                             variant="outlined"
                             size="small"

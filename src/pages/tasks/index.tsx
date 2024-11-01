@@ -12,7 +12,6 @@ import {
 import { getAllTasks, ITaskAndSubs, updateAllTasks } from "../../actions/task";
 import DashboardLayout from "../../components/layout";
 import Task from "./components/task";
-import Header from "./components/header";
 import Column from "./components/column";
 import { TaskStatus, TaskStatusTypes } from "./types";
 import Overlay from "./components/overlay";
@@ -27,7 +26,7 @@ const Tasks = () => {
     setTasks(response);
   };
 
-  const statusCategories = ["active", "inactive", "completed", "pending", "blocked"];
+  const statusCategories = ["inactive",, "blocked", "pending", "active", "completed"];
   const tasksByStatus = statusCategories.map((status) => ({
     status,
     tasks: tasks.filter((task) => task.status === status),
@@ -96,7 +95,6 @@ const Tasks = () => {
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
       >
-        <Header/>
         <Grid container spacing={2} justifyContent="space-around">
           {tasksByStatus.map(({ status, tasks }) => (
             <Column title={TaskStatus[status as keyof typeof TaskStatus]}>

@@ -1,9 +1,9 @@
 export enum TaskStatus {
-    active = "ativo",
-    inactive = "inativo",
-    completed = "completo",
+    active = "ativa",
+    inactive = "inativa",
+    completed = "finalizada",
     pending = "pendente",
-    blocked = "bloqueado"
+    blocked = "bloqueada"
 }
 
 export type TaskStatusTypes = 'active' | 'inactive' | 'completed' | 'pending' | 'blocked';

@@ -6,6 +6,8 @@ const Task = ({ task } : { task: ITask | ITaskAndSubs }) => {
         <Card variant="outlined" sx={{ 
             borderRadius: 2, 
             boxShadow: 1, 
+            flex: 1,
+            width: '100%',
             mb: 2, 
             p: 1,
             ':hover': { boxShadow: 3 }

@@ -129,8 +129,7 @@ const Tasks = () => {
                   flexDirection: "column",
                   justifyContent: tasks.length ? "flex-start" : "center",
                   alignItems: "center",
-                  backgroundColor: tasks.length ? "inherit" : "rgba(0, 0, 0, 0.05)",
-                  borderStyle: tasks.length ? "solid" : "dashed",
+                  border: "none"
                 }}
               >
                 <SortableContext
@@ -168,6 +167,7 @@ const DraggableTask = ({ task }: { task: ITaskAndSubs }) => {
     zIndex: isDragging ? 1000 : "auto",
     boxShadow: isDragging ? "0 5px 15px rgba(0,0,0,0.2)" : "none",
     cursor: isDragging ? "grabbing" : "auto",
+    width: '100%'
   };
 
   return (

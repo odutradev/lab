@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { DndContext, closestCenter } from "@dnd-kit/core";
 import {
   SortableContext,
-  useSortable,
   verticalListSortingStrategy,
   arrayMove,
 } from "@dnd-kit/sortable";
@@ -15,6 +14,7 @@ import Task from "./components/task";
 import Column from "./components/column";
 import { TaskStatus, TaskStatusTypes } from "./types";
 import Overlay from "./components/overlay";
+import Empty from "./components/empty";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<ITaskAndSubs[]>([]);
@@ -31,11 +31,6 @@ const Tasks = () => {
     status,
     tasks: tasks.filter((task) => task.status === status),
   }));
-
-  const EmptyColumnDropTarget = ({ id }: { id: string }) => {
-    const { attributes, listeners, setNodeRef } = useSortable({ id });
-    return <div ref={setNodeRef} {...attributes} {...listeners} style={{ height: "100%" }} />;
-  };
 
   const handleDragStart = ({ active }: any) => {
     setActiveTaskId(active.id);
@@ -106,7 +101,7 @@ const Tasks = () => {
                   {tasks.length > 0 ? (
                     tasks.sort((a, b) => (a.order || 0) -(b.order || 0)).map((task) => <Task key={task._id} task={task} />)
                   ) : (
-                    <EmptyColumnDropTarget id={status as string} />
+                    <Empty id={status as string} />
                   )}
                 </SortableContext>
             </Column>

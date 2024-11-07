@@ -1,7 +1,8 @@
 import React, { useContext, createContext, useState, useEffect, useCallback } from 'react';
 import { GroupTasksByStatusProps, TasksContextProps, TasksProps } from './types';
 import { defaultValues, statusCategories } from './defaultValues';
-import { getAllTasks, ITaskAndSubs } from '../../../actions/task';
+import { getAllTasks, ITaskAndSubs, updateAllTasks } from '../../../actions/task';
+import { TaskStatusTypes } from '../types';
 
 const initialConfig = {
   ...defaultValues,
@@ -49,12 +50,18 @@ export const TasksProvider: React.FC<{
   };
 
   const updateTasksOrder = async (newTasks: ITaskAndSubs[]) => {
-    const tasksByStatus = groupTasksByStatus({ tasks: newTasks, statusCategories })
-
-    updateState({ 
-      tasks: newTasks,
-      tasksByStatus
-    });
+    const tasksByStatus = groupTasksByStatus({ tasks: newTasks, statusCategories });
+  
+    tasksByStatus.forEach((item) =>
+      item.tasks.forEach((task, index) => {
+        const taskIndex = newTasks.findIndex((x) => x._id === task._id);
+        newTasks[taskIndex].status = item.status as TaskStatusTypes;
+        newTasks[taskIndex].order = index;
+      })
+    );
+  
+    updateState({ tasks: newTasks, tasksByStatus });
+    updateAllTasks(newTasks);
   };
 
   useEffect(() => {

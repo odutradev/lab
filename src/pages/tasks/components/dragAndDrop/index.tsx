@@ -53,20 +53,6 @@ const DragAndDrop = () => {
     updateState({ activeOverlayTask: undefined });
   };
 
-  /*
-  useEffect(() => {
-    tasksByStatus.forEach((item) =>
-      item.tasks.forEach((task, index) => {
-        const taskIndex = tasks.findIndex((x) => x._id === task._id);
-        tasks[taskIndex].order = index;
-        tasks[taskIndex].status = item.status as TaskStatusTypes;
-        updateState({ tasks });
-        updateAllTasks(tasks);
-      })
-    );
-  }, [tasksByStatus, updateState]);
-  */
-
   return (
     <DndContext
       collisionDetection={closestCenter}

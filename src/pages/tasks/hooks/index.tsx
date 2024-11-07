@@ -1,10 +1,11 @@
 import React, { useContext, createContext, useState, useEffect, useCallback } from 'react';
 import { GroupTasksByStatusProps, TasksContextProps, TasksProps } from './types';
 import { defaultValues, statusCategories } from './defaultValues';
-import { getAllTasks } from '../../../actions/task';
+import { getAllTasks, ITaskAndSubs } from '../../../actions/task';
 
 const initialConfig = {
   ...defaultValues,
+  updateTasksOrder: () => {},
   updateState: () => {},
 };
 
@@ -47,12 +48,22 @@ export const TasksProvider: React.FC<{
     }
   };
 
+  const updateTasksOrder = async (newTasks: ITaskAndSubs[]) => {
+    const tasksByStatus = groupTasksByStatus({ tasks: newTasks, statusCategories })
+
+    updateState({ 
+      tasks: newTasks,
+      tasksByStatus
+    });
+  };
+
   useEffect(() => {
     getTasksData();
   }, []);
 
   const value = {
     ...state,
+    updateTasksOrder,
     updateState,
   };
 

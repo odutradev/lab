@@ -2,8 +2,6 @@ import { DndContext, closestCenter } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Grid } from "@mui/material";
 
-//import { updateAllTasks } from '../../../../actions/task';
-import { statusCategories } from "./defaultValues";
 import Overlay from "../../components/overlay";
 import Column from "../../components/column";
 import Empty from "../../components/empty";
@@ -11,10 +9,9 @@ import Task from "../../components/task";
 import { TaskStatus } from "../../types";
 import useTasks from "../../hooks";
 import Sortable from "../sortable";
-import { ITaskAndSubs } from "../../../../actions/task";
 
 const DragAndDrop = () => {
-  const { tasks, updateState, tasksByStatus } = useTasks();
+  const { tasks, updateState, updateTasksOrder, tasksByStatus } = useTasks();
   
   const handleDragStart = ({ active }: any) => {
     const activeOverlayTask = tasks.find(
@@ -34,25 +31,23 @@ const DragAndDrop = () => {
     const newStatus = over.data?.current?.sortable.containerId;
 
     if (newStatus && newStatus !== tasks[oldIndex].status) {
-      updateState({
-        tasks: tasks.map((task) =>
-          task._id === active.id
-            ? { ...task, status: newStatus }
-            : task
-        ),
-      });
+      const reorderedTasks = tasks.map((task) =>
+        task._id === active.id
+          ? { ...task, status: newStatus }
+          : task
+      );
+      updateTasksOrder(reorderedTasks);
       return;
     }
 
     const newIndex = tasks.findIndex((task) => task._id === over.id);
     if (newIndex !== -1 && oldIndex !== newIndex) {
-      const reorderedTasks = arrayMove(tasks, oldIndex, newIndex);
-      updateState({
-        tasks: reorderedTasks.map((task, index) => ({
-          ...task,
-          order: index + 1,
-        })),
-      });
+      const reorderedTasks = arrayMove(tasks, oldIndex, newIndex).map((task, index) => ({
+        ...task,
+        order: index + 1,
+      }));
+
+      updateTasksOrder(reorderedTasks);
     }
 
     updateState({ activeOverlayTask: undefined });

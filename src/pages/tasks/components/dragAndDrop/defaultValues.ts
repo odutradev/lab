@@ -1,1 +1,0 @@
-export const statusCategories = ['inactive', 'blocked', 'pending', 'active', 'completed'];

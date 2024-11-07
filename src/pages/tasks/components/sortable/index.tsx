@@ -8,7 +8,7 @@ const Sortable = ({ children, id }: SortableProps) => {
 
     return (
       <SortableContext
-        items={tasks.map((task) => task.identificator)}
+        items={tasks.map((task) => task._id)}
         strategy={verticalListSortingStrategy}
         id={id}
       >

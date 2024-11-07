@@ -22,7 +22,7 @@ const DragAndDrop = () => {
 
   const handleDragStart = ({ active }: any) => {
     const activeOverlayTask = tasks.find(
-      (task) => task.identificator == active.id
+      (task) => task._id == active.id
     );
     updateState({ activeOverlayTask });
   };
@@ -33,14 +33,14 @@ const DragAndDrop = () => {
     if (!over) return;
 
     const oldIndex = tasks.findIndex(
-      (task) => task.identificator === active.id
+      (task) => task._id === active.id
     );
     const newStatus = over.data?.current?.sortable.containerId;
 
     if (newStatus && newStatus !== tasks[oldIndex].status) {
       updateState({
         tasks: tasks.map((task) =>
-          task.identificator === active.id
+          task._id === active.id
             ? { ...task, status: newStatus }
             : task
         ),
@@ -48,7 +48,7 @@ const DragAndDrop = () => {
       return;
     }
 
-    const newIndex = tasks.findIndex((task) => task.identificator === over.id);
+    const newIndex = tasks.findIndex((task) => task._id === over.id);
     if (newIndex !== -1 && oldIndex !== newIndex) {
       const reorderedTasks = arrayMove(tasks, oldIndex, newIndex);
       updateState({

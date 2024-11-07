@@ -8,7 +8,7 @@ import { DraggableTask } from "./styles";
   
 const Task = ({ task, isOverlay } : { task: ITask | ITaskAndSubs, isOverlay?: boolean}) => {
 
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task.identificator });
+    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task._id });
 
     const style = {
       transform: CSS.Transform.toString(transform),

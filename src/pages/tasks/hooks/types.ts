@@ -1,6 +1,7 @@
 import { ITaskAndSubs  } from "../../../actions/task";
   
 export interface TasksProps  {
+    activeOverlayTask?: ITaskAndSubs;
     defaultTasks: ITaskAndSubs[];
     tasks: ITaskAndSubs[];
     createModal: boolean;

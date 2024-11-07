@@ -1,15 +1,16 @@
 import {  DragOverlay } from "@dnd-kit/core";
 
-import { ITaskAndSubs } from "../../../../actions/task";
-import { OverlayProps } from "./types";
+import useTasks from "../../hooks";
 import Task from "../task";
 
-const Overlay = ({ activeTaskId, tasks }: OverlayProps) => {
+const Overlay = () => {
+    const { activeOverlayTask } = useTasks();
+    
     return (
         <DragOverlay>
-            {activeTaskId ? (
+            {activeOverlayTask ? (
                 <Task
-                    task={tasks.find((task: ITaskAndSubs) => String(task.identificator) === String(activeTaskId)) as ITaskAndSubs}
+                    task={activeOverlayTask}
                     isOverlay
                 />
             ) : null}

@@ -13,8 +13,6 @@ import Sortable from '../sortable';
 
 const DragAndDrop = () => {
 
-    
-  const [activeTaskId, setActiveTaskId] = useState<null | string>(null);
   const { tasks, updateState } = useTasks();
 
   const statusCategories = ['inactive', 'blocked', 'pending', 'active', 'completed'];
@@ -24,7 +22,9 @@ const DragAndDrop = () => {
   }));
 
   const handleDragStart = ({ active }: any) => {
-    setActiveTaskId(active.id);
+    const activeOverlayTask = tasks.find((task) => task.identificator == active.id);
+    updateState({ activeOverlayTask });
+
   };
 
   const handleDragEnd = (event: any) => {
@@ -56,7 +56,7 @@ const DragAndDrop = () => {
       });
     }
 
-    setActiveTaskId(null);
+    updateState({ activeOverlayTask: undefined });
   };
 /*
   useEffect(() => {
@@ -93,7 +93,7 @@ const DragAndDrop = () => {
             </Column>
           ))}
         </Grid>
-        <Overlay tasks={tasks} activeTaskId={activeTaskId} />
+        <Overlay />
       </DndContext>
     );
 };

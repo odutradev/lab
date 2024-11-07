@@ -1,30 +1,30 @@
-import { Grid } from '@mui/material';
-import { useState } from 'react';
-import { DndContext, closestCenter } from '@dnd-kit/core';
-import {    arrayMove } from '@dnd-kit/sortable';
-import { updateAllTasks } from '../../../../actions/task';
-import Task from '../../components/task';
-import Column from '../../components/column';
-import { TaskStatus, TaskStatusTypes } from '../../types';
-import Overlay from '../../components/overlay';
-import Empty from '../../components/empty';
-import useTasks from '../../hooks';
-import Sortable from '../sortable';
+import { DndContext, closestCenter } from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
+import { Grid } from "@mui/material";
+
+//import { updateAllTasks } from '../../../../actions/task';
+import { statusCategories } from "./defaultValues";
+import Overlay from "../../components/overlay";
+import Column from "../../components/column";
+import Empty from "../../components/empty";
+import Task from "../../components/task";
+import { TaskStatus } from "../../types";
+import useTasks from "../../hooks";
+import Sortable from "../sortable";
 
 const DragAndDrop = () => {
-
   const { tasks, updateState } = useTasks();
 
-  const statusCategories = ['inactive', 'blocked', 'pending', 'active', 'completed'];
   const tasksByStatus = statusCategories.map((status) => ({
-    status,
     tasks: tasks.filter((task) => task.status === status),
+    status,
   }));
 
   const handleDragStart = ({ active }: any) => {
-    const activeOverlayTask = tasks.find((task) => task.identificator == active.id);
+    const activeOverlayTask = tasks.find(
+      (task) => task.identificator == active.id
+    );
     updateState({ activeOverlayTask });
-
   };
 
   const handleDragEnd = (event: any) => {
@@ -32,14 +32,17 @@ const DragAndDrop = () => {
 
     if (!over) return;
 
-    const oldIndex = tasks.findIndex((task) => task.identificator === active.id);
+    const oldIndex = tasks.findIndex(
+      (task) => task.identificator === active.id
+    );
     const newStatus = over.data?.current?.sortable.containerId;
 
     if (newStatus && newStatus !== tasks[oldIndex].status) {
-      // Atualizar o status do task diretamente
       updateState({
         tasks: tasks.map((task) =>
-          task.identificator === active.id ? { ...task, status: newStatus } : task
+          task.identificator === active.id
+            ? { ...task, status: newStatus }
+            : task
         ),
       });
       return;
@@ -58,7 +61,8 @@ const DragAndDrop = () => {
 
     updateState({ activeOverlayTask: undefined });
   };
-/*
+
+  /*
   useEffect(() => {
     tasksByStatus.forEach((item) =>
       item.tasks.forEach((task, index) => {
@@ -70,32 +74,32 @@ const DragAndDrop = () => {
       })
     );
   }, [tasksByStatus, updateState]);
+  */
 
-*/
-    return (
-      <DndContext
-        collisionDetection={closestCenter}
-        onDragStart={handleDragStart}
-        onDragEnd={handleDragEnd}
-      >
-        <Grid container spacing={2} justifyContent="space-around">
-          {tasksByStatus.map(({ status, tasks }) => (
-            <Column title={TaskStatus[status as keyof typeof TaskStatus]}>
-              <Sortable id={status}>
-                {tasks.length > 0 ? (
-                  tasks
-                    .sort((a, b) => (a.order || 0) - (b.order || 0))
-                    .map((task) => <Task key={task._id} task={task} />)
-                ) : (
-                  <Empty id={status as string} />
-                )}
-              </Sortable>
-            </Column>
-          ))}
-        </Grid>
-        <Overlay />
-      </DndContext>
-    );
+  return (
+    <DndContext
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <Grid container spacing={2} justifyContent="space-around">
+        {tasksByStatus.map(({ status, tasks }) => (
+          <Column title={TaskStatus[status as keyof typeof TaskStatus]} key={status}>
+            <Sortable id={status}>
+              {tasks.length > 0 ? (
+                tasks
+                  .sort((a, b) => (a.order || 0) - (b.order || 0))
+                  .map((task) => <Task key={task._id} task={task} />)
+              ) : (
+                <Empty id={status as string} />
+              )}
+            </Sortable>
+          </Column>
+        ))}
+      </Grid>
+      <Overlay />
+    </DndContext>
+  );
 };
 
 export default DragAndDrop;

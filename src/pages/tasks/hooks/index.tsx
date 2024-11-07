@@ -1,7 +1,9 @@
 import React, { useContext, createContext, useState, useEffect, useCallback } from 'react';
+
+import { getAllTasks, ITaskAndSubs, updateAllTasks } from '../../../actions/task';
 import { GroupTasksByStatusProps, TasksContextProps, TasksProps } from './types';
 import { defaultValues, statusCategories } from './defaultValues';
-import { getAllTasks, ITaskAndSubs, updateAllTasks } from '../../../actions/task';
+import useMenuStore from '../../../store/menu';
 import { TaskStatusTypes } from '../types';
 
 const initialConfig = {
@@ -16,6 +18,8 @@ export const TasksProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [state, setState] = useState<TasksProps>(defaultValues);
+
+  const { selectedSpace } = useMenuStore(x => x.menu);
 
   const updateState = useCallback((newState: Partial<TasksProps>) => {
     setState((prevState) => ({
@@ -65,8 +69,10 @@ export const TasksProvider: React.FC<{
   };
 
   useEffect(() => {
-    getTasksData();
-  }, []);
+      if (selectedSpace){
+        getTasksData();
+      };
+  }, [selectedSpace]);
 
   const value = {
     ...state,

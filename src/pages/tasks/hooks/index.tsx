@@ -1,6 +1,6 @@
 import React, { useContext, createContext, useState, useEffect, useCallback } from 'react';
-import { TasksContextProps, TasksProps } from './types';
-import { defaultValues } from './defaultValues';
+import { GroupTasksByStatusProps, TasksContextProps, TasksProps } from './types';
+import { defaultValues, statusCategories } from './defaultValues';
 import { getAllTasks } from '../../../actions/task';
 
 const initialConfig = {
@@ -22,14 +22,23 @@ export const TasksProvider: React.FC<{
     }));
   }, []);
 
+  const groupTasksByStatus = ({ tasks, statusCategories }: GroupTasksByStatusProps) =>
+    statusCategories.map((status) => ({
+      tasks: tasks.filter((task) => task.status === status),
+      status,
+  }));
+
   const getTasksData = async () => {
     try {
       updateState({ loading: true });
       const response = await getAllTasks();
       if ('error' in response) return;
+
+      const tasksByStatus = groupTasksByStatus({ tasks: response, statusCategories })
       
       updateState({
         defaultTasks: response,
+        tasksByStatus,
         tasks: response,
         loading: false,
       });

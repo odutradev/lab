@@ -11,15 +11,11 @@ import Task from "../../components/task";
 import { TaskStatus } from "../../types";
 import useTasks from "../../hooks";
 import Sortable from "../sortable";
+import { ITaskAndSubs } from "../../../../actions/task";
 
 const DragAndDrop = () => {
-  const { tasks, updateState } = useTasks();
-
-  const tasksByStatus = statusCategories.map((status) => ({
-    tasks: tasks.filter((task) => task.status === status),
-    status,
-  }));
-
+  const { tasks, updateState, tasksByStatus } = useTasks();
+  
   const handleDragStart = ({ active }: any) => {
     const activeOverlayTask = tasks.find(
       (task) => task._id == active.id

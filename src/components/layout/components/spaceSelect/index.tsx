@@ -69,12 +69,12 @@ const SpaceSelect: React.FC<SpaceSelectProps> = ({ drawerOpen, disableGetUser, p
     <div style={{ padding: '16px' }}>
       {drawerOpen && (
         <FormControl fullWidth sx={{ mt: 2 }}>
-          <InputLabel id="space-select-label">Tabela</InputLabel>
+          <InputLabel id="space-select-label">Espaços</InputLabel>
           <Select
             labelId="space-select-label"
             value={menu.selectedSpace}
             onChange={handleChange}
-            label="Tabela"
+            label="Espaços"
             sx={{
               width: 'auto',
               transition: 'width 0.3s ease-in-out',

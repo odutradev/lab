@@ -1,12 +1,7 @@
 import { Grid } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { DndContext, closestCenter } from '@dnd-kit/core';
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-  arrayMove,
-} from '@dnd-kit/sortable';
-
+import {    arrayMove } from '@dnd-kit/sortable';
 import { updateAllTasks } from '../../../../actions/task';
 import Task from '../../components/task';
 import Column from '../../components/column';
@@ -14,6 +9,7 @@ import { TaskStatus, TaskStatusTypes } from '../../types';
 import Overlay from '../../components/overlay';
 import Empty from '../../components/empty';
 import useTasks from '../../hooks';
+import Sortable from '../sortable';
 
 const DragAndDrop = () => {
 
@@ -62,7 +58,7 @@ const DragAndDrop = () => {
 
     setActiveTaskId(null);
   };
-
+/*
   useEffect(() => {
     tasksByStatus.forEach((item) =>
       item.tasks.forEach((task, index) => {
@@ -75,7 +71,7 @@ const DragAndDrop = () => {
     );
   }, [tasksByStatus, updateState]);
 
-
+*/
     return (
       <DndContext
         collisionDetection={closestCenter}
@@ -85,11 +81,7 @@ const DragAndDrop = () => {
         <Grid container spacing={2} justifyContent="space-around">
           {tasksByStatus.map(({ status, tasks }) => (
             <Column title={TaskStatus[status as keyof typeof TaskStatus]}>
-              <SortableContext
-                items={tasks.map((task) => task.identificator)}
-                id={status}
-                strategy={verticalListSortingStrategy}
-              >
+              <Sortable id={status}>
                 {tasks.length > 0 ? (
                   tasks
                     .sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -97,7 +89,7 @@ const DragAndDrop = () => {
                 ) : (
                   <Empty id={status as string} />
                 )}
-              </SortableContext>
+              </Sortable>
             </Column>
           ))}
         </Grid>

@@ -15,6 +15,7 @@ export interface TasksProps  {
     tasksByStatus: TaskByStatus[];
     defaultTasks: ITaskAndSubs[];
     tasks: ITaskAndSubs[];
+    createStatus?: string;
     createModal: boolean;
     loading: boolean;
 };

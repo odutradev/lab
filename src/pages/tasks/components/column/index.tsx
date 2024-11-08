@@ -1,9 +1,21 @@
 import { Grid, Typography, CardContent } from "@mui/material";
+import { useState } from "react";
 
 import { CustomColumn, CustomTitleCard } from "./styles";
+import CreateButton from "../createButton";
 import { ColumnProps } from "./types";
 
-const Column = ({ children, title }: ColumnProps) => {
+const Column = ({ children, title, hasTasks }: ColumnProps) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
     return (
         <Grid item xs={12} sm={6} md={2.4} key={title} sx={{ border: "none" }}>
             <CustomTitleCard>
@@ -13,8 +25,14 @@ const Column = ({ children, title }: ColumnProps) => {
                     </Typography>
                 </CardContent>
             </CustomTitleCard>
-            <CustomColumn variant="outlined">
+            <CustomColumn
+                variant="outlined"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
+                {(isHovered && !hasTasks) && <CreateButton status={title} />}
                 {children}
+                {(isHovered && hasTasks) && <CreateButton status={title} />}
             </CustomColumn>
         </Grid>
     );

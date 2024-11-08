@@ -61,7 +61,7 @@ const DragAndDrop = () => {
     >
       <Grid container spacing={2} justifyContent="space-around">
         {tasksByStatus.map(({ status, tasks }) => (
-          <Column title={TaskStatus[status as keyof typeof TaskStatus]} key={status}>
+          <Column title={TaskStatus[status as keyof typeof TaskStatus]} hasTasks={tasks.length > 0} key={status}>
             <Sortable id={status}>
               {tasks.length > 0 ? (
                 tasks

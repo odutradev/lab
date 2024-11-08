@@ -6,7 +6,7 @@ export const CustomColumn = styled(Card)`
     border: none !important;
     flex-direction: column;
     align-items: center;
-    min-height: 300px;
+    min-height: 80vh;
     padding: 10px;
     display: flex;
     height: 100%;

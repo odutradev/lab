@@ -33,7 +33,7 @@ export interface ITaskCreate {
     parent?: string;
     status?: string;
     deadline?: Date;
-    index?: number;
+    order?: number;
 };
   
 interface ResponseError  {

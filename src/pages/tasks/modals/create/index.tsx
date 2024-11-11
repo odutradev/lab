@@ -7,7 +7,7 @@ import { defaultCreateTask } from "./defaultValues";
 import useTasks from "../../hooks";
 
 const CreateTaskModal = () => {
-  const { createModal, createStatus, updateState, getTasks} = useTasks();
+  const { createModal, createTaskData, updateState, getTasks} = useTasks();
   const [task, setTask] = useState<ITaskCreate>(defaultCreateTask);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +21,7 @@ const CreateTaskModal = () => {
   };
 
   const handleCreateTask = () => useAction({
-    action: async () => createTask({...task, status: createStatus }),
+    action: async () => createTask({...task, ...createTaskData }),
     callback: handleClose,
     toastMessages: {
       pending: "Criando tarefa",

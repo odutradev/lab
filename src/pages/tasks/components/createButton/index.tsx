@@ -6,10 +6,15 @@ import { StyledButton } from "./styles";
 import useTasks from "../../hooks";
 
 const CreateButton = ({ status }: CreateButtonProps) => {
-    const { updateState } = useTasks();
+    const { updateState, tasksByStatus } = useTasks();
 
     const handleCreate = () => {
-        updateState({ createModal: true, createStatus: status });
+        const statusTasks = tasksByStatus.find(item => item.status == status)?.tasks;
+        const data = {
+            order: (statusTasks?.length || 0) + 1,
+            status,
+        };
+        updateState({ createModal: true, createTaskData: data });
     };
 
     return (

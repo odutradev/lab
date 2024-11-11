@@ -4,8 +4,9 @@ import { useState } from "react";
 import { CustomColumn, CustomTitleCard } from "./styles";
 import CreateButton from "../createButton";
 import { ColumnProps } from "./types";
+import { TaskStatus } from "../../types";
 
-const Column = ({ children, title, hasTasks }: ColumnProps) => {
+const Column = ({ children, status, hasTasks }: ColumnProps) => {
     const [isHovered, setIsHovered] = useState(false);
 
     const handleMouseEnter = () => {
@@ -15,6 +16,8 @@ const Column = ({ children, title, hasTasks }: ColumnProps) => {
     const handleMouseLeave = () => {
         setIsHovered(false);
     };
+
+    const title = TaskStatus[status as keyof typeof TaskStatus];
 
     return (
         <Grid item xs={12} sm={6} md={2.4} key={title} sx={{ border: "none" }}>
@@ -30,9 +33,9 @@ const Column = ({ children, title, hasTasks }: ColumnProps) => {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
-                {(isHovered && !hasTasks) && <CreateButton status={title} />}
+                {(isHovered && !hasTasks) && <CreateButton status={status} />}
                 {children}
-                {(isHovered && hasTasks) && <CreateButton status={title} />}
+                {(isHovered && hasTasks) && <CreateButton status={status} />}
             </CustomColumn>
         </Grid>
     );

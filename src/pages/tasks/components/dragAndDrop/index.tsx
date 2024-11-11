@@ -6,7 +6,6 @@ import Overlay from "../../components/overlay";
 import Column from "../../components/column";
 import Empty from "../../components/empty";
 import Task from "../../components/task";
-import { TaskStatus } from "../../types";
 import useTasks from "../../hooks";
 import Sortable from "../sortable";
 
@@ -61,7 +60,7 @@ const DragAndDrop = () => {
     >
       <Grid container spacing={2} justifyContent="space-around">
         {tasksByStatus.map(({ status, tasks }) => (
-          <Column title={TaskStatus[status as keyof typeof TaskStatus]} hasTasks={tasks.length > 0} key={status}>
+          <Column status={status} hasTasks={tasks.length > 0} key={status}>
             <Sortable id={status}>
               {tasks.length > 0 ? (
                 tasks

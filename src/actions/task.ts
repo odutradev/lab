@@ -31,6 +31,7 @@ export interface ITaskCreate {
     scheduling?: Date;
     content?: string;
     parent?: string;
+    status?: string;
     deadline?: Date;
     index?: number;
 };

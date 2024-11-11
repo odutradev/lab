@@ -23,5 +23,6 @@ export interface TasksProps  {
 export type TasksContextProps = {
     updateState: (newState: Partial<TasksProps>) => void;
     updateTasksOrder: (newTasks: ITaskAndSubs[]) => void;
+    getTasks: () => void;
 } & TasksProps;
   

@@ -10,6 +10,7 @@ const initialConfig = {
   ...defaultValues,
   updateTasksOrder: () => {},
   updateState: () => {},
+  getTasks: () => {},
 };
 
 const TasksContext = createContext<TasksContextProps>(initialConfig);
@@ -53,6 +54,10 @@ export const TasksProvider: React.FC<{
     }
   };
 
+  const getTasks = () => {
+    getTasksData();
+  };
+
   const updateTasksOrder = async (newTasks: ITaskAndSubs[]) => {
     const tasksByStatus = groupTasksByStatus({ tasks: newTasks, statusCategories });
   
@@ -78,6 +83,7 @@ export const TasksProvider: React.FC<{
     ...state,
     updateTasksOrder,
     updateState,
+    getTasks
   };
 
   return (

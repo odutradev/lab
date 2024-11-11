@@ -25,7 +25,7 @@ export type ITaskAndSubs = ITask & {
     subs?: ITask[];
 };
 
-interface ITaskCreate {
+export interface ITaskCreate {
     priority?: 'high' | 'medium' | 'low';
     description: string;
     scheduling?: Date;

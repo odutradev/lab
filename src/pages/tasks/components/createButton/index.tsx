@@ -4,9 +4,11 @@ import { Typography } from "@mui/material";
 import { CreateButtonProps } from "./types";
 import { StyledButton } from "./styles";
 import useTasks from "../../hooks";
+import { useNavigate } from "react-router-dom";
 
 const CreateButton = ({ status }: CreateButtonProps) => {
-    const { updateState, tasksByStatus } = useTasks();
+    const { tasksByStatus } = useTasks();
+    const navigate = useNavigate();
 
     const handleCreate = () => {
         const statusTasks = tasksByStatus.find(item => item.status == status)?.tasks;
@@ -14,7 +16,7 @@ const CreateButton = ({ status }: CreateButtonProps) => {
             order: (statusTasks?.length || 0) + 1,
             status,
         };
-        updateState({ createModal: true, createTaskData: data });
+        navigate(`/dashboard/create-task?status=${data.status}&order=${data.order}`);
     };
 
     return (

@@ -16,6 +16,7 @@ import Spaces from "../pages/spaces";
 import Tasks from "../pages/tasks";
 import Error from "../pages/error";
 import Users from "../pages/users";
+import CreateTask from "../pages/createTask";
 
 const InitialRoute = () => localStorage.getItem("token") != null ? <Navigate to="/dashboard" replace/> : <Navigate to="/signin" />;
 
@@ -26,6 +27,7 @@ const routes = [
         routes: [
             ["/invite-space/:spaceID", <InviteSpace/>],
             ["/edit-space/:spaceID", <EditSpace/>],
+            ["/create-task", <CreateTask/>],
             ["/profile", <Profile/>],
             ["/spaces", <Spaces/>],
             ["/tasks", <Tasks/>],

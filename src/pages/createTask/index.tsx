@@ -98,29 +98,31 @@ const CreateTask = () => {
                             <MenuItem value="blocked">Bloqueada</MenuItem>
                         </TextField>
                     </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                        <TextField
-                            label="Agendar inicio da tarefa"
-                            name="scheduling"
-                            type="date"
-                            value={task.scheduling}
-                            InputLabelProps={{ shrink: true }}
-                            onChange={handleChange} 
-                            fullWidth
-                        />
+                    <Grid container spacing={2} style={{ marginBottom: '15px' }}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                label="Agendar inicio da tarefa"
+                                name="scheduling"
+                                type="date"
+                                value={task.scheduling}
+                                InputLabelProps={{ shrink: true }}
+                                onChange={handleChange} 
+                                fullWidth
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                label="Data Limite"
+                                name="deadline"
+                                type="date"
+                                value={task.deadline}
+                                InputLabelProps={{ shrink: true }}
+                                onChange={handleChange} 
+                                fullWidth
+                            />
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                        <TextField
-                            label="Data Limite"
-                            name="deadline"
-                            type="date"
-                            value={task.deadline}
-                            InputLabelProps={{ shrink: true }}
-                            onChange={handleChange} 
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid container spacing={2} justifyContent="center">
+                    <Grid container spacing={2} justifyContent="center" style={{ marginTop: 15}}>
                         <Grid item xs={12} md={6}>
                             <Button variant="outlined" onClick={handleBack} fullWidth>
                                 Voltar

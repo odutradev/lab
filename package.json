@@ -17,6 +17,7 @@
     "@fontsource/roboto": "^5.0.13",
     "@mui/icons-material": "^5.15.21",
     "@mui/material": "^5.15.21",
+    "@uiw/react-md-editor": "^4.0.4",
     "axios": "^1.7.2",
     "mui-file-dropzone": "^4.0.2",
     "react": "^18.3.1",

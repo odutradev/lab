@@ -1,8 +1,8 @@
 import { ITaskCreate } from "../../actions/task";
 
 export const defaultCreateTask: ITaskCreate = {
-    scheduling: new Date(),
-    deadline: new Date(),
+    scheduling: undefined,
+    deadline: undefined,
     priority: 'low',
     description: '',
     content: '',

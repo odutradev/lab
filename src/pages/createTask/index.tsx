@@ -2,10 +2,10 @@ import { TextField, Button, Grid, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-import { defaultCreateTask } from "../tasks/modals/create/defaultValues";          
 import { createTask, ITaskCreate } from "../../actions/task";
 import useQueryParams from "../../hooks/useQueryParams";
 import DashboardLayout from "../../components/layout";
+import { defaultCreateTask } from "./defaultValues";          
 import useAction from "../../hooks/useAction";
 import { CreateTaskParams } from "./types";
 
@@ -33,19 +33,23 @@ const CreateTask = () => {
         setTask({
             ...task!,
             [e.target.name]: e.target.value,
-            order: e.target.name == "status" ? undefined : task.order
+            order: e.target.name === "status" ? undefined : task.order
         });
     };
 
     useEffect(() => {
-        setTask({...task, status, order: Number(order)});
-    }, [])
+        setTask({
+            ...task,
+            status,
+            order: Number(order)
+        });
+    }, [status, order]);
 
     return (
         <DashboardLayout title="CRIAR TAREFA" disableGetUser>
             <Grid container justifyContent="center" style={{ marginTop: '25px' }}>
                 <Grid item xs={12} md={8} style={{ maxWidth: '80vw' }}>
-                <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
                         <TextField
                             label="Descrição"
                             name="description"
@@ -66,7 +70,7 @@ const CreateTask = () => {
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}> 
+                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
                         <TextField
                             select
                             label="Prioridade"
@@ -80,7 +84,7 @@ const CreateTask = () => {
                             <MenuItem value="low">Baixa</MenuItem>
                         </TextField>
                     </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}> 
+                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
                         <TextField
                             select
                             label="Status"
@@ -99,14 +103,24 @@ const CreateTask = () => {
                     </Grid>
                     <Grid item xs={12} style={{ marginBottom: '15px' }}>
                         <TextField
-                            label="Data de Criação"
+                            label="Agendar inicio da tarefa"
                             name="scheduling"
                             type="date"
+                            value={task.scheduling}
                             InputLabelProps={{ shrink: true }}
-                            value={new Date(task.scheduling || new Date).toISOString().split('T')[0]}
-                            InputProps={{ readOnly: true }}
+                            onChange={handleChange} 
                             fullWidth
-                            disabled
+                        />
+                    </Grid>
+                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                        <TextField
+                            label="Data Limite"
+                            name="deadline"
+                            type="date"
+                            value={task.deadline}
+                            InputLabelProps={{ shrink: true }}
+                            onChange={handleChange} 
+                            fullWidth
                         />
                     </Grid>
                     <Grid container spacing={2} justifyContent="center">

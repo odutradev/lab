@@ -1,16 +1,16 @@
-import { TextField, Button, Grid, MenuItem, Typography } from "@mui/material";
+import { TextField, Button, Grid, MenuItem, Typography, IconButton, Menu, MenuItem as MUIMenuItem } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
-
-import { getTaskById, ITaskAndSubs, updateTaskById } from "../../actions/task";
+import { getTaskById, ITaskAndSubs, updateTaskById, deleteTaskById } from "../../actions/task";
 import DashboardLayout from "../../components/layout";      
 import useAction from "../../hooks/useAction";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const EditTask = () => {
     const [task, setTask] = useState<ITaskAndSubs | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { taskID } = useParams();
     const navigate = useNavigate();
 
@@ -34,9 +34,19 @@ const EditTask = () => {
         },
     });
 
-    const handleBack = () => {
-        navigate(-1); 
-    };
+    const handleDeleteTask = () => useAction({
+        action: async () => {
+            if (taskID) deleteTaskById(taskID);
+        },
+        callback: handleBack,
+        toastMessages: {
+          pending: "Apagando tarefa",
+          success: "Tarefa apagada com sucesso",
+          error: "Erro ao apagar tarefa",
+        },
+    });
+
+    const handleBack = () => navigate(-1);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTask({
@@ -46,6 +56,12 @@ const EditTask = () => {
         });
     };
 
+    const handleCopy = (text: string) => navigator.clipboard.writeText(text);
+
+    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => setAnchorEl(event.currentTarget);
+
+    const handleMenuClose = () => setAnchorEl(null);
+
     useEffect(() => {
         getParamsTask();
     }, [taskID]);
@@ -54,8 +70,28 @@ const EditTask = () => {
         <DashboardLayout loading={loading} title="EDITAR TAREFA" disableGetUser>
             <Grid container justifyContent="center" style={{ marginTop: '25px' }}>
                 <Grid item xs={12} md={8} style={{ maxWidth: '80vw' }}>
-                {task ? (
+                    {task ? (
                         <>
+                            <Grid container justifyContent="flex-end">
+                                <IconButton onClick={handleMenuOpen} style={{ margin: "20px 0"}}>
+                                    <MoreVertIcon />
+                                </IconButton>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    open={Boolean(anchorEl)}
+                                    onClose={handleMenuClose}
+                                >
+                                    <MUIMenuItem onClick={() => handleCopy(taskID as string)}>
+                                        Copiar ID
+                                    </MUIMenuItem>
+                                    <MUIMenuItem onClick={() => handleCopy(window.location.href)}>
+                                        Copiar URL
+                                    </MUIMenuItem>
+                                    <MUIMenuItem onClick={handleDeleteTask}>
+                                        Apagar Tarefa
+                                    </MUIMenuItem>
+                                </Menu>
+                            </Grid>
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
                                 <TextField
                                     label="Descrição"

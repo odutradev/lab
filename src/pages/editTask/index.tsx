@@ -104,10 +104,25 @@ const EditTask = () => {
                                     <MenuItem value="active">Ativa</MenuItem>
                                     <MenuItem value="inactive">Inativa</MenuItem>
                                     <MenuItem value="completed">Finalizada</MenuItem>
-                                    <MenuItem value="pending">Pendentre</MenuItem>
+                                    <MenuItem value="pending">Pendente</MenuItem>
                                     <MenuItem value="blocked">Bloqueada</MenuItem>
                                 </TextField>
                             </Grid>
+                                {
+                                    task.lastUpdate && (
+                                        <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                                            <TextField
+                                                label="Ultima alteração"
+                                                name="lastUpdate"
+                                                type="date"
+                                                value={task.lastUpdate}
+                                                InputLabelProps={{ shrink: true }}
+                                                disabled
+                                                fullWidth
+                                            />
+                                        </Grid>
+                                    )
+                                }
                             <Grid item xs={12} style={{ marginBottom: '15px' }}>
                                 <TextField
                                     label="Agendar inicio da tarefa"
@@ -130,6 +145,36 @@ const EditTask = () => {
                                     fullWidth
                                 />
                             </Grid>
+                            {
+                                task.startIn && (
+                                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                                        <TextField
+                                            label="Data de inicio"
+                                            name="startIn"
+                                            type="date"
+                                            value={task.startIn}
+                                            InputLabelProps={{ shrink: true }}
+                                            disabled
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                )
+                            }
+                            {
+                                task.endIn && (
+                                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                                        <TextField
+                                            label="Data de finalização"
+                                            name="endIn"
+                                            type="date"
+                                            value={task.endIn}
+                                            InputLabelProps={{ shrink: true }}
+                                            disabled
+                                            fullWidth
+                                        />
+                                    </Grid>
+                                )
+                            }
                         </>
                     ) : (
                         <Typography variant="h6" align="center" color="textSecondary" style={{ marginTop: '20px' }}>

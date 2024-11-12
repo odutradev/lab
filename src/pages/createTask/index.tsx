@@ -97,7 +97,7 @@ const CreateTask = () => {
                             <MenuItem value="active">Ativa</MenuItem>
                             <MenuItem value="inactive">Inativa</MenuItem>
                             <MenuItem value="completed">Finalizada</MenuItem>
-                            <MenuItem value="pending">Pendentre</MenuItem>
+                            <MenuItem value="pending">Pendente</MenuItem>
                             <MenuItem value="blocked">Bloqueada</MenuItem>
                         </TextField>
                     </Grid>

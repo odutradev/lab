@@ -1,11 +1,12 @@
 import { TextField, Button, Grid, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import MDEditor from "@uiw/react-md-editor";
 
 import { createTask, ITaskCreate } from "../../actions/task";
 import useQueryParams from "../../hooks/useQueryParams";
 import DashboardLayout from "../../components/layout";
-import { defaultCreateTask } from "./defaultValues";          
+import { defaultCreateTask } from "./defaultValues";
 import useAction from "../../hooks/useAction";
 import { CreateTaskParams } from "./types";
 
@@ -60,14 +61,10 @@ const CreateTask = () => {
                         />
                     </Grid>
                     <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                        <TextField
-                            label="Conteúdo"
-                            name="content"
+                        <MDEditor
                             value={task.content || ''}
-                            onChange={handleChange}
-                            multiline
-                            rows={4}
-                            fullWidth
+                            onChange={(value) => setTask({ ...task!, content: value || '' })}
+                            height={200}
                         />
                     </Grid>
                     <Grid item xs={12} style={{ marginBottom: '15px' }}>

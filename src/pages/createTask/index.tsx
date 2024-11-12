@@ -1,8 +1,6 @@
-import { TextField, Button, Grid, MenuItem, Avatar, Box } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { TextField, Button, Grid, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 
 import { defaultCreateTask } from "../tasks/modals/create/defaultValues";          
 import { createTask, ITaskCreate } from "../../actions/task";
@@ -18,14 +16,14 @@ const CreateTask = () => {
     const navigate = useNavigate();
 
     const handleCreateTask = () => useAction({
-        action: async () => createTask({...task, status, order: Number(order) }),
+        action: async () => createTask(task),
         callback: handleBack,
         toastMessages: {
           pending: "Criando tarefa",
           success: "Tarefa criada com sucesso",
           error: "Erro ao criar tarefa",
         },
-      });
+    });
 
     const handleBack = () => {
         navigate(-1); 
@@ -38,143 +36,76 @@ const CreateTask = () => {
         });
     };
 
+    useEffect(() => {
+        setTask({...task, status, order: Number(order)});
+    }, [])
+
     return (
         <DashboardLayout title="CRIAR TAREFA" disableGetUser>
             <Grid container justifyContent="center" style={{ marginTop: '25px' }}>
                 <Grid item xs={12} md={8} style={{ maxWidth: '80vw' }}>
-                    <Grid container direction="row" alignItems="center" justifyContent="center" gap={"10px"} style={{ marginBottom: '25px' }}>
-                        <Avatar
-                            src={task.images?.avatar || undefined}
-                            style={{ width: 80, height: 80, marginBottom: '10px' }}
-                        >
-                            {!task.images?.avatar && task.name.split(' ').map(name => name[0]).join('').toUpperCase()}
-                        </Avatar>
-                        <Box
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                            width={40}
-                            height={40}
-                            borderRadius="50%"
-                            bgcolor="red"
-                            boxShadow={1}
-                            onClick={handleDeleteUser}
-                            style={{ cursor: 'pointer' }}
-                        >
-                            <DeleteIcon style={{ fontSize: 20, color: '#fafafa' }} />
-                        </Box>
-                    </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                <Grid item xs={12} style={{ marginBottom: '15px' }}>
                         <TextField
-                            label="Nome"
-                            name="name"
-                            value={task.name}
+                            label="Descrição"
+                            name="description"
+                            value={task.description}
                             onChange={handleChange}
                             fullWidth
+                            required
                         />
                     </Grid>
                     <Grid item xs={12} style={{ marginBottom: '15px' }}>
                         <TextField
-                            label="Email"
-                            name="email"
-                            value={task.email}
+                            label="Conteúdo"
+                            name="content"
+                            value={task.content || ''}
                             onChange={handleChange}
+                            multiline
+                            rows={4}
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                        <TextField
-                            label="ID"
-                            name="ID"
-                            value={task._id}
-                            onChange={handleChange}
-                            fullWidth
-                            disabled
-                        />
-                    </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                    <Grid item xs={12} style={{ marginBottom: '15px' }}> 
                         <TextField
                             select
-                            label="Cargo"
-                            name="role"
-                            value={task.role}
+                            label="Prioridade"
+                            name="priority"
+                            value={task.priority}
                             onChange={handleChange}
                             fullWidth
                         >
-                            <MenuItem value="admin">Administrador</MenuItem>
-                            <MenuItem value="normal">Normal</MenuItem>
+                            <MenuItem value="high">Alta</MenuItem>
+                            <MenuItem value="medium">Média</MenuItem>
+                            <MenuItem value="low">Baixa</MenuItem>
                         </TextField>
                     </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
+                    <Grid item xs={12} style={{ marginBottom: '15px' }}> 
                         <TextField
                             select
                             label="Status"
                             name="status"
                             value={task.status}
                             onChange={handleChange}
+                            defaultValue={status}
                             fullWidth
                         >
-                            <MenuItem value="logged">Logado</MenuItem>
-                            <MenuItem value="registered">Registrado</MenuItem>
-                            <MenuItem value="blocked">Bloqueado</MenuItem>
-                            <MenuItem value="pending">Pendente</MenuItem>
+                            <MenuItem value="active">Ativa</MenuItem>
+                            <MenuItem value="inactive">Inativa</MenuItem>
+                            <MenuItem value="completed">Finalizada</MenuItem>
+                            <MenuItem value="pending">Pendentre</MenuItem>
+                            <MenuItem value="blocked">Bloqueada</MenuItem>
                         </TextField>
                     </Grid>
                     <Grid item xs={12} style={{ marginBottom: '15px' }}>
                         <TextField
                             label="Data de Criação"
-                            name="createAt"
+                            name="scheduling"
                             type="date"
                             InputLabelProps={{ shrink: true }}
-                            value={new Date(task.createAt).toISOString().split('T')[0]}
+                            value={new Date(task.scheduling || new Date).toISOString().split('T')[0]}
                             InputProps={{ readOnly: true }}
                             fullWidth
                             disabled
-                        />
-                    </Grid>
-                    {
-                        task.approvedAt && (
-                            <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                <TextField
-                                    label="Data de Aprovação"
-                                    name="createAt"
-                                    type="date"
-                                    InputLabelProps={{ shrink: true }}
-                                    value={new Date(task.approvedAt).toISOString().split('T')[0]}
-                                    InputProps={{ readOnly: true }}
-                                    fullWidth
-                                    disabled
-                                />
-                            </Grid>
-                        )
-                    }
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                        <TextField
-                            label="Contato"
-                            name="contact"
-                            value={task.contact || ''}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                        <TextField
-                            label="Descrição"
-                            name="description"
-                            multiline
-                            rows={4}
-                            value={task.description || ''}
-                            onChange={handleChange}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                        <TextField
-                            label="Espaços"
-                            name="spaces"
-                            value={task.spaces.map(space => space.name).join(', ')}
-                            disabled
-                            fullWidth
                         />
                     </Grid>
                     <Grid container spacing={2} justifyContent="center">
@@ -185,7 +116,7 @@ const CreateTask = () => {
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <Button variant="contained" color="primary" onClick={handleCreateTask} fullWidth>
-                                Atualizar Usuário
+                                Criar Tarefa
                             </Button>
                         </Grid>
                     </Grid>

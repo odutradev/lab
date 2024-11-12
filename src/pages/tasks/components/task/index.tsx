@@ -1,6 +1,7 @@
 import { Card, Typography, Chip, IconButton } from "@mui/material";
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { useSortable } from "@dnd-kit/sortable";
+import { useNavigate } from "react-router-dom";
 import { CSS } from "@dnd-kit/utilities";
 
 import { BoxContent, ChipsContainer, Content, DraggableTask, IconContainer, TitleContainer } from "./styles";
@@ -8,6 +9,7 @@ import { ITask, ITaskAndSubs } from "../../../../actions/task";
   
 const Task = ({ task, isOverlay }: { task: ITask | ITaskAndSubs, isOverlay?: boolean}) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: task._id });
+    const navigate = useNavigate();
 
     const style = {
       transform: CSS.Transform.toString(transform),
@@ -20,16 +22,20 @@ const Task = ({ task, isOverlay }: { task: ITask | ITaskAndSubs, isOverlay?: boo
         low: "Baixa"
     };
 
+    const handleEditTask = () => {
+        navigate(`/dashboard/edit-task/${task._id}`);
+    };
+
     return (
         <DraggableTask isDragging={isDragging} isOverlay={isOverlay} ref={setNodeRef} style={style} {...attributes}>
             <Card variant="outlined" sx={{ borderRadius: 2, mb: 2, p: 2 }}>
                     <BoxContent>
                         <IconContainer>
-                            <IconButton {...listeners} {...attributes} sx={{ mr: 1 }}>
+                            <IconButton {...listeners} sx={{ mr: 1 }}>
                                 <DragIndicatorIcon />
                             </IconButton>
                         </IconContainer>
-                        <Content>
+                        <Content onClick={handleEditTask}>
                             <TitleContainer>
                                     <Typography variant="h6" color="primary" sx={{ paddingRight: "15px"}}>
                                         {task.identificator}
@@ -48,7 +54,6 @@ const Task = ({ task, isOverlay }: { task: ITask | ITaskAndSubs, isOverlay?: boo
                                 />
                         </ChipsContainer>
                         </Content>
-
                 </BoxContent>
             </Card>
         </DraggableTask>

@@ -4,8 +4,10 @@ import AccountPending from "../pages/accountPending";
 import AccountBlocked from "../pages/accountBlocked";
 import ResetPassword from "../pages/resetPassword";
 import InviteSpace from "../pages/inviteSpace";
+import CreateTask from "../pages/createTask";
 import Dashboard from "../pages/dashboard";
 import EditSpace from "../pages/editSpace";
+import EditTask from "../pages/editTask";
 import EditUser from "../pages/editUser";
 import Request from "../pages/requests";
 import Profile from "../pages/profile";
@@ -16,7 +18,6 @@ import Spaces from "../pages/spaces";
 import Tasks from "../pages/tasks";
 import Error from "../pages/error";
 import Users from "../pages/users";
-import CreateTask from "../pages/createTask";
 
 const InitialRoute = () => localStorage.getItem("token") != null ? <Navigate to="/dashboard" replace/> : <Navigate to="/signin" />;
 
@@ -27,6 +28,7 @@ const routes = [
         routes: [
             ["/invite-space/:spaceID", <InviteSpace/>],
             ["/edit-space/:spaceID", <EditSpace/>],
+            ["/edit-task/:taskID", <EditTask/>],
             ["/create-task", <CreateTask/>],
             ["/profile", <Profile/>],
             ["/spaces", <Spaces/>],

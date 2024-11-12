@@ -33,6 +33,7 @@ const CreateTask = () => {
         setTask({
             ...task!,
             [e.target.name]: e.target.value,
+            order: e.target.name == "status" ? undefined : task.order
         });
     };
 

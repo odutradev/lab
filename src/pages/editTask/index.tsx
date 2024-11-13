@@ -9,9 +9,10 @@ import DashboardLayout from "../../components/layout";
 import useAction from "../../hooks/useAction";
 
 const EditTask = () => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [task, setTask] = useState<ITaskAndSubs | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
     const { taskID } = useParams();
     const navigate = useNavigate();
 
@@ -64,7 +65,7 @@ const EditTask = () => {
     const handleMenuClose = () => setAnchorEl(null);
 
     const formatDateForInput = (date: string | Date): string => {
-        return new Date(date).toISOString().split("T")[0];
+        return new Date(date).toISOString().slice(0, 16);
     };
       
     useEffect(() => {
@@ -145,12 +146,36 @@ const EditTask = () => {
                                 </TextField>
                             </Grid>
                             <Grid container spacing={2} style={{ marginBottom: '15px' }}>
+                                <Grid item xs={12} md={6}>
+                                    <TextField
+                                        label="Agendar inicio da tarefa"
+                                        name="scheduling"
+                                        type="date"
+                                        value={task.scheduling ? new Date(task.scheduling).toISOString().split("T")[0] : undefined}
+                                        InputLabelProps={{ shrink: true }}
+                                        onChange={handleChange} 
+                                        fullWidth
+                                    />
+                                </Grid>
+                                <Grid item xs={12} md={6}>
+                                    <TextField
+                                        label="Data Limite"
+                                        name="deadline"
+                                        type="date"
+                                        value={task.deadline ? new Date(task.deadline).toISOString().split("T")[0] : undefined}
+                                        InputLabelProps={{ shrink: true }}
+                                        onChange={handleChange} 
+                                        fullWidth
+                                    />
+                                </Grid>
+                            </Grid>
+                            <Grid container spacing={2} style={{ marginBottom: '15px' }}>
                                 {task.lastUpdate && (
                                     <Grid item xs={12} md={6}>
                                         <TextField
                                             label="Ultima alteração"
                                             name="lastUpdate"
-                                            type="date"
+                                            type="datetime-local"
                                             value={formatDateForInput(task.lastUpdate)}
                                             InputLabelProps={{ shrink: true }}
                                             disabled
@@ -163,7 +188,7 @@ const EditTask = () => {
                                         <TextField
                                             label="Data de criação"
                                             name="createAt"
-                                            type="date"
+                                            type="datetime-local"
                                             value={formatDateForInput(task.createAt)}
                                             InputLabelProps={{ shrink: true }}
                                             disabled
@@ -173,55 +198,35 @@ const EditTask = () => {
                                 )}
                             </Grid>
                             <Grid container spacing={2} style={{ marginBottom: '15px' }}>
-                                <Grid item xs={12} md={6}>
-                                    <TextField
-                                        label="Agendar inicio da tarefa"
-                                        name="scheduling"
-                                        type="date"
-                                        value={task.scheduling ? formatDateForInput(task.scheduling) : undefined}
-                                        InputLabelProps={{ shrink: true }}
-                                        onChange={handleChange} 
-                                        fullWidth
-                                    />
-                                </Grid>
-                                <Grid item xs={12} md={6}>
-                                    <TextField
-                                        label="Data Limite"
-                                        name="deadline"
-                                        type="date"
-                                        value={task.deadline ? formatDateForInput(task.deadline) : undefined}
-                                        InputLabelProps={{ shrink: true }}
-                                        onChange={handleChange} 
-                                        fullWidth
-                                    />
-                                </Grid>
+                                {(task.startIn || task.endIn) && (
+                                    <Grid item xs={12} md={6}>
+                                        <TextField
+                                            label="Data de inicio"
+                                            name="startIn"
+                                            type={task.startIn ? "datetime-local" : "date"}
+                                            value={task.startIn ? formatDateForInput(task.startIn) : undefined}
+                                            InputLabelProps={{ shrink: true }}
+                                            onChange={handleChange}
+                                            fullWidth
+                                            disabled
+                                        />
+                                    </Grid>
+                                )}
+                                {(task.endIn || task.startIn) && (
+                                    <Grid item xs={12} md={6}>
+                                        <TextField
+                                            label="Data de finalização"
+                                            name="endIn"
+                                            type={task.endIn ? "datetime-local" : "date"}
+                                            value={task.endIn ? formatDateForInput(task.endIn) : undefined}
+                                            InputLabelProps={{ shrink: true }}
+                                            onChange={handleChange}
+                                            fullWidth
+                                            disabled
+                                        />
+                                    </Grid>
+                                )}
                             </Grid>
-                            {task.startIn && (
-                                <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                    <TextField
-                                        label="Data de inicio"
-                                        name="startIn"
-                                        type="date"
-                                        value={task.startIn ? formatDateForInput(task.startIn) : undefined}
-                                        InputLabelProps={{ shrink: true }}
-                                        disabled
-                                        fullWidth
-                                    />
-                                </Grid>
-                            )}
-                            {task.endIn && (
-                                <Grid item xs={12} style={{ marginBottom: '15px' }}>
-                                    <TextField
-                                        label="Data de finalização"
-                                        name="endIn"
-                                        type="date"
-                                        value={task.endIn ? formatDateForInput(task.endIn) : undefined}
-                                        InputLabelProps={{ shrink: true }}
-                                        disabled
-                                        fullWidth
-                                    />
-                                </Grid>
-                            )}
                         </>
                     ) : (
                         <Typography variant="h6" align="center" color="textSecondary" style={{ marginTop: '20px' }}>

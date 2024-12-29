@@ -17,7 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <GlobalStyle /> {/* Adiciona os estilos globais */}
+      <GlobalStyle /> 
       <ToastContainer
         position="top-right"
         autoClose={5000}
